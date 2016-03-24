@@ -1,6 +1,9 @@
 # Ember CLI Torii Provider ArcGIS
 
-ArcGIS authentication provider for Torii, packaged as an Ember CLI Addon.
+ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.
+
+## Notes
+This is beta software. While the provider works for both App and IFrame UX flows, the dummy (test) app does not sign out correctly when using the App flow.
 
 ## Usage
 
@@ -26,11 +29,11 @@ module.exports = function(environment) {
    // ... other ENV config stuff here
 
    torii:{
+      sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
           appId: 'APP CLIENT ID GOES HERE',
-          redirect_uri: 'APP REDIRECT URI GOES HERE',
-          state: "STATE" // For CSRF, should be random & unguessable
+          portalUrl: 'https://someportal.com' //optional - defaults to https://arcgis.com
         }
       }
     }
@@ -40,9 +43,153 @@ module.exports = function(environment) {
 };
 ```
 
+## Torii Session
+
+Usually the torii session is an opt-in feature, so - strictly speaking - you don't need to use it, but we recommend it, and this documentation assumes you are using it.
+
+Torii injects the session into all routes and controllers, so you can just access it in a template.
+
+We recommend passing data into components vs. having them pull in the session.
+
+#### Session Properties
+
+| Property | Value | Description |
+| --- | --- | --- |
+| isAuthenticated | boolean | Is the session authenticated? |
+| isWorking | boolean | Is the session in transition? |
+| currentUser | object | the ArcGIS.com User |
+| portal | object  | the ArcGIS.com Portal object |
+| token | string | the token returned as part of the authentication process |
+
+Example usage
+```
+//app/templates/secure.hbs
+{{#if session.isAuthenticated}}
+<h2>Hello {{session.currentUser.fullName}}</h2>
+<ul>
+  <li>Portal Name: {{session.portal.name}}</li>
+  <li>Token: {{session.token}}</li>
+</ul>
+{{else}}
+<p>Not authenticated</p>
+{{/if}}
+```
+
 ## ArcGIS Authentication Options
 
 The ArcGIS Platform has a few types of authentication, based on OAuth2. For all the details, please consult the [documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Authorize/02r300000214000000/).
+
+#### Application Authentication
+
+Since your application will not be running on a sub-domain of ArcGIS.com, you will need to use a 'pop-up' based authentication flow.
+
+With this model, you need to register an application at [developers.arcgis.com](https://developers.arcgis.com).
+
+Next, at [developers.arcgis.com](https://developers.arcgis.com) you need to register a Redirect URI for the application - this should be the url that your web application lives at.
+
+**Note:** You can add multiple Redirect URI's for a single application, including `http://localhost`, which is convenient for development.
+
+Once that's complete, you will need to copy the 'client id', and put it into the torii provider as noted above.
+
+To initiate authentication with this flow, typically you will use a button and have it's action initiate the "opening" of a session.
+
+In your application, on the controller or route where this button lives, add an action like:
+
+```
+//app/routes/application.js
+import Ember from 'ember';
+export default Ember.Route.extend({
+
+  actions: {
+    signin: function(){
+      this.get('session').open('arcgis-oauth-bearer')
+        .then((authorization) => {
+          Ember.debug('AUTH SUCCESS: ', authorization);
+          //transition to some secured route or... so whatever is needed
+          this.controller.transitionToRoute('secure');
+        })
+        .catch((err)=>{
+          Ember.debug('AUTH ERROR: ', err);
+        });
+    },
+  }
+});
+
+```
+
+When this action is fired, it will open the session, which will utilize torii to open a pop-up window with the ArcGIS.com login displayed.
+
+
+#### Esri Application Authentication
+
+Esri hosted applications (hosted on a subdomain of arcgis.com) can have the ArcGIS.com login page embedded in an iframe.
+
+There are a few additional configuration parameters required for the `torii-provider-arcgis` configuration so that the url that is constructed for the iframe has the correct parameters.
+
+```
+//config/environment.js
+module.exports = function(environment) {
+
+  var ENV = {
+
+   // ... other ENV config stuff here
+
+   torii:{
+      sessionServiceName: 'session',
+      providers: {
+        'arcgis-oauth-bearer': {
+          appId: 'ESRI-WELL-KNOWN-APPLICATION-ID',
+          portalUrl: 'https://somePortal.com', //optional - defaults to https://www.arcgis.com
+          remoteServiceName: 'iframe',  
+          display: 'iframe',
+          showSocialLogins:true //optional, will default to false           
+        }
+      }
+    }
+  };
+
+  return ENV;
+};
+```
+
+Since torii is really designed to work with 'pop-up' style oAuth, in order to have the login page injected in the iframe on a specific template (i.e. /signin), we need to do a little more work.
+
+Torii has a iframe placeholder component, and this needs to be in the DOM before we can call `session.open`. So we add it into the signin template
+
+```
+//app/templates/signin.hbs
+{{torii-iframe-placeholder}}
+```
+
+But - just adding it won't do anything - we still need a means to open the session *after* the DOM has been rendered. We do this by adding some code into the route.
+
+```
+//app/routes/signin.js
+import Ember from 'ember';
+export default Ember.Route.extend({
+
+  actions: {
+    //this will fire once the route has fully transitioned
+    //but the DOM may not be done rendering yet...
+    didTransition: function(){
+      //so we schedule it to run afterRender
+      Ember.run.schedule('afterRender', this, function(){
+        this.get('session').open('arcgis-oauth-bearer')
+          .then((authorization) => {
+            Ember.debug('AUTH SUCCESS: ', authorization);
+            //transition to secured route etc...
+            this.controller.transitionToRoute('secure');
+          })
+          .catch((err)=>{
+            Ember.debug('AUTH ERROR: ' + JSON.stringify(err));
+          });
+      });
+    }
+  }
+});
+```
+
+
 
 
 
@@ -59,7 +206,7 @@ To use the ArcGIS Online authentication you need to run the app on **localui.arc
 
 To add this hostname on a Mac:
   * `sudo vim /etc/hosts`
-  * Add `127.0.0.1 torii-example.com`
+  * Add `127.0.0.1 torii-arcgis-provider-example.com`
   * Add `127.0.0.1 localui.arcgis.com`
 
 The `/etc/hosts` equivalent filepath on Windows is:

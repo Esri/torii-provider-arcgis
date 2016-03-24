@@ -17,14 +17,18 @@
      return this.get('portalUrl') + '/sharing/oauth2/authorize';
    }),
 
-   showSocialLogins: configurable('showSocialLogins', true),
+   showSocialLogins: configurable('showSocialLogins', false),
+
+   display: configurable('display', 'default'),
+
+   expiration: configurable('expiration', 20160),
 
    //These params must be present in on the provider
-   requiredUrlParams: ['response_type','showSocialLogins'],
+   requiredUrlParams: ['response_type','showSocialLogins', 'display', 'expiration'],
    // additional params that this provider accepts
-   optionalUrlParams: ['client', 'display', 'expiration','parent'],
+   optionalUrlParams: ['client', 'parent'],
    //params the provider will extract from the redirected url
-   responseParams:    ['token','state'],
+   responseParams:    ['token','state','expires_in'],
 
 
    /**
@@ -33,6 +37,12 @@
     * the login
     */
    open: function(options){
+     options = options || {};
+
+     if(this.get('display') === 'iframe'){
+       //if we are using an iframe, we need to set the parent to the current domain
+       options.parent = window.location.protocol + '//' + window.location.hostname;
+     }
 
      //since we want any passed in options to map up to the optional params...
      this.setProperties(options);

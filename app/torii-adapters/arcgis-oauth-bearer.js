@@ -33,16 +33,18 @@ export default Ember.Object.extend({
    * the portal
    */
   open (authentication){
-    Ember.debug('Open called...');
+
     let token = authentication.authorizationToken.token;
-    Ember.debug('Got token...' + token);
+    let expires = Date.now() + (authentication.authorizationToken.expires_in * 1000); //seconds from now
+
+    Ember.debug('torii:adapter:arcgis-oauth-bearer:open token...' + token);
     let portalSelfUrl = this.get('portalBaseUrl') + '/sharing/rest/portals/self?f=json&token=' + token;
-    Ember.debug('PortalselfUrl ' + portalSelfUrl);
+
     let signoutUrl = this.get('signoutUrl');
     // Ember.debug('signoutUrl ' + signoutUrl);
     //now use the token to call portal self
     return new Ember.RSVP.Promise(function(resolve, reject){
-      Ember.debug('arcgis-oauth-bearer:adapter:open making portal/self call...');
+      Ember.debug('torii:adapter:arcgis-oauth-bearer:open making portal/self call...');
       Ember.$.ajax({
         url: portalSelfUrl,
         dataType: 'json',
@@ -51,13 +53,22 @@ export default Ember.Object.extend({
       });
 
     }).then((portal)=>{
-      Ember.debug('arcgis-oauth-bearer:adapter:open got response from portal/self & assigning to session');
+      Ember.debug('torii:adapter:arcgis-oauth-bearer:open got response from portal/self & assigning to session');
       // The returned object is merged onto the session (basically).
 
-      //separate the portal and user so they are separate props on the
-      //session object
+      //separate the portal and user so they are separate props on the session object
       let user = portal.user;
       delete portal.user;
+
+      //TODO find a cleaner means to handle this iframe jiggery pokery
+      if(!ENV.torii.providers['arcgis-oauth-bearer'].display || ENV.torii.providers['arcgis-oauth-bearer'].display != 'iframe'){
+        //basically - if we are not using the iframe, we need to handle the
+        //login persistence ourselves so cook up an object and stuff it
+        //in localStorage
+        let cookieData = this._createCookieData(token,expires, user, portal);
+        this._store('torii-provider-arcgis', cookieData);
+      }
+
       return {
         portal: portal,
         currentUser:user,
@@ -72,8 +83,15 @@ export default Ember.Object.extend({
    */
   close(){
     return new Ember.RSVP.Promise(function(resolve, reject){
-      throw new Error(
-        'To log out of ArcGIS Online, you should redirect the browser to ' + this.get('signoutUrl') );
+      //always nuke the localStorage things
+      if(window.localStorage){
+        window.localStorage.removeItem('torii-provider-arcgis');
+      }
+      //TODO find a cleaner means to handle this iframe jiggery pokery
+      if(ENV.torii.providers['arcgis-oauth-bearer'].display && ENV.torii.providers['arcgis-oauth-bearer'].display === 'iframe'){
+        throw new Error('To log out of ArcGIS Online, you should redirect the browser to ' + this.get('signoutUrl') );
+      }
+      resolve();
     });
   },
 
@@ -83,11 +101,29 @@ export default Ember.Object.extend({
   fetch(){
     let self = this;
     return new Ember.RSVP.Promise(function(resolve, reject){
-      let cookieData = self._checkCookie(self.get('authCookieName'));
-      if(cookieData.valid){
+      //try for a cookie...
+      let result = self._checkCookie(self.get('authCookieName'));
+      //failing that look in localStorage
+      if(!result.valid){
+        result = self._checkLocalStorage('torii-provider-arcgis');
+      }
+
+      if(result.valid){
         //degate to the ope function to do the work...
         Ember.debug('Fetch has valid cookie... opening session...');
-        resolve( self.open({authorizationToken: {token: cookieData.cookie.token}}) );
+
+        //calcuate expires_in based on current timestamp
+        let now = Date.now();
+        let expires_in = (result.authData.expires - now) / 1000;
+
+        //create the expected object for open
+        let authData = {
+          authorizationToken: {
+            token: result.authData.token,
+            expires_in: expires_in
+          }
+        }
+        resolve( self.open(authData) );
       }else{
         Ember.debug('Fetch did not get a cookie... rejecting');
         reject();
@@ -95,6 +131,54 @@ export default Ember.Object.extend({
     });
   },
 
+  /**
+   * Checks local storage for auth data
+   */
+  _checkLocalStorage(keyName){
+    Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage keyName ' + keyName);
+    let result = {
+      valid: false
+    };
+    if(window.localStorage){
+      let stored = window.localStorage.getItem(keyName);
+      if(stored){
+        result.authData = JSON.parse(stored);
+      }
+      if(new Date(result.authData.expires) > new Date()){
+        Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage authdata has not expired yet ');
+        result.valid = true;
+      }
+    }
+    return result;
+  },
+
+  /**
+   * Stores auth data in local storage
+   */
+  _store(keyName, object){
+    if(window.localStorage){
+      window.localStorage.setItem(keyName, JSON.stringify(object));
+    }
+  },
+
+  /**
+   * Helper to ensure consisten serialization
+   */
+  _createCookieData(token, expires, user, portal){
+    let data = {
+      token: token,
+      accountId: user.orgId,
+      create: user.created,
+      culture: user.culture,
+      customBaseUrl: portal.customBaseUrl,
+      email:user.username,
+      expires:expires ,
+      persistent:false,
+      region: user.region,
+      role: user.role
+    };
+    return data;
+  },
 
   /**
    * Check for and validate a cookie by name
@@ -107,7 +191,7 @@ export default Ember.Object.extend({
     let cookieString = decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(cookieName).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
 
     if(cookieString){
-      Ember.debug('arcgis-oauth-bearer:checkCookie: Found cookie...');
+      Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: Found cookie...');
       //parse it
       let cookieData = JSON.parse(cookieString);
       //check if it has expired
@@ -115,11 +199,11 @@ export default Ember.Object.extend({
         //ok it's still valid... we still don't know if
         //it is valid for the env we are working with
         //but we will return it
-        Ember.debug('arcgis-oauth-bearer:checkCookie: cookie has not expired yet...');
-        result.cookie = cookieData;
+        Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: cookie has not expired yet...');
+        result.authData = cookieData;
         result.valid = true;
       }else{
-        Ember.debug('arcgis-oauth-bearer:checkCookie: cookie has expired.');
+        Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: cookie has expired.');
       }
     }
     return result;

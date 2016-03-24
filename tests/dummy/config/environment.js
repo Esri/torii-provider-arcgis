@@ -1,6 +1,7 @@
 /* jshint node: true */
 
 module.exports = function(environment) {
+
   var ENV = {
     modulePrefix: 'dummy',
     environment: environment,
@@ -20,16 +21,18 @@ module.exports = function(environment) {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          remoteServiceName: 'iframe',
-          apiKey: 'arcgisonline',
-          display:'iframe'
+          apiKey: 'zDbzLJW6W4tcxHkj'
         }
       }
     }
   };
 
-  //Keep things DRY
-  ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = ENV.APP.portalBaseUrl;
+  //Overrides for testing to easily swap to AGO Iframe flow
+  // ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = ENV.APP.portalBaseUrl;
+  // ENV.torii.providers['arcgis-oauth-bearer'].apiKey = 'arcgisonline';
+  // ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName = 'iframe';
+  // ENV.torii.providers['arcgis-oauth-bearer'].display = 'iframe';
+
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;

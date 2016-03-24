@@ -14,10 +14,22 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
+      portalBaseUrl: 'https://www.arcgis.com'
+    },
+    torii: {
+      sessionServiceName: 'session',
+      providers: {
+        'arcgis-oauth-bearer': {
+          remoteServiceName: 'iframe',
+          apiKey: 'arcgisonline',
+          display:'iframe'
+        }
+      }
     }
   };
+
+  //Keep things DRY
+  ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = ENV.APP.portalBaseUrl;
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;

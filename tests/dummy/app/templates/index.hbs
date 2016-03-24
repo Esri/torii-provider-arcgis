@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="col-sm-12">
+    <div class="jumbotron">
+      <h1>Torii Provider for ArcGIS</h1>
+      <p>Quickly add ArcGIS.com authentication into an Ember-cli application.</p>
+      <p>
+        {{#if session.isAuthenticated}}
+          <a href="{{session.signoutUrl}}" class="btn btn-primary">Sign Out</a>
+        {{else}}
+          {{link-to 'Sign In' 'signin' class="btn btn-primary" }}
+        {{/if}}
+      </p>
+    </div>
+
+    {{#if session.isAuthenticated}}
+    <div class="alert alert-info" role="alert">
+      Hello {{session.currentUser.username }}, you are currently authenticated.
+    </div>
+    {{else}}
+    <div class="alert alert-danger" role="alert">
+      You are not currently authenticated.
+    </div>
+    {{/if}}
+
+    {{# if badDomain}}
+      <div class="alert alert-danger" role="alert">
+        <h2>ArcGIS.com Domain Required</h2>
+        <p>In order to run this sample site, you need to load this page on a *.arcgis.com domain. But,
+        fear not - this is very easy! Simply add an entry to your hosts file, pointing local.arcgis.com to 127.0.0.1.</p>
+      </div>
+    {{/if}}
+  </div>
+</div>

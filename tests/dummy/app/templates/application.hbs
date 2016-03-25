@@ -18,7 +18,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {{#if session.isAuthenticated}}
-        <li><a href="{{session.signoutUrl}}">Sign Out</a></li>
+        <li><a href="#" {{action 'signout'}}>Sign Out</a></li>
         {{else}}
         {{#active-link}}{{link-to "Sign In" "signin"}}{{/active-link}}
         {{/if}}

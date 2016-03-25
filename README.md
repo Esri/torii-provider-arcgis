@@ -32,7 +32,7 @@ module.exports = function(environment) {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          appId: 'APP CLIENT ID GOES HERE',
+          apiKey: 'APP CLIENT ID GOES HERE',
           portalUrl: 'https://someportal.com' //optional - defaults to https://arcgis.com
         }
       }
@@ -138,7 +138,7 @@ module.exports = function(environment) {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          appId: 'ESRI-WELL-KNOWN-APPLICATION-ID',
+          apiKey: 'ESRI-WELL-KNOWN-APPLICATION-ID',
           portalUrl: 'https://somePortal.com', //optional - defaults to https://www.arcgis.com
           remoteServiceName: 'iframe',  
           display: 'iframe',

@@ -1,7 +1,7 @@
 {
   "name": "torii-provider-arcgis",
   "version": "0.0.2",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -15,7 +15,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Dave Bouwman <dbouwman@esri.com>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
@@ -38,14 +38,17 @@
     "ember-load-initializers": "^0.5.0",
     "ember-resolver": "^2.0.3",
     "ember-try": "^0.1.2",
-    "loader.js": "^4.0.0",
-    "torii": "0.7.0-beta.4"
+    "loader.js": "^4.0.0"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "arcgis",
+    "esri",
+    "oauth"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.5"
+    "ember-cli-babel": "^5.1.5",
+    "torii": "0.7.0-beta.4"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

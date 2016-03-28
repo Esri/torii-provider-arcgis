@@ -3,7 +3,7 @@
 ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.
 
 ## Notes
-This is beta software. While the provider works for both App and IFrame UX flows, the dummy (test) app does not sign out correctly when using the App flow.
+This is beta software. The intention of this addon is to enable an application to authenticate user using ArcGIS.com oAuth. It does not currently, nor is it planned, to handle federation of ArcGIS Server credentials.
 
 ## Usage
 

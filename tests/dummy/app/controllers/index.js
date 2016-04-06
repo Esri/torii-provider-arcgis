@@ -6,7 +6,11 @@ export default Ember.Controller.extend({
     //logic to show a warning if iframe style is requested...
     if(ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName &&
         ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName  === 'iframe'){
-          return !(window.location.hostname.toLowerCase().indexOf('arcgis.com') > -1);
+          if(window.location.hostname.toLowerCase().indexOf('arcgis.com') > -1){
+            return true;
+          }else{
+            return false;
+          }
         }else{
           return false;
         }

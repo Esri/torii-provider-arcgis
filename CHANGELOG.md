@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.0]
+### Added
+- gatekeeper service
+- gatekeeper route + template
+- fixed .nvmrc typo
+
 ## [0.0.3]
 ### Changed
 - minor updates to readme and package.json

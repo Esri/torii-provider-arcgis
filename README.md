@@ -61,6 +61,7 @@ We recommend passing data into components vs. having them pull in the session.
 | portal | object  | the ArcGIS.com Portal object |
 | token | string | the token returned as part of the authentication process |
 
+
 Example usage
 ```
 //app/templates/secure.hbs
@@ -73,6 +74,33 @@ Example usage
 {{else}}
 <p>Not authenticated</p>
 {{/if}}
+```
+
+#### Session Methods
+
+| Method | Return | Description |
+| isInRole('roleName') | bool | is the current user in the specified role |
+| isInAnyRole(['role1', 'role2']) | bool | is the current user in any of the specified roles |
+| hasPrivilege('privName') | bool | does the current user have the specified privilege |
+| hasAnyPrivilege(['priv1', 'priv2']) | bool | does the current user have the specified privilege |
+| isInOrg('orgId') | bool | is the current user a member of the specified org |
+| isInAnyOrg(['orgId1', 'orgId2']) | bool | is the current user a member of any of the specified orgs |
+
+Example Usage
+```
+//app/routes/privileged.js
+...
+beforeModel(){
+  let session = this.get('session');
+  if(!session.isAuthenticated){
+    this.transitionTo('signin');
+  }else{
+    if(!session.hasPrivilege('some:priv')){
+      this.transitionTo('notauthorized');
+    }
+  }
+}
+
 ```
 
 ## ArcGIS Authentication Options

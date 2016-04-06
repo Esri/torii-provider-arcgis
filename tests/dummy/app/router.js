@@ -8,6 +8,8 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('signin');
   this.authenticatedRoute('secure');
+  this.route('rolesecure');
+  this.route('gatekeeper');
 });
 
 export default Router;

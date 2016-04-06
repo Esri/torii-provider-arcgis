@@ -15,6 +15,7 @@
       <ul class="nav navbar-nav">
         {{#active-link}}{{link-to "Home" "index"}}{{/active-link}}
         {{#active-link}}{{link-to "Secure" "secure"}}{{/active-link}}
+        {{#active-link}}{{link-to "GateKeeper" "gatekeeper"}}{{/active-link}}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {{#if session.isAuthenticated}}

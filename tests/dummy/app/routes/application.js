@@ -13,6 +13,7 @@ export default Ember.Route.extend({
         window.location = this.get('session.signoutUrl');
       }else{
         this.get('session').close();
+        //this.transitionTo('index');
       }
     }
   }

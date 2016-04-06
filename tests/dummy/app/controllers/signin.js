@@ -9,7 +9,11 @@ export default Ember.Controller.extend({
   badDomain: Ember.computed('model', function(){
     //logic to show a warning if iframe style is requested...
     if(this.get('usingIframe')){
-      return !(window.location.hostname.toLowerCase().indexOf('arcgis.com') > -1);
+      if(window.location.hostname.toLowerCase().indexOf('arcgis.com') > -1){
+        return true;
+      }else{
+        return false;
+      }
     }else{
       return false;
     }

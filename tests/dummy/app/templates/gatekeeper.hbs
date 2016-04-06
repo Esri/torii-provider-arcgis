@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="col-md-12">
+    <h2>GateKeeper</h2>
+    <p>The gatekeeper service basically wraps the torii session and adds some ArcGIS Online specific methods for managing authorization.</p>
+    <h3>Methods</h3>
+    <ul>
+      <li>isInRole(roleName)</li>
+      <li>hasPrivilege(priviligeName)</li>
+      <li>isInOrg(orgId)</li>
+      <li>isInAnyRole([roleName,roleName])</li>
+      <li>hasAnyPrivilege([priviligeName,priviligeName])</li>
+      <li>isInAnyOrg([orgId, orgId])</li>
+    </ul>
+    {{#if model.isAuthenticated}}
+    <h2>Hey there {{session.currentUser.fullName}}!</h2>
+    <p>This page simply does a few role/priviledge checks using the gatekeeper service</p>
+    <ul>
+      <li>isInRole('org_admin'): {{model.isOrgAdmin}}</li>
+      <li>hasPriviledge('opendata:user:openDataAdmin'): {{model.hasOpenDataAdmin}}</li>
+      <li>isInOrg('bkrWlSKcjUDFDtgw'): {{model.isInDCProdOrg}}</li>
+    </ul>
+    {{else}}
+    <h2>Hello...</h2>
+    <p>you need to login before we can check roles/privileges</p>
+    {{/if}}
+
+
+  </div>
+</div>
+{{outlet}}

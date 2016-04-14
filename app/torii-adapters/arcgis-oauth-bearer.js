@@ -61,7 +61,7 @@ export default Ember.Object.extend({
       delete portal.user;
 
       //TODO find a cleaner means to handle this iframe jiggery pokery
-      if(!ENV.torii.providers['arcgis-oauth-bearer'].display || ENV.torii.providers['arcgis-oauth-bearer'].display != 'iframe'){
+      if(!ENV.torii.providers['arcgis-oauth-bearer'].display || ENV.torii.providers['arcgis-oauth-bearer'].display !== 'iframe'){
         //basically - if we are not using the iframe, we need to handle the
         //login persistence ourselves so cook up an object and stuff it
         //in localStorage
@@ -82,7 +82,7 @@ export default Ember.Object.extend({
    * Close a session (aka log out the user)
    */
   close(){
-    return new Ember.RSVP.Promise(function(resolve, reject){
+    return new Ember.RSVP.Promise(function(resolve /*, reject*/){
       //always nuke the localStorage things
       if(window.localStorage){
         window.localStorage.removeItem('torii-provider-arcgis');
@@ -99,6 +99,7 @@ export default Ember.Object.extend({
    * Rehydrate a session by looking for the esri_auth cookie
    */
   fetch(){
+    console.debug('torii-provider-arcgis.fetch called...');
     let self = this;
     return new Ember.RSVP.Promise(function(resolve, reject){
       //try for a cookie...
@@ -122,7 +123,7 @@ export default Ember.Object.extend({
             token: result.authData.token,
             expires_in: expires_in
           }
-        }
+        };
         resolve( self.open(authData) );
       }else{
         Ember.debug('Fetch did not get a cookie... rejecting');

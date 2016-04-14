@@ -5,6 +5,7 @@
  */
  import Provider from 'torii/providers/oauth2-bearer';
  import {configurable} from 'torii/configuration';
+ import Ember from 'ember';
 
  var ArcGISOAuth = Provider.extend({
    name: 'arcgis-oauth-bearer',
@@ -66,7 +67,7 @@
            throw new Error("The response from the provider is missing " +
                  "these required response params: " + missingResponseParams.join(', '));
          }
-
+         Ember.debug('session.open is returning with data...');
          return {
            authorizationToken: authData,
            provider: name,

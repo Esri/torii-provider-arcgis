@@ -7,9 +7,9 @@ export default Ember.Controller.extend({
     if(ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName &&
         ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName  === 'iframe'){
           if(window.location.hostname.toLowerCase().indexOf('arcgis.com') > -1){
-            return true;
-          }else{
             return false;
+          }else{
+            return true;
           }
         }else{
           return false;

@@ -43,6 +43,8 @@ export default Ember.Object.extend({
     let signoutUrl = this.get('signoutUrl');
     // Ember.debug('signoutUrl ' + signoutUrl);
     //now use the token to call portal self
+    //TODO: If we have a cookie but the token is invalid (i.e. for a different portal)
+    //then this call will return a 499-in-a-200.
     return new Ember.RSVP.Promise(function(resolve, reject){
       Ember.debug('torii:adapter:arcgis-oauth-bearer:open making portal/self call...');
       Ember.$.ajax({

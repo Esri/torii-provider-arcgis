@@ -24,8 +24,10 @@
 
    expiration: configurable('expiration', 20160),
 
+   locale: configurable('locale', 'en-us'),
+
    //These params must be present in on the provider
-   requiredUrlParams: ['response_type','showSocialLogins', 'display', 'expiration'],
+   requiredUrlParams: ['response_type','showSocialLogins', 'display', 'expiration', 'locale'],
    // additional params that this provider accepts
    optionalUrlParams: ['client', 'parent'],
    //params the provider will extract from the redirected url

@@ -32,6 +32,11 @@
    responseParams:    ['token','state','expires_in'],
 
 
+   _currentBaseUrl: function (){
+      return [window.location.protocol,
+              "//",
+              window.location.host].join('');
+    },
    /**
     * shows the pop-up/iframe - we override the base implementation so
     * we can merge the passed in options into the object before we show
@@ -48,10 +53,19 @@
      //since we want any passed in options to map up to the optional params...
      this.setProperties(options);
 
+     //Set the redirectUri to the redirect.html that's in the addon's public
+     //folder and exposed at /<addon-name>/redirect.html
+     //By default torii redirects to the whole ember app, which can be really slow
+     //given that it's just 10 lines of js that's needed
+     this.set('redirectUri',  this._currentBaseUrl() + '/torii-provider-arcgis/redirect.html');
+
+
      var name        = this.get('name'),
          url         = this.buildUrl(),
          redirectUri = this.get('redirectUri'),
          responseParams = this.get('responseParams');
+
+
 
      return this.get('popup').open(url, responseParams, options)
       .then(function(authData){

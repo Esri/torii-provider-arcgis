@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.1]
+### Changed
+-  the provider finds a cookie with a token, and makes the portals/self call but gets a 200 response that contains an error payload, reject the promise so that the app does not *think* the user is logged in.
+
+
 ## [0.2.0]
 ### Added
 - option to redirect to static page for *much* faster iframe auth flows

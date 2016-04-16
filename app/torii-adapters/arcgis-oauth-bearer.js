@@ -50,7 +50,14 @@ export default Ember.Object.extend({
       Ember.$.ajax({
         url: portalSelfUrl,
         dataType: 'json',
-        success: Ember.run.bind(null, resolve),
+        success: Ember.run.bind(null, function(data){
+          Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call returned: ' + JSON.stringify(data));
+          if(data.error){
+            reject(data);
+          }else{
+            resolve(data);
+          }
+        }),
         error: Ember.run.bind(null, reject)
       });
 

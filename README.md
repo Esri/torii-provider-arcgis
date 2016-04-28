@@ -79,6 +79,7 @@ Example usage
 #### Session Methods
 
 | Method | Return | Description |
+| --- | --- | --- |
 | isInRole('roleName') | bool | is the current user in the specified role |
 | isInAnyRole(['role1', 'role2']) | bool | is the current user in any of the specified roles |
 | hasPrivilege('privName') | bool | does the current user have the specified privilege |

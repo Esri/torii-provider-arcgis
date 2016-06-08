@@ -28,10 +28,10 @@ module.exports = function(environment) {
   };
 
   //Overrides for testing to easily swap to AGO Iframe flow
-  // ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = ENV.APP.portalBaseUrl;
-  // ENV.torii.providers['arcgis-oauth-bearer'].apiKey = 'arcgisonline';
-  // ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName = 'iframe';
-  // ENV.torii.providers['arcgis-oauth-bearer'].display = 'iframe';
+  ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = ENV.APP.portalBaseUrl;
+  ENV.torii.providers['arcgis-oauth-bearer'].apiKey = 'arcgisonline';
+  ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName = 'iframe';
+  ENV.torii.providers['arcgis-oauth-bearer'].display = 'iframe';
 
 
   if (environment === 'development') {

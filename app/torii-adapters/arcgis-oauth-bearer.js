@@ -37,7 +37,7 @@ export default Ember.Object.extend({
     let token = authentication.authorizationToken.token;
     let expires = Date.now() + (authentication.authorizationToken.expires_in * 1000); //seconds from now
 
-    Ember.debug('torii:adapter:arcgis-oauth-bearer:open token...' + token);
+    //Ember.debug('torii:adapter:arcgis-oauth-bearer:open token...' + token);
     let portalSelfUrl = this.get('portalBaseUrl') + '/sharing/rest/portals/self?f=json&token=' + token;
 
     let signoutUrl = this.get('signoutUrl');
@@ -46,13 +46,14 @@ export default Ember.Object.extend({
     //TODO: If we have a cookie but the token is invalid (i.e. for a different portal)
     //then this call will return a 499-in-a-200.
     return new Ember.RSVP.Promise(function(resolve, reject){
-      Ember.debug('torii:adapter:arcgis-oauth-bearer:open making portal/self call...');
+      //Ember.debug('torii:adapter:arcgis-oauth-bearer:open making portal/self call...');
       Ember.$.ajax({
         url: portalSelfUrl,
         dataType: 'json',
         success: Ember.run.bind(null, function(data){
-          Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call returned: ' + JSON.stringify(data));
+          //Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call returned: ' + JSON.stringify(data));
           if(data.error){
+            Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call shows token was not valid.');
             reject(data);
           }else{
             resolve(data);
@@ -62,7 +63,7 @@ export default Ember.Object.extend({
       });
 
     }).then((portal)=>{
-      Ember.debug('torii:adapter:arcgis-oauth-bearer:open got response from portal/self & assigning to session');
+      //Ember.debug('torii:adapter:arcgis-oauth-bearer:open got response from portal/self & assigning to session');
       // The returned object is merged onto the session (basically).
 
       //separate the portal and user so they are separate props on the session object
@@ -145,7 +146,7 @@ export default Ember.Object.extend({
    * Checks local storage for auth data
    */
   _checkLocalStorage(keyName){
-    Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage keyName ' + keyName);
+    //Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage keyName ' + keyName);
     let result = {
       valid: false
     };
@@ -201,7 +202,7 @@ export default Ember.Object.extend({
     let cookieString = decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(cookieName).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
 
     if(cookieString){
-      Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: Found cookie...');
+      //Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: Found cookie...');
       //parse it
       let cookieData = JSON.parse(cookieString);
       //check if it has expired

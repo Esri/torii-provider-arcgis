@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script type="text/javascript">
+      if (window.opener && window.opener.parent && window.opener.parent.checkOAuthResponse){
+        window.opener.parent.checkOAuthResponse(window.location.href);
+      } else if (window.parent && window.parent.checkOAuthResponse) {
+        window.parent.checkOAuthResponse(window.location.href);
+      }
+      
+    </script>
+  </body>
+</html>

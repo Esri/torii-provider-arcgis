@@ -21,7 +21,7 @@ module.exports = function(environment) {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          apiKey: 'zDbzLJW6W4tcxHkj'
+          apiKey: '6sC0ARLxo3RAL7L7' //'zDbzLJW6W4tcxHkj'
         }
       }
     }
@@ -55,6 +55,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.locationType = 'hash';
+    ENV.baseURL = '/torii-provider-arcgis/';
 
   }
 

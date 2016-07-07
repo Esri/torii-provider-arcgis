@@ -5,6 +5,7 @@
  */
  import Provider from 'torii/providers/oauth2-bearer';
  import {configurable} from 'torii/configuration';
+ import ENV from '../config/environment';
  import Ember from 'ember';
 
  var ArcGISOAuth = Provider.extend({
@@ -35,9 +36,7 @@
 
 
    _currentBaseUrl: function (){
-      return [window.location.protocol,
-              "//",
-              window.location.host].join('');
+      return [window.location.protocol,'//',window.location.host].join('');
     },
    /**
     * shows the pop-up/iframe - we override the base implementation so
@@ -59,7 +58,14 @@
      //folder and exposed at /<addon-name>/redirect.html
      //By default torii redirects to the whole ember app, which can be really slow
      //given that it's just 10 lines of js that's needed
-     this.set('redirectUri',  this._currentBaseUrl() + '/torii-provider-arcgis/redirect.html');
+
+     let redirect = 'torii-provider-arcgis/redirect.html';
+     if(ENV.baseURL){
+       redirect = ENV.baseURL + redirect;
+     }else{
+       redirect = '/' + redirect;
+     }
+     this.set('redirectUri',  this._currentBaseUrl() + redirect);
 
 
      var name        = this.get('name'),

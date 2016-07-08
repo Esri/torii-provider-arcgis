@@ -6,9 +6,16 @@
     <title>torii-provider-arcgis</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script>
+    if(window.localStorage){
+      let chk = window.localStorage.getItem('__torii_request');
+      if(chk){
+        window.localStorage.removeItem('__torii_request');
+      }
+    }
+    </script>
     
-<meta name="dummy/config/environment" content="%7B%22modulePrefix%22%3A%22dummy%22%2C%22environment%22%3A%22production%22%2C%22baseURL%22%3A%22/torii-provider-arcgis/%22%2C%22locationType%22%3A%22hash%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22APP%22%3A%7B%22portalBaseUrl%22%3A%22https%3A//www.arcgis.com%22%2C%22name%22%3A%22torii-provider-arcgis%22%2C%22version%22%3A%220.2.3+c9a097ab%22%7D%2C%22torii%22%3A%7B%22sessionServiceName%22%3A%22session%22%2C%22providers%22%3A%7B%22arcgis-oauth-bearer%22%3A%7B%22apiKey%22%3A%22zDbzLJW6W4tcxHkj%22%7D%7D%7D%2C%22exportApplicationGlobal%22%3Afalse%7D" />
+<meta name="dummy/config/environment" content="%7B%22modulePrefix%22%3A%22dummy%22%2C%22environment%22%3A%22production%22%2C%22baseURL%22%3A%22/torii-provider-arcgis/%22%2C%22locationType%22%3A%22hash%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22APP%22%3A%7B%22portalBaseUrl%22%3A%22https%3A//www.arcgis.com%22%2C%22name%22%3A%22torii-provider-arcgis%22%2C%22version%22%3A%220.2.4+51794eac%22%7D%2C%22torii%22%3A%7B%22sessionServiceName%22%3A%22session%22%2C%22providers%22%3A%7B%22arcgis-oauth-bearer%22%3A%7B%22apiKey%22%3A%22zDbzLJW6W4tcxHkj%22%7D%7D%7D%2C%22exportApplicationGlobal%22%3Afalse%7D" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/dummy-465da8e38f6d2caa661dab5bf8c82829.css" integrity="sha256-5C1zcWKKBC2fkGID5DrWFx5M4Mz5UZtps7GaQmjzogk= sha512-wmCyW6EH2lrgs6Q17U7nGMwjhecQPyPe/xf5J72x4YyoNW11gHPMtGnmtcBvKqSe3BstlmtTCZC5/axyc5lO9g==" >
 
@@ -20,7 +27,7 @@
 
 
     <script src="assets/vendor-b4fe8faabab80c7579b6aef0028d170f.js" integrity="sha256-DJcU8qs/JJ2IMZFdE14JoKr+d1MwPZFBD1/r5di1EkQ= sha512-rdjfl1mPzxkULIHy39HEBBtCwe/Fh57svlqM3NEi+ak7QzCRM1OyXEsaw9RGtaEzVOayPYjx7XV5gWHM1JEZ9g==" ></script>
-    <script src="assets/dummy-81711d536563d4071a69e8b16264d7b5.js" integrity="sha256-vXqM5GTG3wPIoTH49RwOsJFf4dN/Jq+ySHmBhGG2GLs= sha512-2qSaOsU8eXTzcyfeAIFCinVZIvMrcjVWWrH3gUBSgkP8G3nvGjXi5lQFXRhBxGMLmD1dxN3j/Rx2EyuT0Zme1g==" ></script>
+    <script src="assets/dummy-3561cab89f6e834ff6bf506813ea3d4e.js" integrity="sha256-VYQKzK/8i93d1eztiyy1uE71NXIfnlEvTvy1WyD+uIQ= sha512-njvqJy/OBWyZecmTaLZoZzELWmqb9H61A2SXUxE8DrnhbmSHg5UGsEBoFBPTD0bWVa0ZkIqbBZ9VP4RIwlMaPQ==" ></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     
   </body>

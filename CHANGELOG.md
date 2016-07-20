@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.5]
+#### Added
+- option to configure a `customRedirectUri` in the `torii:{...}` config section, allowing greater flexibility with where the oAuth redirect page lives.
+
 ## [0.2.4]
 #### Changed
 - `redirect_uri` now respects `ENV.baseURL` if set

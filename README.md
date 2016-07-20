@@ -171,7 +171,8 @@ module.exports = function(environment) {
           portalUrl: 'https://somePortal.com', //optional - defaults to https://www.arcgis.com
           remoteServiceName: 'iframe',  
           display: 'iframe',
-          showSocialLogins:true //optional, will default to false           
+          showSocialLogins:true, //optional, will default to false
+          customRedirectUri: 'https://someUrl.com/custom-redirect' //optional, but allows for deeper customization          
         }
       }
     }

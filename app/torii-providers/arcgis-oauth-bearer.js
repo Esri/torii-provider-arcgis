@@ -34,6 +34,8 @@
    //params the provider will extract from the redirected url
    responseParams:    ['token','state','expires_in'],
 
+   customRedirectUri: configurable('customRedirectUri', ''),
+
 
    _currentBaseUrl: function (){
       return [window.location.protocol,'//',window.location.host].join('');
@@ -54,18 +56,26 @@
      //since we want any passed in options to map up to the optional params...
      this.setProperties(options);
 
-     //Set the redirectUri to the redirect.html that's in the addon's public
-     //folder and exposed at /<addon-name>/redirect.html
-     //By default torii redirects to the whole ember app, which can be really slow
-     //given that it's just 10 lines of js that's needed
-
-     let redirect = 'torii-provider-arcgis/redirect.html';
-     if(ENV.baseURL){
-       redirect = ENV.baseURL + redirect;
+     let uri = '';
+     // Check for a customized redirect uri. This can be useful if your app
+     // is hosted by rails or some other server-side rendering system, or
+     // if you have multiple apps fronted by nginx and you want to centralize
+     // the redirects.
+     if(this.get('customRedirectUri')){
+       uri = this.get('customRedirectUri');
      }else{
-       redirect = '/' + redirect;
+       //Set the redirectUri to the redirect.html that's in the addon's public
+       //folder and exposed at /<addon-name>/redirect.html
+       //By default torii redirects to the whole ember app, which can be really slow
+       //given that it's just 10 lines of js that's needed
+       if(ENV.baseURL){
+         uri = this._currentBaseUrl() + ENV.baseURL + 'torii-provider-arcgis/redirect.html';;
+       }else{
+         uri = this._currentBaseUrl() + '/' + 'torii-provider-arcgis/redirect.html';;
+       }
      }
-     this.set('redirectUri',  this._currentBaseUrl() + redirect);
+
+     this.set('redirectUri',  uri);
 
 
      var name        = this.get('name'),

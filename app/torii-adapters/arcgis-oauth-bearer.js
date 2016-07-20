@@ -121,7 +121,7 @@ export default Ember.Object.extend({
 
       if(result.valid){
         //degate to the ope function to do the work...
-        Ember.debug('Fetch has valid cookie... opening session...');
+        Ember.debug('Fetch has valid client-side information... opening session...');
 
         //calcuate expires_in based on current timestamp
         let now = Date.now();
@@ -136,7 +136,7 @@ export default Ember.Object.extend({
         };
         resolve( self.open(authData) );
       }else{
-        Ember.debug('Fetch did not get a cookie... rejecting');
+        Ember.debug('Fetch did not find valid client-side information... rejecting');
         reject();
       }
     });
@@ -146,18 +146,19 @@ export default Ember.Object.extend({
    * Checks local storage for auth data
    */
   _checkLocalStorage(keyName){
-    //Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage keyName ' + keyName);
+    Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage keyName ' + keyName);
     let result = {
       valid: false
     };
+
     if(window.localStorage){
       let stored = window.localStorage.getItem(keyName);
       if(stored){
         result.authData = JSON.parse(stored);
-      }
-      if(new Date(result.authData.expires) > new Date()){
-        Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage authdata has not expired yet ');
-        result.valid = true;
+        if(new Date(result.authData.expires) > new Date()){
+          Ember.debug('torii:adapter:arcgis-oauth-bearer:checkLocalStorage authdata has not expired yet ');
+          result.valid = true;
+        }
       }
     }
     return result;
@@ -206,16 +207,21 @@ export default Ember.Object.extend({
       //parse it
       let cookieData = JSON.parse(cookieString);
       //check if it has expired
+
       if(new Date(cookieData.expires) > new Date() ){
         //ok it's still valid... we still don't know if
-        //it is valid for the env we are working with
-        //but we will return it
+        //it is valid for the env we are working with so but we will return it
         Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: cookie has not expired yet...');
-        result.authData = cookieData;
-        result.valid = true;
       }else{
-        Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: cookie has expired.');
+        //There is an occasional bug where it seems that we can have valid tokens
+        //with expires values in the past. Where this gets really odd is that
+        //when we make a call to /authorize ahd this borked cookie is sent along
+        //the cookie is not overwritten w/ an updated cookie.
+        //Thus, we return the auth data in either case
+        Ember.debug('torii:adapter:arcgis-oauth-bearer:checkCookie: cookie has expired - but we are still going to try to use it');
       }
+      result.authData = cookieData;
+      result.valid = true;
     }
     return result;
   },

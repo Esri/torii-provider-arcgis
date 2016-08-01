@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.2.5]
 #### Added
 - option to configure a `customRedirectUri` in the `torii:{...}` config section, allowing greater flexibility with where the oAuth redirect page lives.
+- bumped to node 6.3.0 in `.nvmrc` and `.travis.yml`
 
 ## [0.2.4]
 #### Changed

@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
    */
   isInRole(role){
     let user = this.get('currentUser');
-    
+
     if(user){
       return user.role === role;
     }else{
@@ -108,5 +108,20 @@ export default Ember.Mixin.create({
       Ember.warn('Session.isInAnyOrg was not passed an array. Please use .isInOrg instead.');
     }
     return result;
-  }
+  },
+
+  orgPortalUrl: Ember.computed('portal', function () {
+    const portal = this.get('portal');
+    const urlKey = portal.urlKey;
+    let result = portal.portalHostName;
+
+    if (urlKey) {
+      const customUrl = portal.customBaseUrl;
+      result = `${urlKey}.${customUrl}`;
+    } else {
+      const portalHostName = portal.portalHostname;
+      result = `${portalHostName}`;
+    }
+    return result;
+  }),
 });

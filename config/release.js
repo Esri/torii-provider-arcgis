@@ -6,4 +6,5 @@ module.exports = {
   remote: 'upstream',
   annotation: 'Release %@',
   message: 'Bumped version to %@',
+  publish: true
 };

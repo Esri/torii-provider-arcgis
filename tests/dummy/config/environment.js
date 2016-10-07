@@ -1,11 +1,10 @@
 /* jshint node: true */
 
 module.exports = function(environment) {
-
   var ENV = {
     modulePrefix: 'dummy',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -21,18 +20,11 @@ module.exports = function(environment) {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          apiKey: 'zDbzLJW6W4tcxHkj' 
+          apiKey: 'zDbzLJW6W4tcxHkj'
         }
       }
     }
   };
-
-  //Overrides for testing to easily swap to AGO Iframe flow
-  // ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = ENV.APP.portalBaseUrl;
-  // ENV.torii.providers['arcgis-oauth-bearer'].apiKey = 'arcgisonline';
-  // ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName = 'iframe';
-  // ENV.torii.providers['arcgis-oauth-bearer'].display = 'iframe';
-
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
@@ -44,7 +36,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -57,7 +48,6 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.locationType = 'hash';
     ENV.baseURL = '/torii-provider-arcgis/';
-
   }
 
   return ENV;

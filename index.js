@@ -2,8 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'torii-provider-arcgis',
-  isDevelopingAddon: function() {
-    return true;
-  }
+  name: 'torii-provider-arcgis'
 };

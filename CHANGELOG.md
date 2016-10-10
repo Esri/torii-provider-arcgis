@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - orgPortalUrl CP on session service mixin
 
+### Changed
+- upgrade to ember 2.8
+
 ## [0.2.5]
 #### Added
 - option to configure a `customRedirectUri` in the `torii:{...}` config section, allowing greater flexibility with where the oAuth redirect page lives.

@@ -5,6 +5,8 @@ ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Ad
 ## Notes
 This is beta software. The intention of this addon is to enable an application to authenticate user using ArcGIS.com oAuth. It does not currently, nor is it planned, to handle federation of ArcGIS Server credentials.
 
+**Torii Dependency** Currently we are using a stable fork of [torii](https://github.com/Vestorly/torii) as they have unreleased changes that we need. As soon as the next release of torii comes out, we will switch.
+
 ## Usage
 
 Create a project using ember-cli. If you have an existing ember-cli project, skip this step.

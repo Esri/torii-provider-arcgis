@@ -20,6 +20,7 @@ export default Ember.Object.extend({
    * options, and update the defaults
    */
   init(){
+     this._super.init && this._super.init.apply(this, arguments);
      if(ENV.APP.authCookieName){
         this.set('authCookieName', ENV.APP.authCookieName);
      }

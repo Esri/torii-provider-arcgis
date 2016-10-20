@@ -50,7 +50,7 @@
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
-    "torii": "0.7.0-beta.4"
+    "torii": "https://github.com/dbouwman/torii"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

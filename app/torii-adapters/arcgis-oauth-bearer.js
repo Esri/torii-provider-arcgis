@@ -8,7 +8,10 @@ export default Ember.Object.extend({
   portalBaseUrl: 'https://www.arcgis.com/',
 
   signoutUrl: Ember.computed('portalBaseUrl', function(){
-    return this.get('portalBaseUrl')  + '/sharing/rest/oauth2/signout?redirect_uri=' + window.location.protocol + '//' + window.location.host + ENV.baseURL;
+    //baseURL is basically deprecated, in preference of rootURL.
+    //So, we will use baseURL if present, but prefer rootURL
+    let base = ENV.baseURL || ENV.rootURL;
+    return this.get('portalBaseUrl')  + '/sharing/rest/oauth2/signout?redirect_uri=' + window.location.protocol + '//' + window.location.host + base;
   }),
 
   /**

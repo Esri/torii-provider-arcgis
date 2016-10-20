@@ -27,7 +27,14 @@ module.exports = function(environment) {
   var ENV = {
 
    // ... other ENV config stuff here
-
+   APP: {
+     portalBaseUrl: 'https://www.arcgis.com',
+     arcgisPortal: {
+       domain: 'arcgis.com',
+       env: 'www',
+       maps: 'maps',
+     },
+   },
    torii:{
       sessionServiceName: 'session',
       providers: {
@@ -41,6 +48,14 @@ module.exports = function(environment) {
 
   return ENV;
 };
+```
+
+**Note** If deploying to gh-pages, you will want to set a few more environment params:
+```
+ if (environment === 'production') {
+    ENV.locationType = 'hash';
+    ENV.rootURL = '/your-repo-name/';
+  }
 ```
 
 ## Torii Session

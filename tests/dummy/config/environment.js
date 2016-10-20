@@ -14,13 +14,18 @@ module.exports = function(environment) {
     },
 
     APP: {
-      portalBaseUrl: 'https://www.arcgis.com'
+      portalBaseUrl: 'https://www.arcgis.com',
+      arcgisPortal: {
+        domain: 'arcgis.com',
+        env: 'www',
+        maps: 'maps',
+      },
     },
     torii: {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          apiKey: 'zDbzLJW6W4tcxHkj'
+          apiKey: 'zDbzLJW6W4tcxHkj' // production
         }
       }
     }

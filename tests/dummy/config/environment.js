@@ -52,7 +52,7 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.locationType = 'hash';
-    ENV.baseURL = '/torii-provider-arcgis/';
+    ENV.rootURL = '/ember-arcgis-portal-service/';
   }
 
   return ENV;

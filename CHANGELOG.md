@@ -3,15 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## Unreleased
+## [0.4.0]
 #### Added
--
+- support for `ENV.rootURL` while still using `ENV.baseURL` if that is set
 
 ### Changed
--
-
-### Fixed
--
+- now using a fork of torii master that is ~0.8+
 
 
 ## [0.3.0]

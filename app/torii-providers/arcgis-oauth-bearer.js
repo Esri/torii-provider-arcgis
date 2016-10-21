@@ -68,8 +68,9 @@
        //folder and exposed at /<addon-name>/redirect.html
        //By default torii redirects to the whole ember app, which can be really slow
        //given that it's just 10 lines of js that's needed
-       if(ENV.baseURL){
-         uri = this._currentBaseUrl() + ENV.baseURL + 'torii-provider-arcgis/redirect.html';;
+       if(ENV.baseURL || ENV.rootURL){
+         let path = ENV.baseURL || ENV.rootURL;
+         uri = this._currentBaseUrl() + path + 'torii-provider-arcgis/redirect.html';;
        }else{
          uri = this._currentBaseUrl() + '/' + 'torii-provider-arcgis/redirect.html';;
        }

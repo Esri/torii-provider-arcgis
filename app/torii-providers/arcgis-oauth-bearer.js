@@ -77,10 +77,10 @@
 
      this.set('redirectUri', uri);
 
-     var name = this.get('name'),
-       url = this.buildUrl(),
-       redirectUri = this.get('redirectUri'),
-       responseParams = this.get('responseParams');
+     let name = this.get('name');
+     let url = this.buildUrl();
+     let redirectUri = this.get('redirectUri');
+     let responseParams = this.get('responseParams');
 
      return this.get('popup').open(url, responseParams, options)
       .then(function (authData) {

@@ -25,10 +25,10 @@ export default Ember.Object.extend({
       this.set('authCookieName', ENV.APP.authCookieName);
     }
      // Unless working against a portal instance, this can be left as the default
-    if (ENV.APP.portalBaseUrl) {
-      this.set('portalBaseUrl', ENV.APP.portalBaseUrl);
+    if (ENV.torii.providers['arcgis-oauth-bearer'].portalUrl) {
+      this.set('portalBaseUrl', ENV.torii.providers['arcgis-oauth-bearer'].portalUrl);
     } else {
-      Ember.warn('ENV.APP.portalBaseUrl not defined. Defaulting to https://www.arcgis.com');
+      Ember.warn('ENV.torii.providers[\'arcgis-oauth-bearer\'].portalUrl not defined. Defaulting to https://www.arcgis.com');
     }
   },
 

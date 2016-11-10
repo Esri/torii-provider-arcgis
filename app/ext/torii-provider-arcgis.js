@@ -5,6 +5,6 @@
  * using the GateKeeper mixin
  */
 import ToriiSession from 'torii/services/torii-session';
-import GateKeeper   from 'torii-provider-arcgis/mixins/gatekeeper';
+import GateKeeper from 'torii-provider-arcgis/mixins/gatekeeper';
 
 ToriiSession.reopen(GateKeeper);

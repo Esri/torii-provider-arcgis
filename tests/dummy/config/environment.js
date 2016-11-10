@@ -1,6 +1,6 @@
 /* jshint node: true */
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   var ENV = {
     modulePrefix: 'dummy',
     environment: environment,
@@ -14,18 +14,14 @@ module.exports = function(environment) {
     },
 
     APP: {
-      portalBaseUrl: 'https://www.arcgis.com',
-      arcgisPortal: {
-        domain: 'arcgis.com',
-        env: 'www',
-        maps: 'maps',
-      },
+      // normal app stuff in here
     },
     torii: {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          apiKey: 'zDbzLJW6W4tcxHkj' // production
+          apiKey: 'zDbzLJW6W4tcxHkj', // production,
+          portalUrl: 'https://www.arcgis.com'
         }
       }
     }

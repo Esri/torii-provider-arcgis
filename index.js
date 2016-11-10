@@ -3,7 +3,7 @@
 
 module.exports = {
   name: 'torii-provider-arcgis',
-  isDevelopingAddon: function() {
+  isDevelopingAddon: function () {
     return true;
   }
 };

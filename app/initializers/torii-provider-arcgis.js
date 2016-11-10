@@ -8,12 +8,12 @@
 
 import ext from '../ext/torii-provider-arcgis';
 
-export function initialize(){
-  //do nothing here...
+export function initialize () {
+  // do nothing here...
 }
 
-//we need to export this stuff...
+// we need to export this stuff...
 export default {
-  name:'torii-provider-arcgis',
-  initialize:initialize
+  name: 'torii-provider-arcgis',
+  initialize: initialize
 };

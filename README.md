@@ -29,14 +29,7 @@ module.exports = function(environment) {
   var ENV = {
 
    // ... other ENV config stuff here
-   APP: {
-     portalBaseUrl: 'https://www.arcgis.com',
-     arcgisPortal: {
-       domain: 'arcgis.com',
-       env: 'www',
-       maps: 'maps',
-     },
-   },
+
    torii:{
       sessionServiceName: 'session',
       providers: {
@@ -72,11 +65,11 @@ We recommend passing data into components vs. having them pull in the session.
 
 | Property | Value | Description |
 | --- | --- | --- |
-| isAuthenticated | boolean | Is the session authenticated? |
-| isWorking | boolean | Is the session in transition? |
-| currentUser | object | the ArcGIS.com User |
-| portal | object  | the ArcGIS.com Portal object |
-| token | string | the token returned as part of the authentication process |
+| `isAuthenticated` | boolean | Is the session authenticated? |
+| `isWorking` | boolean | Is the session in transition? |
+| `currentUser` | object | the ArcGIS.com User |
+| `portal` | object  | the ArcGIS.com Portal object |
+| `token` | string | the token returned as part of the authentication process |
 
 
 Example usage
@@ -97,12 +90,13 @@ Example usage
 
 | Method | Return | Description |
 | --- | --- | --- |
-| isInRole('roleName') | bool | is the current user in the specified role |
-| isInAnyRole(['role1', 'role2']) | bool | is the current user in any of the specified roles |
-| hasPrivilege('privName') | bool | does the current user have the specified privilege |
-| hasAnyPrivilege(['priv1', 'priv2']) | bool | does the current user have the specified privilege |
-| isInOrg('orgId') | bool | is the current user a member of the specified org |
-| isInAnyOrg(['orgId1', 'orgId2']) | bool | is the current user a member of any of the specified orgs |
+| `isInRole('roleName')` | bool | is the current user in the specified role |
+| `isInAnyRole(['role1', 'role2'])` | bool | is the current user in any of the specified roles |
+| `hasPrivilege('privName')` | bool | does the current user have the specified privilege |
+| `hasAnyPrivilege(['priv1', 'priv2'])` | bool | does the current user have the specified privilege |
+| `isInOrg('orgId')` | bool | is the current user a member of the specified org |
+| `isInAnyOrg(['orgId1', 'orgId2'])` | bool | is the current user a member of any of the specified orgs |
+| `portalHostName()` | string | returns a protocol-less hostname for the portal i.e. `www.arcgis.com` or `dcdev.maps.arcgis.com` |
 
 Example Usage
 ```

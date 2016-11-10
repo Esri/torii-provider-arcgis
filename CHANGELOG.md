@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [0.5.0]
+#### Added
+- portalHostName returns protocol-less hostname for Authenticated and Unauthenticated sessions.
+#### Changed
+- orgPortalUrl marked as deprecated
+
+
+
 ## [0.4.0]
 #### Added
 - support for `ENV.rootURL` while still using `ENV.baseURL` if that is set

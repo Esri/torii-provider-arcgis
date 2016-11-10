@@ -110,7 +110,10 @@ export default Ember.Mixin.create({
     return result;
   },
 
-  orgPortalUrl: Ember.computed('portal', function () {
+  /**
+   * Returns a protocol-less hostname for the Portal
+   */
+  portalHostName: Ember.computed('portal', function () {
     let result;
     if (this.get('isAuthenticated')) {
       const portal = this.get('portal');
@@ -126,7 +129,13 @@ export default Ember.Mixin.create({
       result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;
       result = result.replace(/https?:\/\//, '');
     }
-
     return result;
   }),
+
+  /**
+   * Returns a protocol-less hostname for
+   */
+  orgPortalUrl: Ember.computed('portal', function () {
+    Ember.deprecate('session.orgPortalUrl is deprecated. Please switch to session.portalHostName', false);
+  })
 });

@@ -111,17 +111,22 @@ export default Ember.Mixin.create({
   },
 
   orgPortalUrl: Ember.computed('portal', function () {
-    const portal = this.get('portal');
-    const urlKey = portal.urlKey;
-    let result = portal.portalHostName;
+    let result;
+    if (this.get('isAuthenticated')) {
+      const portal = this.get('portal');
+      const urlKey = portal.urlKey;
+      result = portal.portalHostName;
 
-    if (urlKey) {
-      const customUrl = portal.customBaseUrl;
-      result = `${urlKey}.${customUrl}`;
+      if (urlKey) {
+        const customUrl = portal.customBaseUrl;
+        result = `${urlKey}.${customUrl}`;
+      }
     } else {
-      const portalHostName = portal.portalHostname;
-      result = `${portalHostName}`;
+      const config = Ember.getOwner(this).resolveRegistration('config:environment');
+      result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;
+      result = result.replace(/https?:\/\//, '');
     }
+
     return result;
   }),
 });

@@ -6,7 +6,7 @@ const Router = Ember.Router.extend({
   rootURL: config.rootURL
 });
 
-Router.map(function() {
+Router.map(function () {
   this.route('signin');
   this.authenticatedRoute('secure');
   this.route('rolesecure');

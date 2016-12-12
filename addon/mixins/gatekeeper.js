@@ -111,11 +111,10 @@ export default Ember.Mixin.create({
     if (this.get('isAuthenticated')) {
       const portal = this.get('portal');
       const urlKey = portal.urlKey;
-      result = portal.portalHostName;
+      result = portal.portalHostname;
 
       if (urlKey) {
-        const customUrl = portal.customBaseUrl;
-        result = `${urlKey}.${customUrl}`;
+        result = `${urlKey}.${portal.customBaseUrl}`;
       }
     } else {
       const config = Ember.getOwner(this).resolveRegistration('config:environment');

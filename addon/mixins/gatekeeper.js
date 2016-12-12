@@ -127,7 +127,7 @@ export default Ember.Mixin.create({
   portalHostName: Ember.computed.deprecatingAlias('portalHostname', {
     id: 'torii-provider-arcgis::portalHostName',
     until: '10.0.0'
-  })
+  }),
 
   /**
    * Deprecated - use portalHostName

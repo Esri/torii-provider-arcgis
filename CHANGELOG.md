@@ -4,6 +4,10 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## [0.4.2]
+### Fixed
+- typo in gatekeeper.js
+
+## [0.4.2]
 ### Changed
 - fix error in portalHostname (it used `portalHostName` instead of `portalHostname` from portal.self)
 - deprecate `portalHostName` in favor of `portalHostname`

@@ -106,7 +106,7 @@ export default Ember.Mixin.create({
   /**
    * Returns a protocol-less hostname for the Portal
    */
-  portalHostName: Ember.computed('isAuthenticated', function () {
+  portalHostname: Ember.computed('isAuthenticated', function () {
     let result;
     if (this.get('isAuthenticated')) {
       const portal = this.get('portal');
@@ -123,6 +123,11 @@ export default Ember.Mixin.create({
     }
     return result;
   }),
+
+  portalHostName: Ember.computed.deprecatingAlias('portalHostname', {
+    id: 'torii-provider-arcgis::portalHostName',
+    until: '10.0.0'
+  })
 
   /**
    * Deprecated - use portalHostName

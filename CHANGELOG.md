@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [0.4.2]
+### Changed
+- fix error in portalHostname (it used `portalHostName` instead of `portalHostname` from portal.self)
+- deprecate `portalHostName` in favor of `portalHostname`
 
 ## [0.4.1]
 ### Changed

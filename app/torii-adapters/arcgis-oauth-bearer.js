@@ -33,6 +33,27 @@ export default Ember.Object.extend({
   },
 
   /**
+   * Promisified getJson
+   */
+  _getJson (url) {
+    return new Ember.RSVP.Promise(function (resolve, reject) {
+      Ember.$.ajax({
+        url: url,
+        dataType: 'json',
+        success: Ember.run.bind(null, function (data) {
+          if (data.error) {
+            Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call shows token was not valid.');
+            reject(data);
+          } else {
+            resolve(data);
+          }
+        }),
+        error: Ember.run.bind(null, reject)
+      });
+    });
+  },
+
+  /**
    * Open a session by fetching portal/self from
    * the portal
    */
@@ -48,28 +69,30 @@ export default Ember.Object.extend({
     // now use the token to call portal self
     // TODO: If we have a cookie but the token is invalid (i.e. for a different portal)
     // then this call will return a 499-in-a-200.
-    return new Ember.RSVP.Promise(function (resolve, reject) {
-      // Ember.debug('torii:adapter:arcgis-oauth-bearer:open making portal/self call...');
-      Ember.$.ajax({
-        url: portalSelfUrl,
-        dataType: 'json',
-        success: Ember.run.bind(null, function (data) {
-          // Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call returned: ' + JSON.stringify(data));
-          if (data.error) {
-            Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call shows token was not valid.');
-            reject(data);
-          } else {
-            resolve(data);
-          }
-        }),
-        error: Ember.run.bind(null, reject)
-      });
-    }).then((portal) => {
-      // Ember.debug('torii:adapter:arcgis-oauth-bearer:open got response from portal/self & assigning to session');
-      // The returned object is merged onto the session (basically).
+    return this._getJson(portalSelfUrl)
+    .then((portal) => {
+      Ember.debug('torii:adapter:arcgis-oauth-bearer:open got response from portal/self & assigning to session');
 
+      if (ENV.torii.providers['arcgis-oauth-bearer'].loadGroups) {
+        // make a request to get user's groups
+        let username = portal.user.username;
+        let userUrl = `${this.get('portalBaseUrl')}/sharing/rest/community/users/${username}?f=json&token=${token}`;
+        return Ember.RSVP.hash({
+          portalResponse: portal,
+          userResponse: this._getJson(userUrl)
+        });
+      } else {
+        return {
+          portalResponse: portal,
+          userResponse: portal.user
+        };
+      }
+    })
+    .then((result) => {
       // separate the portal and user so they are separate props on the session object
-      let user = portal.user;
+      let user = result.userResponse;
+      let portal = result.portalResponse;
+      // drop the user node from the portalSelf response
       delete portal.user;
 
       // TODO find a cleaner means to handle this iframe jiggery pokery

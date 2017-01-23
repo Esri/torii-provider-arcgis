@@ -22,6 +22,28 @@ export default Ember.Mixin.create({
   },
 
   /**
+   * Check if the user is a member of a group
+   */
+  isGroupMember (groupId) {
+    let user = this.get('currentUser');
+    if (!Ember.isArray(user.groups)) {
+      // if the provider has not been configured to load groups, show a warning...
+      Ember.debug('Session.isGroupMember was called, but torii-provider-arcgis has not been configured to fetch user groups. Please see documentation. (https://github.com/dbouwman/torii-provider-arcgis#ember-cli-torii-provider-arcgis)');
+      return false;
+    } else {
+      // look up the group in the groups array by it's Id
+      let group = user.groups.find((g) => {
+        return g.id === groupId;
+      });
+      if (group) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+
+  /**
    * Is the specified priviledge is the list of priviledges
    * assigned to the current user?
    */

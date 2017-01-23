@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+
+## [0.5.0]
+### Added
+- configuration option to loadGroups during sign-in process. This makes an additional xhr to `/community/users/{username}` which returns the users groups.
+- added `isGroupMember` to the gatekeeper which is exposed as `session.isGroupMember(groupId)` in consuming applications
+
 ## [0.4.3]
 ### Fixed
 - typo in gatekeeper.js

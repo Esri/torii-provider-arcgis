@@ -35,6 +35,7 @@ module.exports = function(environment) {
       providers: {
         'arcgis-oauth-bearer': {
           apiKey: 'APP CLIENT ID GOES HERE',
+          loadGroups: false, // makes an additional API request to populate groups
           portalUrl: 'https://someportal.com' //optional - defaults to https://arcgis.com
         }
       }
@@ -70,6 +71,7 @@ We recommend passing data into components vs. having them pull in the session.
 | `currentUser` | object | the ArcGIS.com User |
 | `portal` | object  | the ArcGIS.com Portal object |
 | `token` | string | the token returned as part of the authentication process |
+| `isGroupMember` | boolean | Is the user a member of a particular group. If
 
 
 Example usage

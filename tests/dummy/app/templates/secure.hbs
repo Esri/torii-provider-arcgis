@@ -7,5 +7,23 @@
       <li>Token: {{session.token}}</li>
     </ul>
   </div>
+  <div class="col-md-6">
+    <h2>Groups</h2>
+    <ul>
+      {{#if session.currentUser.groups.length}}
+        {{#each session.currentUser.groups as |group|}}
+          <li>{{group.id}} :: {{group.title}}</li>
+        {{/each}}
+      {{else}}
+        User is not a member of any groups
+      {{/if}}
+    </ul>
+
+  </div>
+  <div class="col-md-6">
+    <h2>Group Check</h2>
+    <p>Is Member of 17d516cf609c4e90b798205e7d26ce5e {{isMemberOfOpenData}}</p>
+    <p>Is Member of NOT-A-GROUP {{isMemberOfNonGroup}}</p>
+  </div>
 </div>
 {{outlet}}

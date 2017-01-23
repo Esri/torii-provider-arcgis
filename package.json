@@ -1,6 +1,6 @@
 {
   "name": "torii-provider-arcgis",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "description": "ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.",
   "directories": {
     "doc": "doc",

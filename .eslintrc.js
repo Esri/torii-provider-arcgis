@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'semistandard'
+    // 'semistandard'
   ],
   env: {
     'browser': true
@@ -17,6 +17,5 @@ module.exports = {
     "no-extra-boolean-cast": 0
   },
   globals: {
-
   }
 };

@@ -176,6 +176,10 @@ export default Ember.Mixin.create({
     return result;
   }),
 
+  isLevelOne: Ember.computed.equal('currentUser.level', '1'),
+
+  isLevelTwo: Ember.computed.equal('currentUser.level', '2'),
+
   portalHostName: Ember.computed.deprecatingAlias('portalHostname', {
     id: 'torii-provider-arcgis::portalHostName',
     until: '10.0.0'

@@ -7,6 +7,20 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
+
+  /**
+   * Org Admins must have the org_admin role and
+   * NO roleId
+   */
+  isAdmin () {
+    let user = this.get('currentUser');
+    let val = false;
+    if (user.role === 'org_admin' && !user.roleId) {
+      val = true;
+    }
+    return val;
+  },
+
   /**
    * Check if the current user is in a specific role
    * In ArcGIS Online, users can only have a single role.
@@ -70,6 +84,22 @@ export default Ember.Mixin.create({
       }
     } else {
       Ember.warn('Session.hasAnyPrivilege was not passed an array. Please use .hasPrivilege instead.');
+    }
+    return result;
+  },
+
+  /**
+   * Does the current user have ALL the passed in privileges
+   */
+  hasAllPrivileges (privileges) {
+    let result = false;
+    // check that we have an array
+    if (Ember.isArray(privileges)) {
+      let chks = privileges.map(this.hasPrivilege, this);
+      // ensure that all checks return true...
+      result = chks.indexOf(false) === -1;
+    } else {
+      Ember.warn('Session.hasAllPrivileges was not passed an array. Please use .hasPrivilege instead.');
     }
     return result;
   },

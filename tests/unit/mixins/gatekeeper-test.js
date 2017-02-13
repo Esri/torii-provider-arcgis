@@ -12,6 +12,31 @@ test('returns current user', function (assert) {
   assert.equal(subject.get('currentUser.username'), 'dbouwman');
 });
 
+test('isAdmin- pass', function (assert) {
+  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let subject = GatekeeperObject.create();
+  let user = {
+    username: 'fakeuser',
+    role: 'org_admin'
+  };
+  subject.set('currentUser', user);
+  assert.expect(1);
+  assert.ok(subject.isAdmin());
+});
+
+test('isAdmin - fail', function (assert) {
+  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let subject = GatekeeperObject.create();
+  let user = {
+    username: 'fakeuser',
+    role: 'org_admin',
+    roleId: 'blarg'
+  };
+  subject.set('currentUser', user);
+  assert.expect(1);
+  assert.notOk(subject.isAdmin());
+});
+
 test('isInRole', function (assert) {
   let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
@@ -71,6 +96,22 @@ test('hasAnyPrivilege', function (assert) {
   assert.ok(subject.hasAnyPrivilege(['yet:another', 'fake:two', 'some:other']));
   assert.ok(subject.hasAnyPrivilege(['fake:three']));
   assert.notOk(subject.hasAnyPrivilege(['other:fake']));
+});
+
+test('hasAllPrivileges', function (assert) {
+  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let subject = GatekeeperObject.create();
+  let user = {
+    username: 'fakeuser',
+    privileges: ['fake:one', 'fake:two', 'fake:three']
+  };
+  subject.set('currentUser', user);
+  assert.expect(5);
+  assert.ok(subject.hasAllPrivileges(['fake:one', 'fake:two']));
+  assert.ok(subject.hasAllPrivileges(['fake:one', 'fake:three']));
+  assert.ok(subject.hasAllPrivileges(['fake:two', 'fake:three']));
+  assert.ok(subject.hasAllPrivileges(['fake:three']));
+  assert.notOk(subject.hasAllPrivileges(['other:fake', 'fake:one']));
 });
 
 test('isInOrg', function (assert) {

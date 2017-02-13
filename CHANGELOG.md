@@ -4,6 +4,11 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 
+## [0.6.0]
+### Added
+- `isAdmin()` which will returnt true if `role === 'org_admin' && !roleId` - which is how we know if a user is a FULL org admin
+-
+
 ## [0.5.0]
 ### Added
 - configuration option to loadGroups during sign-in process. This makes an additional xhr to `/community/users/{username}` which returns the users groups.

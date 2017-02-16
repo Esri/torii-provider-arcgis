@@ -15,7 +15,7 @@ export default Ember.Mixin.create({
   isAdmin () {
     let user = this.get('currentUser');
     let val = false;
-    if (user.role === 'org_admin' && !user.roleId) {
+    if (user && user.role === 'org_admin' && !user.roleId) {
       val = true;
     }
     return val;

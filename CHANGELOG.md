@@ -7,6 +7,9 @@ Versioning](http://semver.org/).
 ## Added
 - isLevelOne and isLevelTwo CPs to session
 
+## Fixed
+- null reference error because this was undefined
+
 ## [0.6.0]
 ### Added
 - `isAdmin()` which will returnt true if `role === 'org_admin' && !roleId` - which is how we know if a user is a FULL org admin

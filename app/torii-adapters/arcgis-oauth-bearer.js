@@ -117,7 +117,7 @@ export default Ember.Object.extend({
    * Close a session (aka log out the user)
    */
   close () {
-    return new Ember.RSVP.Promise(function (resolve /*, reject */) {
+    return new Ember.RSVP.Promise((resolve /*, reject */) => {
       // always nuke the localStorage things
       if (window.localStorage) {
         window.localStorage.removeItem('torii-provider-arcgis');

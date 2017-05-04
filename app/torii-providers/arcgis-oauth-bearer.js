@@ -5,6 +5,7 @@
  */
  import Provider from 'torii/providers/oauth2-bearer';
  import {configurable} from 'torii/configuration';
+ import QueryString from './query-string';
  import ENV from '../config/environment';
  import Ember from 'ember';
 
@@ -14,9 +15,11 @@
    // Allow the portalUrl to be passed in, but default to ago
    portalUrl: configurable('portalUrl', 'https://www.arcgis.com'),
 
+   path: '/sharing/oauth2/authorize',
+
    // construct the authorize end-point url based on the portalUrl
    baseUrl: configurable('baseUrl', function () {
-     return this.get('portalUrl') + '/sharing/oauth2/authorize';
+     return `${this.get('portalUrl')}${this.get('path')}`;
    }),
 
    showSocialLogins: configurable('showSocialLogins', false),
@@ -30,7 +33,7 @@
    // These params must be present in on the provider
    requiredUrlParams: ['response_type', 'showSocialLogins', 'display', 'expiration', 'locale'],
    // additional params that this provider accepts
-   optionalUrlParams: ['client', 'parent'],
+   optionalUrlParams: ['client', 'parent', 'autoAccountCreateForSocial', 'socialLoginProviderName'],
    // params the provider will extract from the redirected url
    responseParams: ['token', 'state', 'expires_in'],
 
@@ -39,6 +42,36 @@
    _currentBaseUrl: function () {
      return [window.location.protocol, '//', window.location.host].join('');
    },
+
+   buildQueryString: function(options){
+     const requiredParams = this.get('requiredUrlParams');
+     const optionalParams = this.get('optionalUrlParams');
+
+     const qs = QueryString.create({
+       provider: this,
+       requiredParams: requiredParams,
+       optionalParams: optionalParams,
+       options
+     });
+
+     return qs.toString();
+  },
+
+  buildUrl: function(options){
+    let base = this.get('baseUrl');
+    if (options.portalUrl || options.path) {
+      base = options.portalUrl || this.get('portalUrl');
+      const path = options.path || this.get('path');
+      base = `${base}${path}`;
+    }
+    delete options.portalUrl;
+    delete options.path;
+
+    const qs = this.buildQueryString(options);
+
+    return [base, qs].join('?');
+  },
+
    /**
     * shows the pop-up/iframe - we override the base implementation so
     * we can merge the passed in options into the object before we show
@@ -51,9 +84,6 @@
        // if we are using an iframe, we need to set the parent to the current domain
        options.parent = window.location.protocol + '//' + window.location.hostname;
      }
-
-     // since we want any passed in options to map up to the optional params...
-     this.setProperties(options);
 
      let uri = '';
      // Check for a customized redirect uri. This can be useful if your app
@@ -78,7 +108,7 @@
      this.set('redirectUri', uri);
 
      let name = this.get('name');
-     let url = this.buildUrl();
+     let url = this.buildUrl(options);
      let redirectUri = this.get('redirectUri');
      let responseParams = this.get('responseParams');
 

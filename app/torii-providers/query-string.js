@@ -1,5 +1,9 @@
 import Ember from 'ember';
-// import QueryString from 'torii/lib/query-string';
+
+/*
+  NOTE: this is mostly the same implementation as the default torii implementation
+          the difference is that it takes an `options` which it uses when constructing the querystring
+*/
 
 var camelize = Ember.String.camelize,
     get      = Ember.get;

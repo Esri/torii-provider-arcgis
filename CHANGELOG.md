@@ -10,6 +10,10 @@ Versioning](http://semver.org/).
 ## Fixed
 - null reference error because this was undefined
 
+## Changed
+- arcgis-oauth-bearer handles options differently - we now do not `set` the options on the bearer
+- arcgis-oath-bearer now handles additional queryString params: autoAccountCreateForSocial & socialLoginProviderName
+
 ## [0.6.0]
 ### Added
 - `isAdmin()` which will returnt true if `role === 'org_admin' && !roleId` - which is how we know if a user is a FULL org admin

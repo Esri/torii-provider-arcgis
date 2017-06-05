@@ -80,7 +80,16 @@
    open: function (options) {
      options = options || {};
 
-     if (this.get('display') === 'iframe') {
+     if (options.remoteServiceName) {
+       // torii uses this to determine whether a popout or an iframe is used
+       // we need to be able to pass this option in at runtime
+       this.set('configuredRemoteServiceName', options.remoteServiceName);
+       delete options.remoteServiceName;
+     }
+
+     const display = options.display || this.get('display');
+     if (display === 'iframe') {
+       // the display parameter is sent on the url querystring
        // if we are using an iframe, we need to set the parent to the current domain
        options.parent = window.location.protocol + '//' + window.location.hostname;
      }

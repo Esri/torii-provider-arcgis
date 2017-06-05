@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## Unreleased
+
+### Added
+- ability to change remoteServiceName at runtime
+
 ## 0.7.0
 ## Added
 - isLevelOne and isLevelTwo CPs to session

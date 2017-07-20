@@ -91,7 +91,7 @@
      if (display === 'iframe') {
        // the display parameter is sent on the url querystring
        // if we are using an iframe, we need to set the parent to the current domain
-       options.parent = window.location.protocol + '//' + window.location.hostname;
+       options.parent = this._currentBaseUrl(); // window.location.protocol + '//' + window.location.hostname;
      }
 
      let uri = '';

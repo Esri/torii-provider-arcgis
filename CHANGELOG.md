@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## 0.8.1
+### Changed
+- when constructing the url for iframed oauth, pass the port with the `parent` param, as Firefox now requires an exact match including port on the `X-Frame-Options` header
+
 ## 0.8.0
 
 ### Added

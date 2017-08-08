@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+- upgrade to torii v 0.8.4 for compatibility with ember > 2.12.0
+
 ## 0.8.1
 ### Changed
 - when constructing the url for iframed oauth, pass the port with the `parent` param, as Firefox now requires an exact match including port on the `X-Frame-Options` header

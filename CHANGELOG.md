@@ -3,7 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## Unreleased
+
+## 0.10.0
+### Changed
+- always store token - even if using iframe. This is because portal may not set the `esri_auth` cookie during it's login process, if it's not perfectly configured. So - we will just always store the credentials ourselves.
+
+## 0.9.0
 ### Changed
 - upgrade to torii v 0.8.4 for compatibility with ember > 2.12.0
 

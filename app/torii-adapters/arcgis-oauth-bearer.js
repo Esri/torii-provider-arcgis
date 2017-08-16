@@ -95,14 +95,9 @@ export default Ember.Object.extend({
       // drop the user node from the portalSelf response
       delete portal.user;
 
-      // TODO find a cleaner means to handle this iframe jiggery pokery
-      if (!ENV.torii.providers['arcgis-oauth-bearer'].display || ENV.torii.providers['arcgis-oauth-bearer'].display !== 'iframe') {
-        // basically - if we are not using the iframe, we need to handle the
-        // login persistence ourselves so cook up an object and stuff it
-        // in localStorage
-        let cookieData = this._createCookieData(token, expires, user, portal);
-        this._store('torii-provider-arcgis', cookieData);
-      }
+      // always store the information
+      let cookieData = this._createCookieData(token, expires, user, portal);
+      this._store('torii-provider-arcgis', cookieData);
 
       return {
         portal: portal,

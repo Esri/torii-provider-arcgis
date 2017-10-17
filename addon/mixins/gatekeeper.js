@@ -191,5 +191,11 @@ export default Ember.Mixin.create({
   orgPortalUrl: Ember.computed.deprecatingAlias('portalHostName', {
     id: 'torii-provider-arcgis::orgPortalUrl',
     until: '10.0.0'
-  })
+  }),
+
+  isPublicUser: Ember.computed.not('portal.portalProperties'),
+
+  isCommunityOrgUser: Ember.computed.equal('portal.subscriptionInfo.type', 'Community'),
+
+  isEsriUser: Ember.computed.equal('portal.subscriptionInfo.type', 'In House'),
 });

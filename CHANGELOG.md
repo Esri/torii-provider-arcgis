@@ -3,13 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## Unreleased
+## 0.12.0
+### Changed
+- upgrade torii to 0.9.6
+
+## 0.11.0
 ### Added
 - isPublicUser CP on session
 - isCommunityOrgUser CP on session
 - isEsriUser CP on session
-### Changed
-- upgrade torii to 0.9.6
 
 ## 0.10.0
 ### Changed

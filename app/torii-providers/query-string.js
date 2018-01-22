@@ -42,8 +42,8 @@ function getOptionalParamValue(obj, paramName){
 export default Ember.Object.extend({
   init: function() {
     this.obj               = this.provider;
-    this.urlParams         = Ember.A(this.requiredParams).uniq();
-    this.optionalUrlParams = Ember.A(this.optionalParams || []).uniq();
+    this.urlParams         = Ember.A(Ember.copy(this.requiredParams)).uniq();
+    this.optionalUrlParams = Ember.A(Ember.copy(this.optionalParams || [])).uniq();
 
     this.optionalUrlParams.forEach(function(param){
       if (this.urlParams.indexOf(param) > -1) {

@@ -8,6 +8,8 @@ Versioning](http://semver.org/).
 - isPublicUser CP on session
 - isCommunityOrgUser CP on session
 - isEsriUser CP on session
+### Changed
+- upgrade torii to 0.9.6
 
 ## 0.10.0
 ### Changed

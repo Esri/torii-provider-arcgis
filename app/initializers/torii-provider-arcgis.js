@@ -1,7 +1,7 @@
 /**
  * initializers/torii-provider-arcgis.js
  *
- * This file is simply here so that it includes the extention file
+ * This file is simply here so that it includes the extension file
  * which reopen's the Torii Session, and adds additional methods
  * to it which are useful for ArcGIS Online Sessions
  */

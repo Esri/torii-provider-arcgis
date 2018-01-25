@@ -3,7 +3,7 @@
 ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.
 
 ## Notes
-This is beta software. The intention of this addon is to enable an application to authenticate user using ArcGIS.com oAuth. It does not currently, nor is it planned, to handle federation of ArcGIS Server credentials.
+This is beta software. The intention of this addon is to enable an application to authenticate users using ArcGIS.com OAuth2. It does not currently, nor is it planned, to handle federation of ArcGIS Server credentials.
 
 **Torii Dependency** Currently we are using a stable fork of [torii](https://github.com/Vestorly/torii) as they have unreleased changes that we need. As soon as the next release of torii comes out, we will switch.
 
@@ -24,7 +24,7 @@ $ ember install torii-provider-arcgis
 
 Now edit `/config/environment.js` to add your Torii provider configuration.
 
-```
+```js
 module.exports = function(environment) {
   var ENV = {
 
@@ -75,7 +75,7 @@ We recommend passing data into components vs. having them pull in the session.
 
 
 Example usage
-```
+```js
 //app/templates/secure.hbs
 {{#if session.isAuthenticated}}
 <h2>Hello {{session.currentUser.fullName}}</h2>
@@ -101,7 +101,7 @@ Example usage
 | `portalHostName()` | string | returns a protocol-less hostname for the portal i.e. `www.arcgis.com` or `dcdev.maps.arcgis.com` |
 
 Example Usage
-```
+```js
 //app/routes/privileged.js
 ...
 beforeModel(){
@@ -137,7 +137,7 @@ To initiate authentication with this flow, typically you will use a button and h
 
 In your application, on the controller or route where this button lives, add an action like:
 
-```
+```js
 //app/routes/application.js
 import Ember from 'ember';
 export default Ember.Route.extend({
@@ -168,7 +168,7 @@ Esri hosted applications (hosted on a subdomain of arcgis.com) can have the ArcG
 
 There are a few additional configuration parameters required for the `torii-provider-arcgis` configuration so that the url that is constructed for the iframe has the correct parameters.
 
-```
+```js
 //config/environment.js
 module.exports = function(environment) {
 
@@ -182,10 +182,10 @@ module.exports = function(environment) {
         'arcgis-oauth-bearer': {
           apiKey: 'ESRI-WELL-KNOWN-APPLICATION-ID',
           portalUrl: 'https://somePortal.com', //optional - defaults to https://www.arcgis.com
-          remoteServiceName: 'iframe',  
+          remoteServiceName: 'iframe',
           display: 'iframe',
           showSocialLogins:true, //optional, will default to false
-          customRedirectUri: 'https://someUrl.com/custom-redirect' //optional, but allows for deeper customization          
+          customRedirectUri: 'https://someUrl.com/custom-redirect' //optional, but allows for deeper customization
         }
       }
     }
@@ -206,7 +206,7 @@ Torii has a iframe placeholder component, and this needs to be in the DOM before
 
 But - just adding it won't do anything - we still need a means to open the session *after* the DOM has been rendered. We do this by adding some code into the route.
 
-```
+```js
 //app/routes/signin.js
 import Ember from 'ember';
 export default Ember.Route.extend({
@@ -231,11 +231,6 @@ export default Ember.Route.extend({
   }
 });
 ```
-
-
-
-
-
 
 ## Running the Addon Locally
 
@@ -266,7 +261,7 @@ For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file
 
 ## Running Test App
 
-* `ember server --dummy`
+* `ember server`
 * Visit your app at http://localhost:4200.
 
 ## Running Tests

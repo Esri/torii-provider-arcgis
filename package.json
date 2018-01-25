@@ -54,6 +54,10 @@
     "oauth"
   ],
   "dependencies": {
+    "@esri/arcgis-rest-auth": "1.0.2",
+    "@esri/arcgis-rest-request": "1.0.2",
+    "broccoli-funnel": "^2.0.1",
+    "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^5.1.5",
     "torii": "0.9.6"
   },

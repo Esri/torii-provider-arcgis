@@ -9,8 +9,6 @@
  import ENV from '../config/environment';
  import Ember from 'ember';
 
- import request from 'arcgis-rest-request';
-
  var ArcGISOAuth = Provider.extend({
    name: 'arcgis-oauth-bearer',
 
@@ -46,9 +44,7 @@
    },
 
    buildQueryString: function(options){
-     console.log(request);
-
-     request("https://www.arcgis.com/sharing/rest/info").then(response => {
+     arcgisRest.request("https://www.arcgis.com/sharing/rest/info").then(response => {
         console.log('hello', response);
      });
 

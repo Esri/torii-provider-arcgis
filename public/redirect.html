@@ -4,18 +4,36 @@
   <body>
     <!--
     This page is loaded after the authorize page has done it's work. This
-    simply updates local storage and the rest of torii takes over from There -->
+    simply updates local storage and the rest of torii takes over from there -->
+
+    <!-- load arcgis-rest-js -->
+    <script src="http://localhost:4200/assets/vendor.js"></script>
 
     <script type="text/javascript">
+      debugger;
+      // use a regex to fetch the clientId and complete OAuth2.
+      // ideally we'd be using the state parameter instead, but arcgis-rest doesn't support it
+      const match = window.location.href.match(
+        /clientId=(.+)#/
+      );
+      const clientId = match[1];
+      let session;
 
-      var CURRENT_REQUEST_KEY = '__torii_request';
-      var pendingRequestKey = window.localStorage.getItem(CURRENT_REQUEST_KEY);
-      window.localStorage.removeItem(CURRENT_REQUEST_KEY);
-      if (pendingRequestKey) {
-        var url = window.location.toString();
-        window.localStorage.setItem(pendingRequestKey, url);
-        window.close();
+      function processAuthentication() {
+        // var CURRENT_REQUEST_KEY = '__torii_request';
+        // var pendingRequestKey = window.localStorage.getItem(CURRENT_REQUEST_KEY);
+        // window.localStorage.removeItem(CURRENT_REQUEST_KEY);
+
+        // if (pendingRequestKey) {
+        //   var url = window.location.toString();
+        //   window.localStorage.setItem(pendingRequestKey, url);
+        // }
+
+        session = arcgisRest.UserSession.completeOAuth2({
+          clientId
+        });
       }
+      processAuthentication();
     </script>
   </body>
 </html>

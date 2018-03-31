@@ -35,77 +35,92 @@ export default Ember.Object.extend({
   /**
    * Promisified getJson
    */
-  _getJson (url) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
-      Ember.$.ajax({
-        url: url,
-        dataType: 'json',
-        success: Ember.run.bind(null, function (data) {
-          if (data.error) {
-            Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call shows token was not valid.');
-            reject(data);
-          } else {
-            resolve(data);
-          }
-        }),
-        error: Ember.run.bind(null, reject)
-      });
-    });
-  },
+  // _getJson (url) {
+  //   return new Ember.RSVP.Promise(function (resolve, reject) {
+  //     Ember.$.ajax({
+  //       url: url,
+  //       dataType: 'json',
+  //       success: Ember.run.bind(null, function (data) {
+  //         if (data.error) {
+  //           Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call shows token was not valid.');
+  //           reject(data);
+  //         } else {
+  //           resolve(data);
+  //         }
+  //       }),
+  //       error: Ember.run.bind(null, reject)
+  //     });
+  //   });
+  // },
 
   /**
    * Open a session by fetching portal/self from
    * the portal
    */
   open (authentication) {
-    let token = authentication.authorizationToken.token;
-    let expires = Date.now() + (authentication.authorizationToken.expires_in * 1000); // seconds from now
+    // TODO?: If we have a cookie but the token is invalid (i.e. for a different portal)
+    // then this call will return a 499-in-a-200.
 
-    // Ember.debug('torii:adapter:arcgis-oauth-bearer:open token...' + token);
-    let portalSelfUrl = this.get('portalBaseUrl') + '/sharing/rest/portals/self?f=json&token=' + token;
+    // instantiate an auth session from what's in the cookie
+    if (!authentication.session) {
+      authentication.session = arcgisRest.UserSession.deserialize(authentication.authorizationToken.serializedSession);
+    }
+
+    // session is hydrated with the portal info and token
+    return arcgisRest.getSelf({
+      authentication: authentication.session
+    })
+      .then((portal) => {
+        Ember.debug('torii:adapter:arcgis-oauth-bearer:open got response from portal/self & assigning to session');
+
+        if (ENV.torii.providers['arcgis-oauth-bearer'].loadGroups) {
+          // make a request to get user's groups
+          let username = portal.user.username;
+
+          const userUrl = arcgisRest.getPortalUrl({
+            authentication: authentication.session
+          }) + `/community/users/${username}`
+
+          return arcgisRest.request(userUrl, {
+            authentication: authentication.session
+          })
+            .then(response => {
+              return Ember.RSVP.hash({
+                portalResponse: portal,
+                userResponse: response,
+                session: authentication.session
+              })
+            })
+        } else {
+          return {
+            portalResponse: portal,
+            userResponse: portal.user,
+            session: authentication.session
+          };
+        }
+      })
+      .then((result) => {
+        // separate the portal and user so they are separate props on the session object
+        let user = result.userResponse;
+        let portal = result.portalResponse;
+        // drop the user node from the portalSelf response
+        delete portal.user;
+
+        // always store the information
+        let expires = Date.now() + (result.session.tokenDuration * 1000);
+        let cookieData = this._createCookieData(result.session.token, expires, user, portal, result.session.serialize());
+        this._store('torii-provider-arcgis', cookieData);
+
+        return {
+          portal: portal,
+          currentUser: user,
+          token: result.session.token,
+          signoutUrl: signoutUrl,
+          serializedSession: result.session.serialize()
+        };
+    })
 
     let signoutUrl = this.get('signoutUrl');
-    // Ember.debug('signoutUrl ' + signoutUrl);
-    // now use the token to call portal self
-    // TODO: If we have a cookie but the token is invalid (i.e. for a different portal)
-    // then this call will return a 499-in-a-200.
-    return this._getJson(portalSelfUrl)
-    .then((portal) => {
-      Ember.debug('torii:adapter:arcgis-oauth-bearer:open got response from portal/self & assigning to session');
-
-      if (ENV.torii.providers['arcgis-oauth-bearer'].loadGroups) {
-        // make a request to get user's groups
-        let username = portal.user.username;
-        let userUrl = `${this.get('portalBaseUrl')}/sharing/rest/community/users/${username}?f=json&token=${token}`;
-        return Ember.RSVP.hash({
-          portalResponse: portal,
-          userResponse: this._getJson(userUrl)
-        });
-      } else {
-        return {
-          portalResponse: portal,
-          userResponse: portal.user
-        };
-      }
-    })
-    .then((result) => {
-      // separate the portal and user so they are separate props on the session object
-      let user = result.userResponse;
-      let portal = result.portalResponse;
-      // drop the user node from the portalSelf response
-      delete portal.user;
-
-      // always store the information
-      let cookieData = this._createCookieData(token, expires, user, portal);
-      this._store('torii-provider-arcgis', cookieData);
-
-      return {
-        portal: portal,
-        currentUser: user,
-        token: token,
-        signoutUrl: signoutUrl
-      };
-    });
   },
 
   /**
@@ -151,7 +166,8 @@ export default Ember.Object.extend({
         let authData = {
           authorizationToken: {
             token: result.authData.token,
-            expires_in: expiresIn
+            expires_in: expiresIn,
+            serializedSession: result.authData.serializedSession
           }
         };
         resolve(self.open(authData));
@@ -194,9 +210,9 @@ export default Ember.Object.extend({
   },
 
   /**
-   * Helper to ensure consisten serialization
+   * Helper to ensure consistent serialization
    */
-  _createCookieData (token, expires, user, portal) {
+  _createCookieData (token, expires, user, portal, session) {
     let data = {
       token: token,
       accountId: user.orgId,
@@ -207,7 +223,8 @@ export default Ember.Object.extend({
       expires: expires,
       persistent: false,
       region: user.region,
-      role: user.role
+      role: user.role,
+      serializedSession: session
     };
     return data;
   },

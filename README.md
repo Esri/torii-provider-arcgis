@@ -119,15 +119,15 @@ beforeModel(){
 
 ## ArcGIS Authentication Options
 
-The ArcGIS Platform has a few types of authentication, based on OAuth2. For all the details, please consult the [documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Authorize/02r300000214000000/).
+The ArcGIS Platform has a few types of authentication, based on OAuth2. For all the details, please consult the [documentation](https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/).
 
-#### Application Authentication
+#### Named User Login
 
 Since your application will not be running on a sub-domain of ArcGIS.com, you will need to use a 'pop-up' based authentication flow.
 
 With this model, you need to register an application at [developers.arcgis.com](https://developers.arcgis.com).
 
-Next, at [developers.arcgis.com](https://developers.arcgis.com) you need to register a Redirect URI for the application - this should be the url that your web application lives at.
+Next, at [developers.arcgis.com](https://developers.arcgis.com) you need to register a Redirect URI for the application - this should be the url where your web application lives.
 
 **Note:** You can add multiple Redirect URI's for a single application, including `http://localhost`, which is convenient for development.
 
@@ -147,7 +147,7 @@ export default Ember.Route.extend({
       this.get('session').open('arcgis-oauth-bearer')
         .then((authorization) => {
           Ember.debug('AUTH SUCCESS: ', authorization);
-          //transition to some secured route or... so whatever is needed
+          // transition to some secured route or... so whatever is needed
           this.controller.transitionToRoute('secure');
         })
         .catch((err)=>{
@@ -161,8 +161,7 @@ export default Ember.Route.extend({
 
 When this action is fired, it will open the session, which will utilize torii to open a pop-up window with the ArcGIS.com login displayed.
 
-
-#### Esri Application Authentication
+#### Esri Hosted Applications
 
 Esri hosted applications (hosted on a subdomain of arcgis.com) can have the ArcGIS.com login page embedded in an iframe.
 
@@ -195,7 +194,7 @@ module.exports = function(environment) {
 };
 ```
 
-Since torii is really designed to work with 'pop-up' style oAuth, in order to have the login page injected in the iframe on a specific template (i.e. /signin), we need to do a little more work.
+Since torii is really designed to work with 'pop-up' style OAuth, in order to have the login page injected in the iframe on a specific template (i.e. /signin), we need to do a little more work.
 
 Torii has a iframe placeholder component, and this needs to be in the DOM before we can call `session.open`. So we add it into the signin template
 
@@ -251,7 +250,6 @@ The `/etc/hosts` equivalent filepath on Windows is:
 `%SystemRoot%\system32\drivers\etc\hosts`.
 
 For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file)).
-
 
 ## Contributing
 

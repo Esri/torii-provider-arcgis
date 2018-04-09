@@ -33,27 +33,6 @@ export default Ember.Object.extend({
   },
 
   /**
-   * Promisified getJson
-   */
-  // _getJson (url) {
-  //   return new Ember.RSVP.Promise(function (resolve, reject) {
-  //     Ember.$.ajax({
-  //       url: url,
-  //       dataType: 'json',
-  //       success: Ember.run.bind(null, function (data) {
-  //         if (data.error) {
-  //           Ember.debug('torii:adapter:arcgis-oauth-bearer:open portals/self call shows token was not valid.');
-  //           reject(data);
-  //         } else {
-  //           resolve(data);
-  //         }
-  //       }),
-  //       error: Ember.run.bind(null, reject)
-  //     });
-  //   });
-  // },
-
-  /**
    * Open a session by fetching portal/self from
    * the portal
    */
@@ -66,6 +45,8 @@ export default Ember.Object.extend({
       authentication.session = arcgisRest.UserSession.deserialize(authentication.authorizationToken.serializedSession);
     }
 
+    let signoutUrl = this.get('signoutUrl');
+    
     // session is hydrated with the portal info and token
     return arcgisRest.getSelf({
       authentication: authentication.session
@@ -119,8 +100,6 @@ export default Ember.Object.extend({
           serializedSession: result.session.serialize()
         };
     })
-
-    let signoutUrl = this.get('signoutUrl');
   },
 
   /**

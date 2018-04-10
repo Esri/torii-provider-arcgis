@@ -2,22 +2,10 @@
   "name": "torii-provider-arcgis",
   "version": "0.12.0",
   "description": "ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
-  "scripts": {
-    "build": "ember build",
-    "start": "ember server",
-    "test": "ember try:each",
-    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\";"
-  },
-  "repository": "https://github.com/dbouwman/torii-provider-arcgis",
-  "engines": {
-    "node": ">= 0.10.0"
-  },
   "author": "Dave Bouwman <dbouwman@esri.com>",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Esri/torii-provider-arcgis/issues"
+  },
   "devDependencies": {
     "broccoli-asset-rev": "^2.7.0",
     "ember-cli": "2.8.0",
@@ -46,6 +34,17 @@
     "eslint-plugin-standard": "^2.0.0",
     "loader.js": "^4.0.1"
   },
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config"
+  },
+  "engines": {
+    "node": ">= 4"
+  },
+  "homepage": "https://github.com/Esri/torii-provider-arcgis#readme",
   "keywords": [
     "ember-addon",
     "arcgis",
@@ -60,7 +59,16 @@
     "ember-cli-babel": "^6.6.0",
     "torii": "0.9.6"
   },
-  "ember-addon": {
-    "configPath": "tests/dummy/config"
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Esri/torii-provider-arcgis"
+  },
+  "scripts": {
+    "build": "ember build",
+    "start": "ember server",
+    "test": "ember try:each",
+    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\";"
   }
 }

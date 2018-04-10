@@ -3,7 +3,7 @@
 ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.
 
 ## Notes
-This is beta software. The intention of this addon is to enable an application to authenticate user using ArcGIS.com oAuth. It does not currently, nor is it planned, to handle federation of ArcGIS Server credentials.
+This is beta software. The intention of this addon is to enable an application to authenticate users using ArcGIS.com OAuth2. It does not currently, nor is it planned, to handle federation of ArcGIS Server credentials.
 
 **Torii Dependency** Currently we are using a stable fork of [torii](https://github.com/Vestorly/torii) as they have unreleased changes that we need. As soon as the next release of torii comes out, we will switch.
 
@@ -24,7 +24,7 @@ $ ember install torii-provider-arcgis
 
 Now edit `/config/environment.js` to add your Torii provider configuration.
 
-```
+```js
 module.exports = function(environment) {
   var ENV = {
 
@@ -75,7 +75,7 @@ We recommend passing data into components vs. having them pull in the session.
 
 
 Example usage
-```
+```js
 //app/templates/secure.hbs
 {{#if session.isAuthenticated}}
 <h2>Hello {{session.currentUser.fullName}}</h2>
@@ -101,7 +101,7 @@ Example usage
 | `portalHostName()` | string | returns a protocol-less hostname for the portal i.e. `www.arcgis.com` or `dcdev.maps.arcgis.com` |
 
 Example Usage
-```
+```js
 //app/routes/privileged.js
 ...
 beforeModel(){
@@ -119,15 +119,15 @@ beforeModel(){
 
 ## ArcGIS Authentication Options
 
-The ArcGIS Platform has a few types of authentication, based on OAuth2. For all the details, please consult the [documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Authorize/02r300000214000000/).
+The ArcGIS Platform has a few types of authentication, based on OAuth2. For all the details, please consult the [documentation](https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/).
 
-#### Application Authentication
+#### Named User Login
 
 Since your application will not be running on a sub-domain of ArcGIS.com, you will need to use a 'pop-up' based authentication flow.
 
 With this model, you need to register an application at [developers.arcgis.com](https://developers.arcgis.com).
 
-Next, at [developers.arcgis.com](https://developers.arcgis.com) you need to register a Redirect URI for the application - this should be the url that your web application lives at.
+Next, at [developers.arcgis.com](https://developers.arcgis.com) you need to register a Redirect URI for the application - this should be the url where your web application lives.
 
 **Note:** You can add multiple Redirect URI's for a single application, including `http://localhost`, which is convenient for development.
 
@@ -137,7 +137,7 @@ To initiate authentication with this flow, typically you will use a button and h
 
 In your application, on the controller or route where this button lives, add an action like:
 
-```
+```js
 //app/routes/application.js
 import Ember from 'ember';
 export default Ember.Route.extend({
@@ -147,7 +147,7 @@ export default Ember.Route.extend({
       this.get('session').open('arcgis-oauth-bearer')
         .then((authorization) => {
           Ember.debug('AUTH SUCCESS: ', authorization);
-          //transition to some secured route or... so whatever is needed
+          // transition to some secured route or... so whatever is needed
           this.controller.transitionToRoute('secure');
         })
         .catch((err)=>{
@@ -161,14 +161,13 @@ export default Ember.Route.extend({
 
 When this action is fired, it will open the session, which will utilize torii to open a pop-up window with the ArcGIS.com login displayed.
 
-
-#### Esri Application Authentication
+#### Esri Hosted Applications
 
 Esri hosted applications (hosted on a subdomain of arcgis.com) can have the ArcGIS.com login page embedded in an iframe.
 
 There are a few additional configuration parameters required for the `torii-provider-arcgis` configuration so that the url that is constructed for the iframe has the correct parameters.
 
-```
+```js
 //config/environment.js
 module.exports = function(environment) {
 
@@ -182,10 +181,10 @@ module.exports = function(environment) {
         'arcgis-oauth-bearer': {
           apiKey: 'ESRI-WELL-KNOWN-APPLICATION-ID',
           portalUrl: 'https://somePortal.com', //optional - defaults to https://www.arcgis.com
-          remoteServiceName: 'iframe',  
+          remoteServiceName: 'iframe',
           display: 'iframe',
           showSocialLogins:true, //optional, will default to false
-          customRedirectUri: 'https://someUrl.com/custom-redirect' //optional, but allows for deeper customization          
+          customRedirectUri: 'https://someUrl.com/custom-redirect' //optional, but allows for deeper customization
         }
       }
     }
@@ -195,7 +194,7 @@ module.exports = function(environment) {
 };
 ```
 
-Since torii is really designed to work with 'pop-up' style oAuth, in order to have the login page injected in the iframe on a specific template (i.e. /signin), we need to do a little more work.
+Since torii is really designed to work with 'pop-up' style OAuth, in order to have the login page injected in the iframe on a specific template (i.e. /signin), we need to do a little more work.
 
 Torii has a iframe placeholder component, and this needs to be in the DOM before we can call `session.open`. So we add it into the signin template
 
@@ -206,7 +205,7 @@ Torii has a iframe placeholder component, and this needs to be in the DOM before
 
 But - just adding it won't do anything - we still need a means to open the session *after* the DOM has been rendered. We do this by adding some code into the route.
 
-```
+```js
 //app/routes/signin.js
 import Ember from 'ember';
 export default Ember.Route.extend({
@@ -232,11 +231,6 @@ export default Ember.Route.extend({
 });
 ```
 
-
-
-
-
-
 ## Running the Addon Locally
 
 The torii example app at ArcGIS.com is configured to use
@@ -257,7 +251,6 @@ The `/etc/hosts` equivalent filepath on Windows is:
 
 For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file)).
 
-
 ## Contributing
 
 * `git clone` this repository
@@ -266,7 +259,7 @@ For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file
 
 ## Running Test App
 
-* `ember server --dummy`
+* `ember server`
 * Visit your app at http://localhost:4200.
 
 ## Running Tests

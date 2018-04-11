@@ -254,7 +254,7 @@ For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file
 
 ## Running
 
-* `ember server --dummy`
+* `ember serve`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 
 ## Running Tests

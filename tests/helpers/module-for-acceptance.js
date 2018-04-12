@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016-2018 Esri
+ * Apache-2.0
+*/
+
 import { module } from 'qunit';
 import Ember from 'ember';
 import startApp from '../helpers/start-app';

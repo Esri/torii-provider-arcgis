@@ -1,24 +1,28 @@
-# Ember CLI Torii Provider ArcGIS
+# Torii Provider ArcGIS
 
-ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.
+> ArcGIS authentication provider & adapters for [Torii](https://github.com/Vestorly/torii), packaged as an [Ember CLI](https://github.com/ember-cli/ember-cli) Addon.
+
+![oauth 2.0 example screenshot](oauth2.png)
+
+[Live Demo](https://esri.github.io/torii-provider-arcgis)
 
 ## Notes
 
-This is beta software. The intention of this addon is to enable an application to authenticate users using ArcGIS.com OAuth2. It does not currently, nor are we planning to handle federation of ArcGIS Server credentials.
+ This addon provides a convenient utility for [Ember.js](https://www.emberjs.com/) developers to add support for authenticating ArcGIS users using [OAuth 2.0](https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/what-is-oauth-2/).
 
-**Torii Dependency** Currently we are using a stable fork of [torii](https://github.com/Vestorly/torii) as they have unreleased changes that we need. As soon as the next release of torii comes out, we will switch.
+> Disclaimer: This is beta software. It does not currently, nor will it in the future handle federating ArcGIS Server credentials.
 
 ## Usage
 
-Create a project using ember-cli. If you have an existing ember-cli project, skip this step.
+Create a project using ember-cli.
 
-```
+```bash
 $ ember new my-new-app
 ```
 
 Add Torii and the ArcGIS Provider to the project
 
-```
+```bash
 $ ember install torii
 $ ember install torii-provider-arcgis
 ```
@@ -48,7 +52,8 @@ module.exports = function(environment) {
 ```
 
 **Note** If deploying to gh-pages, you will want to set a few more environment params:
-```
+
+```js
  if (environment === 'production') {
     ENV.locationType = 'hash';
     ENV.rootURL = '/your-repo-name/';
@@ -76,6 +81,7 @@ We recommend passing data into components vs. having them pull in the session.
 
 
 Example usage
+
 ```js
 //app/templates/secure.hbs
 {{#if session.isAuthenticated}}
@@ -102,6 +108,7 @@ Example usage
 | `portalHostName()` | string | returns a protocol-less hostname for the portal i.e. `www.arcgis.com` or `dcdev.maps.arcgis.com` |
 
 Example Usage
+
 ```js
 //app/routes/privileged.js
 ...
@@ -199,7 +206,7 @@ Since torii is really designed to work with 'pop-up' style OAuth, in order to ha
 
 Torii has a iframe placeholder component, and this needs to be in the DOM before we can call `session.open`. So we add it into the signin template
 
-```
+```js
 //app/templates/signin.hbs
 {{torii-iframe-placeholder}}
 ```
@@ -288,7 +295,7 @@ Esri welcomes contributions from anyone and everyone. Please see our [guidelines
 
 ### License
 
-Copyright 2018 Esri
+Copyright (c) 2016-2018 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -3,7 +3,8 @@
 ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.
 
 ## Notes
-This is beta software. The intention of this addon is to enable an application to authenticate users using ArcGIS.com OAuth2. It does not currently, nor is it planned, to handle federation of ArcGIS Server credentials.
+
+This is beta software. The intention of this addon is to enable an application to authenticate users using ArcGIS.com OAuth2. It does not currently, nor are we planning to handle federation of ArcGIS Server credentials.
 
 **Torii Dependency** Currently we are using a stable fork of [torii](https://github.com/Vestorly/torii) as they have unreleased changes that we need. As soon as the next release of torii comes out, we will switch.
 
@@ -251,16 +252,10 @@ The `/etc/hosts` equivalent filepath on Windows is:
 
 For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file)).
 
-## Contributing
+## Running
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
-
-## Running Test App
-
-* `ember server`
-* Visit your app at http://localhost:4200.
+* `ember serve`
+* Visit your app at [http://localhost:4200](http://localhost:4200).
 
 ## Running Tests
 
@@ -271,3 +266,40 @@ For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file
 ## Building
 
 * `ember build`
+
+## Resources
+
+* [ArcGIS Hub](http://doc.arcgis.com/en/hub/)
+* [ArcGIS for Developers](https://developers.arcgis.com/)
+* [ArcGIS Blog](http://blogs.esri.com/esri/arcgis/)
+* [twitter@esri](http://twitter.com/esri)
+
+## Issues
+
+Find a bug or want to request a new feature?  Please let us know by submitting an issue.
+
+### Contributing
+
+* `git clone` this repository
+* `npm install`
+* `bower install`
+
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing/blob/master/CONTRIBUTING.md).
+
+### License
+
+Copyright 2018 Esri
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+> http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+A copy of the license is available in the repository's [LICENSE](./LICENSE) file.

@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## 0.12.0
+## [Unreleased]
+
+## [0.12.0] - 2018-01-22
 ### Changed
 - upgrade torii to 0.9.6
 
@@ -131,3 +133,6 @@ Versioning](http://semver.org/).
 ### Added
 - support for iframe (\*.argis.com only apps) oAuth
 - support for application (pop-up) oAuth
+
+[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/Esri/torii-provider-arcgis/compare/v0.11.0...v0.12.0

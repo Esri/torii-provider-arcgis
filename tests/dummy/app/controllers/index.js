@@ -7,6 +7,13 @@ import Ember from 'ember';
 import ENV from '../config/environment';
 export default Ember.Controller.extend({
 
+  /**
+   * Should we show signin/signout
+   */
+  isTokenAuth: Ember.computed('session', function () {
+    return this.get('session.authType') === 'token';
+  }),
+  isWebTier: Ember.computed.not('isTokenAuth'),
   badDomain: Ember.computed('model', function () {
     // logic to show a warning if iframe style is requested...
     if (ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName &&

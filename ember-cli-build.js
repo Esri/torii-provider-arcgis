@@ -6,8 +6,10 @@
 /* jshint node:true */
 /* global require, module */
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const env = EmberAddon.env() || 'development';
 
 module.exports = function (defaults) {
+  console.log(`BUILD: Env is ${env}`);
   var app = new EmberAddon(defaults, {
     // Add options here
   });

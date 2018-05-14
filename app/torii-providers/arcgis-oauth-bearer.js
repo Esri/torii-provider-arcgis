@@ -40,7 +40,7 @@
    // additional params that this provider accepts
    optionalUrlParams: ['client', 'parent', 'autoAccountCreateForSocial', 'socialLoginProviderName'],
    // params the provider will extract from the redirected url
-   responseParams: ['token', 'state', 'expires_in'],
+   responseParams: ['token', 'state', 'expires_in', 'username'],
 
    customRedirectUri: configurable('customRedirectUri', ''),
 
@@ -83,6 +83,7 @@
   * the login
   */
   open: function (options) {
+    let debugPrefix = 'torii provider.open:: ';
     options = options || {};
 
     if (options.remoteServiceName) {
@@ -126,29 +127,38 @@
     let responseParams = this.get('responseParams');
     // hopefully someone can explain to me the whole camelize() thing someday
     let clientId = this.get('clientId');
+    let portalUrl = this.get('portalUrl') + '/sharing/rest';
     let redirectUri = this.get('redirectUri') + `?clientId=${clientId}`;
 
-    // no idea what set the localStorage value originally when the OAuth2 popup first opened
-    // window.localStorage.setItem("__torii_request", "34067cfb-97da-4f51-9c94-536277b500a5");
-
-    // not passing through showSocialLogins or locale yet. only the second appears to be supported by the endpoint and neither by arcgis-rest-js
-    // https://developers.arcgis.com/rest/users-groups-and-items/authorize.htm
-    return arcgisRest.UserSession.beginOAuth2({
-      clientId,
-      redirectUri,
-      popup: true,
-      portal: this.get('portalUrl') + '/sharing/rest'
-    }).then(session => {
-      const toriiAuth = {
-        authorizationToken: {
-          token: session.token,
-          expires_in: session.tokenDuration,
-
-        },
-        session
+    // open the popup/iframe and start polling localStorage for the auth info...
+    return this.get('popup').open(url, responseParams, options)
+      .then(function (authData) {
+        // hey look! Auth info! Let's check if we're missing anything we need...
+        var missingResponseParams = [];
+        responseParams.forEach(function (param) {
+          if (authData[param] === undefined) {
+            missingResponseParams.push(param);
+          }
+      });
+      // if so, throw w an error. This would only happen if AGO/Portal changed it's response structure
+      if (missingResponseParams.length) {
+        throw new Error(`${debugPrefix} The response from the provider is missing these required response params: ${missingResponseParams.join(', ')}`);
       }
-      return toriiAuth;
-    })
+      // attach in more info that arcgisRest wants
+      authData.clientId = clientId;
+      authData.portal = portalUrl;
+      // if we went through a sign-in process, then we're not dealing w/ web-tier auth...
+      // thus we never have to send the IWA user credentials
+      authData.withCredentials = false;
+      authData.authType = 'token';
+      Ember.debug(`${debugPrefix} is returning with data...`);
+      // this hash it passed over to the adapter.open method
+      return {
+        properties: authData,
+        provider: name,
+        redirectUri: redirectUri
+      };
+    });
   }
 
  });

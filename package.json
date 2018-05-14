@@ -69,6 +69,7 @@
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:each",
-    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\";"
+    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\";",
+    "build:ecs": "TARGET=ecs ember build --environment=production"
   }
 }

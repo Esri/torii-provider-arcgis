@@ -22,5 +22,6 @@ module.exports = {
     "no-extra-boolean-cast": 0
   },
   globals: {
+    "arcgisRest": true
   }
 };

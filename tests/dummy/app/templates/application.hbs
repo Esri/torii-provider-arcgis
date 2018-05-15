@@ -18,12 +18,13 @@
         {{#active-link}}{{link-to "GateKeeper" "gatekeeper"}}{{/active-link}}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        {{#if session.isAuthenticated}}
-        <li><a href="#" {{action 'signout'}}>Sign Out</a></li>
-        {{else}}
-        {{#active-link}}{{link-to "Sign In" "signin"}}{{/active-link}}
+        {{#if isTokenAuth}}
+          {{#if session.isAuthenticated}}
+            <li><a href="#" {{action 'signout'}}>Sign Out</a></li>
+          {{else}}
+            {{#active-link}}{{link-to "Sign In" "signin"}}{{/active-link}}
+          {{/if}}
         {{/if}}
-
         <li><a href="https://github.com/dbouwman/torii-provider-arcgis">Github</a></li>
       </ul>
     </div><!--/.nav-collapse -->

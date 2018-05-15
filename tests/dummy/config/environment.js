@@ -2,10 +2,10 @@
  * Copyright (c) 2016-2018 Esri
  * Apache-2.0
 */
-
-/* jshint node: true */
-
+/* eslint-env node  */
 module.exports = function (environment) {
+  let TARGET = process.env.TARGET || 'development';
+  console.info(`TARGET: ${TARGET}`);
   var ENV = {
     modulePrefix: 'dummy',
     environment: environment,
@@ -27,7 +27,8 @@ module.exports = function (environment) {
         'arcgis-oauth-bearer': {
           apiKey: 'zDbzLJW6W4tcxHkj', // production,
           portalUrl: 'https://www.arcgis.com',
-          loadGroups: true
+          loadGroups: true,
+          webTier: false
         }
       }
     }
@@ -52,9 +53,19 @@ module.exports = function (environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
-  if (environment === 'production') {
+  if (TARGET === 'surge') {
     ENV.locationType = 'hash';
     ENV.rootURL = '/torii-provider-arcgis/';
+  }
+
+  if (TARGET === 'ecs' || environment === 'ecs') {
+    console.info('Setting ENV for ecs');
+    ENV.locationType = 'hash';
+    ENV.torii.providers['arcgis-oauth-bearer'].webTier = true;
+    ENV.torii.providers['arcgis-oauth-bearer'].apiKey = 'arcgisonline';
+    ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = 'https://dev0003027.esri.com/portal';
+    ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = '../..';
+    ENV.rootURL = '/portal/apps/torii';
   }
 
   return ENV;

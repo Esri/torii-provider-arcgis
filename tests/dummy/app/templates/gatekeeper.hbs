@@ -20,6 +20,8 @@
       <li>hasPriviledge('opendata:user:openDataAdmin'): {{model.hasOpenDataAdmin}}</li>
       <li>isInOrg('bkrWlSKcjUDFDtgw'): {{model.isInDCProdOrg}}</li>
       <li>portalHostName: {{model.portalHostName}}</li>
+      <li>authType: {{session.authType}}</li>
+      <li>withCredentials: {{session.withCredentials}}</li>
     </ul>
     {{else}}
     <h2>Hello Unauthenticated User!</h2>

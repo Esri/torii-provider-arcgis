@@ -4,6 +4,15 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- support for web-tier authentication
+- `session.authType` with values of `token` or `web-tier`
+- `session.withCredentials`, will be `true` if `authType === web-tier`
+- `session.authMgr` which is an `IAuthenticationManager` to allow consuming apps to pass this into `arcgis-rest-js` methods
+- added `npm run build:ecs` which sets a `TARGET` env var to allow the `ecs` target to use the production build of ember.
+
+### Changed
+- uses `arcgis-rest-js` internally
 
 ## [0.12.0] - 2018-01-22
 ### Changed

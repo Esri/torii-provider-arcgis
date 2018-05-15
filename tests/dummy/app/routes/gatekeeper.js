@@ -60,8 +60,8 @@ export default Ember.Route.extend({
       this.set('isInDCProdOrg', session.isInOrg('bkrWlSKcjUDFDtgw'));
     }
 
-    let depChk = this.get('session.orgPortalUrl');
-    Ember.debug('OrgPortalUrl should have thrown a deprecated warning but returned a value shown --> ' + depChk);
+    // let depChk = this.get('session.portalHostName');
+    // Ember.debug('OrgPortalUrl should have thrown a deprecated warning but returned a value shown --> ' + depChk);
 
     return {
       isAuthenticated: this.get('isAuthenticated'),

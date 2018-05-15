@@ -4,17 +4,21 @@
       <h1>Torii Provider for ArcGIS</h1>
       <p>Quickly add ArcGIS.com authentication into an Ember-cli application.</p>
       <p>
-        {{#if session.isAuthenticated}}
+      {{#if session.isAuthenticated}}
+        {{#if isTokenAuth}}
           <button class="btn btn-primary" type='button' {{action 'signout'}}>Sign Out</button>
         {{else}}
-          {{link-to 'Sign In' 'signin' class="btn btn-primary" }}
+          <span>Web Tier Auth</span>
         {{/if}}
+      {{else}}
+        {{link-to 'Sign In' 'signin' class="btn btn-primary" }}
+      {{/if}}
       </p>
     </div>
 
     {{#if session.isAuthenticated}}
     <div class="alert alert-info" role="alert">
-      Hello {{session.currentUser.username }}, you are currently authenticated.
+      Hello {{session.currentUser.username }}, you are currently authenticated using {{session.authType}}
     </div>
     {{else}}
     <div class="alert alert-danger" role="alert">

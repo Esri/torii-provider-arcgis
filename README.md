@@ -4,13 +4,11 @@
 
 ![oauth 2.0 example screenshot](oauth2.png)
 
-[Live Demo](https://esri.github.io/torii-provider-arcgis)
-
 ## Notes
 
  This addon provides a convenient utility for [Ember.js](https://www.emberjs.com/) developers to add support for authenticating ArcGIS users using [OAuth 2.0](https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/what-is-oauth-2/).
 
-> Disclaimer: This is beta software. It does not currently, nor will it in the future handle federating ArcGIS Server credentials.
+> Disclaimer: This is beta software. It does not currently handle federating ArcGIS Server credentials.
 
 ## Usage
 
@@ -40,6 +38,7 @@ module.exports = function(environment) {
       providers: {
         'arcgis-oauth-bearer': {
           apiKey: 'APP CLIENT ID GOES HERE',
+          webTier: false, // optional - if true, support web-tier authentication in Portal
           loadGroups: false, // makes an additional API request to populate groups
           portalUrl: 'https://someportal.com' //optional - defaults to https://arcgis.com
         }
@@ -77,7 +76,9 @@ We recommend passing data into components vs. having them pull in the session.
 | `currentUser` | object | the ArcGIS.com User |
 | `portal` | object  | the ArcGIS.com Portal object |
 | `token` | string | the token returned as part of the authentication process |
-| `isGroupMember` | boolean | Is the user a member of a particular group. If
+| `isGroupMember` | boolean | Is the user a member of a particular group. |
+| `authType` | string `"token" or "web-tier"` | type of authentication used |
+
 
 
 Example usage

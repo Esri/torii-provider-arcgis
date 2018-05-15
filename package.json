@@ -1,6 +1,6 @@
 {
   "name": "torii-provider-arcgis",
-  "version": "0.12.0",
+  "version": "1.0.0",
   "description": "ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.",
   "author": "Dave Bouwman <dbouwman@esri.com>",
   "bugs": {
@@ -52,8 +52,8 @@
     "oauth"
   ],
   "dependencies": {
-    "@esri/arcgis-rest-auth": "^1.1.1",
-    "@esri/arcgis-rest-request": "^1.1.1",
+    "@esri/arcgis-rest-auth": "^1.2.0",
+    "@esri/arcgis-rest-request": "^1.2.0",
     "broccoli-funnel": "^2.0.1",
     "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^6.6.0",

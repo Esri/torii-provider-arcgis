@@ -20,7 +20,7 @@ module.exports = {
   included( /* app */ ) {
     this._super.included.apply(this, arguments);
     // bundle scripts from vendor folder
-    this.import('vendor/@esri/arcgis-rest-request/arcgis-rest-request.umd.js');
+    this.import('vendor/@esri/arcgis-rest-request/request.umd.js');
     this.import('vendor/@esri/arcgis-rest-auth/auth.umd.js');
   },
 

@@ -9,8 +9,8 @@ export default Ember.Controller.extend({
   /**
    * Should we show signin/signout
    */
-  isTokenAuth: Ember.computed('session', function () {
-    return this.get('session.authType') === 'token';
+  isTokenAuth: Ember.computed('session.authType', function () {
+    return this.getWithDefault('session.authType', 'token') === 'token';
   }),
   isWebTier: Ember.computed.not('isTokenAuth'),
 });

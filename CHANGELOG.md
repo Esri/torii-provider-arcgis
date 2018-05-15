@@ -3,7 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## [Unreleased]
+## 1.0.1
+### Changed
+- fixed eslint error re: unused var in `/app/ext/torii-provider-arcgis.js`
+- fixed for Ember 2.18.x build error when vendorTree is null
+
+## 1.0.0
 ### Added
 - support for web-tier authentication
 - `session.authType` with values of `token` or `web-tier`

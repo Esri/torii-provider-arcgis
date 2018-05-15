@@ -35,8 +35,11 @@ module.exports = {
       destDir: '@esri/arcgis-rest-auth'
     });
 
-
-    var treesToMerge = [vendorTree, arcgisRequestTree, arcgisAuthTree];
+    var treesToMerge = [arcgisRequestTree, arcgisAuthTree];
+    // if we got a vendorTree, and add it in
+    if (vendorTree) {
+      treesToMerge = [vendorTree, arcgisRequestTree, arcgisAuthTree];
+    }
 
     return new MergeTrees(treesToMerge);
   }

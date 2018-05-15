@@ -25,8 +25,8 @@ module.exports = {
   },
 
   treeForVendor(vendorTree) {
-    var arcgisRequestTree = new Funnel(path.dirname(require.resolve('@esri/arcgis-rest-request/dist/umd/arcgis-rest-request.umd.js')), {
-      files: ['arcgis-rest-request.umd.js', 'arcgis-rest-request.umd.js.map'],
+    var arcgisRequestTree = new Funnel(path.dirname(require.resolve('@esri/arcgis-rest-request/dist/umd/request.umd.js')), {
+      files: ['request.umd.js', 'request.umd.js.map'],
       destDir: '@esri/arcgis-rest-request'
     });
 

@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## 1.0.2
+### Changed
+- include the `request.umd.js` file which is the actual current build output from ArcGIS Rest JS
+
 ## 1.0.1
 ### Changed
 - fixed eslint error re: unused var in `/app/ext/torii-provider-arcgis.js`

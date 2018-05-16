@@ -11,7 +11,6 @@ Versioning](http://semver.org/).
 ### Changed
 - typo in the 1.0.3 change
 
-
 ## 1.0.2
 ### Changed
 - include the `request.umd.js` file which is the actual current build output from ArcGIS Rest JS

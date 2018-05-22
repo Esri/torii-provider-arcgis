@@ -119,7 +119,8 @@ export default Ember.Object.extend({
 
     })
     .catch((ex) => {
-      console.error(`${debugPrefix} exception occured ${ex}`);
+      // console.error(`${debugPrefix} exception occured ${ex}`);
+      throw new Error(`${debugPrefix} exception occured ${ex}`);
     });
   },
 

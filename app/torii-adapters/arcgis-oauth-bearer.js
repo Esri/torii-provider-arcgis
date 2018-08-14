@@ -6,10 +6,8 @@
 import Ember from 'ember';
 import ENV from '../config/environment';
 import fetch from 'fetch';
-
-// this doesn't work
-// import { request, getSelf, getPortalUrl } from "@esri/arcgis-rest-request";
-// import { UserSession } from "@esri/arcgis-rest-auth";
+import { request, getSelf, getPortalUrl } from "@esri/arcgis-rest-request";
+import { UserSession } from "@esri/arcgis-rest-auth";
 
 export default Ember.Object.extend({
 
@@ -85,7 +83,7 @@ export default Ember.Object.extend({
       delete authentication.properties.portalSelf;
     } else {
       // we have to fetch portalSelf
-      portalSelfPromise = arcgisRest.getSelf({ authentication: sessionInfo.authMgr, fetch });
+      portalSelfPromise = getSelf({ authentication: sessionInfo.authMgr, fetch });
     }
 
     return portalSelfPromise
@@ -134,11 +132,11 @@ export default Ember.Object.extend({
    */
   _fetchUserGroups (username, authMgr) {
     // create the url
-    const userUrl = arcgisRest.getPortalUrl({
+    const userUrl = getPortalUrl({
       authentication: authMgr
     }) + `/community/users/${username}`
     // fire off the request...
-    return arcgisRest.request(userUrl, {
+    return request(userUrl, {
       authentication: authMgr,
       httpMethod: "GET",
       fetch
@@ -266,7 +264,7 @@ export default Ember.Object.extend({
     options.tokenExpires = new Date();
     options.tokenExpires.setMinutes(options.tokenExpires.getMinutes() + (options.tokenDuration -1 ));
     // create the arcgis-rest-js auth manager aka UserSession
-    return new arcgisRest.UserSession(options);
+    return new UserSession(options);
   },
 
   _rehydrateSession (sessionInfo) {
@@ -295,7 +293,7 @@ export default Ember.Object.extend({
     }
     // finally, if the hash has a serializeSession, deserialize it
     if (sessionInfo.serializedSession) {
-      session.authMgr = arcgisRest.UserSession.deserialize(sessionInfo.serializedSession);
+      session.authMgr = UserSession.deserialize(sessionInfo.serializedSession);
       // remove  the prop...
       delete session.properties.serializedSession;
     }

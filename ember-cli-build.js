@@ -11,7 +11,7 @@ const env = EmberAddon.env() || 'development';
 module.exports = function (defaults) {
   console.log(`BUILD: Env is ${env}`);
   var app = new EmberAddon(defaults, {
-    // config for ember-cli-babel
+    // only needed so that the addon's dummy app can be run in IE
     'ember-cli-babel': {
       includePolyfill: true
     }

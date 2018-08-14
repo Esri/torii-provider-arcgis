@@ -3,7 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## 1.1.3
+## [1.1.4]
+### Changed
+- bump arcgis-rest-js dependencies to `v1.7.1`
+- use shims instead of relying on the `arcgisRest` global.
+
+### Fixed
+- use a `GET` to fetch user metadata to sidestep situations in which a `302` redirect doesn't pass along the request body.
+
+## [1.1.3]
 ### Fixed
 - adapter was not but should have been `throw`-ing an exception out of `open`
 
@@ -172,5 +180,7 @@ Versioning](http://semver.org/).
 - support for iframe (\*.argis.com only apps) oAuth
 - support for application (pop-up) oAuth
 
-[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.4...HEAD
+[1.1.4]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.3...v1.1.4
+[1.1.3]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.1...v1.1.3
 [0.12.0]: https://github.com/Esri/torii-provider-arcgis/compare/v0.11.0...v0.12.0

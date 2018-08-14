@@ -22,6 +22,8 @@ module.exports = {
     // bundle scripts from vendor folder
     this.import('vendor/@esri/arcgis-rest-request/request.umd.js');
     this.import('vendor/@esri/arcgis-rest-auth/auth.umd.js');
+    this.import('vendor/shims/@esri/arcgis-rest-request.js');
+    this.import('vendor/shims/@esri/arcgis-rest-auth.js');
   },
 
   treeForVendor(vendorTree) {
@@ -38,7 +40,7 @@ module.exports = {
     var treesToMerge = [arcgisRequestTree, arcgisAuthTree];
     // if we got a vendorTree, and add it in
     if (vendorTree) {
-      treesToMerge = [vendorTree, arcgisRequestTree, arcgisAuthTree];
+      treesToMerge.unshift(vendorTree);
     }
 
     return new MergeTrees(treesToMerge);

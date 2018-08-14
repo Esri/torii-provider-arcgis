@@ -11,7 +11,10 @@ const env = EmberAddon.env() || 'development';
 module.exports = function (defaults) {
   console.log(`BUILD: Env is ${env}`);
   var app = new EmberAddon(defaults, {
-    // Add options here
+    // config for ember-cli-babel
+    'ember-cli-babel': {
+      includePolyfill: true
+    }
   });
 
   /*

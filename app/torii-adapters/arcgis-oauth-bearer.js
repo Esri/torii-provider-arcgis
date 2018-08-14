@@ -138,7 +138,11 @@ export default Ember.Object.extend({
       authentication: authMgr
     }) + `/community/users/${username}`
     // fire off the request...
-    return arcgisRest.request(userUrl, { authentication: authMgr, fetch });
+    return arcgisRest.request(userUrl, {
+      authentication: authMgr,
+      httpMethod: "GET",
+      fetch
+    });
   },
   /**
    * Close a session (aka log out the user)

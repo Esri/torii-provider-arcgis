@@ -5,6 +5,11 @@
 
 import Ember from 'ember';
 import ENV from '../config/environment';
+import fetch from 'fetch';
+
+// this doesn't work
+// import { request, getSelf, getPortalUrl } from "@esri/arcgis-rest-request";
+// import { UserSession } from "@esri/arcgis-rest-auth";
 
 export default Ember.Object.extend({
 
@@ -80,7 +85,7 @@ export default Ember.Object.extend({
       delete authentication.properties.portalSelf;
     } else {
       // we have to fetch portalSelf
-      portalSelfPromise = arcgisRest.getSelf({ authentication: sessionInfo.authMgr });
+      portalSelfPromise = arcgisRest.getSelf({ authentication: sessionInfo.authMgr, fetch });
     }
 
     return portalSelfPromise
@@ -133,7 +138,7 @@ export default Ember.Object.extend({
       authentication: authMgr
     }) + `/community/users/${username}`
     // fire off the request...
-    return arcgisRest.request(userUrl, { authentication: authMgr });
+    return arcgisRest.request(userUrl, { authentication: authMgr, fetch });
   },
   /**
    * Close a session (aka log out the user)

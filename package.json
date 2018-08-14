@@ -52,11 +52,12 @@
     "oauth"
   ],
   "dependencies": {
-    "@esri/arcgis-rest-auth": "^1.2.1",
-    "@esri/arcgis-rest-request": "^1.2.1",
+    "@esri/arcgis-rest-auth": "^1.7.1",
+    "@esri/arcgis-rest-request": "^1.7.1",
     "broccoli-funnel": "^2.0.1",
     "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^6.6.0",
+    "ember-fetch": "3.4.4",
     "torii": "0.9.6"
   },
   "license": "Apache-2.0",

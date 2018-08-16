@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## Unreleased
+## [Unreleased]
+
+## [1.1.5]
 ### Fixed
 - correctly cache `username` and `email` when an authentication session is initiated.
 
@@ -184,7 +186,8 @@ Versioning](http://semver.org/).
 - support for iframe (\*.argis.com only apps) oAuth
 - support for application (pop-up) oAuth
 
-[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.4...HEAD
+[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.5...HEAD
+[1.1.5]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.4...v1.1.5
 [1.1.4]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.1...v1.1.3
 [0.12.0]: https://github.com/Esri/torii-provider-arcgis/compare/v0.11.0...v0.12.0

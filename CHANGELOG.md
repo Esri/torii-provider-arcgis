@@ -4,6 +4,8 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- match behavior of ArcGIS Online cookie, which caches usernames as an `email`.
 
 ## [1.1.5]
 ### Fixed

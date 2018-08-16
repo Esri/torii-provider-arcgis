@@ -3,7 +3,7 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
 });

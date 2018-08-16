@@ -3,15 +3,11 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
+import { copy } from '@ember/object/internals';
 
-/*
-  NOTE: this is mostly the same implementation as the default torii implementation
-          the difference is that it takes an `options` which it uses when constructing the querystring
-*/
-
-var camelize = Ember.String.camelize,
-    get      = Ember.get;
+import { A } from '@ember/array';
+import { camelize } from '@ember/string';
+import EmberObject, { get } from '@ember/object';
 
 function isValue(value){
   return (value || value === false);
@@ -44,11 +40,11 @@ function getOptionalParamValue(obj, paramName){
   return getParamValue(obj, paramName, true);
 }
 
-export default Ember.Object.extend({
+export default EmberObject.extend({
   init: function() {
     this.obj               = this.provider;
-    this.urlParams         = Ember.A(Ember.copy(this.requiredParams)).uniq();
-    this.optionalUrlParams = Ember.A(Ember.copy(this.optionalParams || [])).uniq();
+    this.urlParams         = A(copy(this.requiredParams)).uniq();
+    this.optionalUrlParams = A(copy(this.optionalParams || [])).uniq();
 
     this.optionalUrlParams.forEach(function(param){
       if (this.urlParams.indexOf(param) > -1) {
@@ -61,7 +57,7 @@ export default Ember.Object.extend({
     const urlParams = this.urlParams;
     const optionalUrlParams = this.optionalUrlParams;
     const obj = this.obj;
-    const keyValuePairs = Ember.A([]);
+    const keyValuePairs = A([]);
 
     const options = this.get('options');
     const optionsKeys = Object.keys(options);

@@ -8,11 +8,11 @@
  *
  * torii provider that works with ArcGIS.com oauth
  */
+ import { debug } from '@ember/debug';
  import Provider from 'torii/providers/oauth2-bearer';
- import {configurable} from 'torii/configuration';
+ import { configurable } from 'torii/configuration';
  import QueryString from './query-string';
  import ENV from '../config/environment';
- import Ember from 'ember';
 
  var ArcGISOAuth = Provider.extend({
    name: 'arcgis-oauth-bearer',
@@ -151,7 +151,7 @@
       // thus we never have to send the IWA user credentials
       authData.withCredentials = false;
       authData.authType = 'token';
-      Ember.debug(`${debugPrefix} is returning with data...`);
+      debug(`${debugPrefix} is returning with data...`);
       // this hash it passed over to the adapter.open method
       return {
         properties: authData,

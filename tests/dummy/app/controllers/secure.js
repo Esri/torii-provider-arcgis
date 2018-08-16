@@ -3,14 +3,16 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
-export default Ember.Controller.extend({
+import { computed } from '@ember/object';
 
-  isMemberOfOpenData: Ember.computed('session', function () {
+import Controller from '@ember/controller';
+export default Controller.extend({
+
+  isMemberOfOpenData: computed('session', function () {
     return this.get('session').isGroupMember('17d516cf609c4e90b798205e7d26ce5e');
   }),
 
-  isMemberOfNonGroup: Ember.computed('session', function () {
+  isMemberOfNonGroup: computed('session', function () {
     return this.get('session').isGroupMember('NOT-A-GROUP');
   })
 });

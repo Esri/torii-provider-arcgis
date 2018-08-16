@@ -3,18 +3,21 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
+import { not } from '@ember/object/computed';
+
+import { computed } from '@ember/object';
+import Controller from '@ember/controller';
 import ENV from '../config/environment';
-export default Ember.Controller.extend({
+export default Controller.extend({
 
   /**
    * Should we show signin/signout
    */
-  isTokenAuth: Ember.computed('session', function () {
+  isTokenAuth: computed('session', function () {
     return this.get('session.authType') === 'token';
   }),
-  isWebTier: Ember.computed.not('isTokenAuth'),
-  badDomain: Ember.computed('model', function () {
+  isWebTier: not('isTokenAuth'),
+  badDomain: computed('model', function () {
     // logic to show a warning if iframe style is requested...
     if (ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName &&
         ENV.torii.providers['arcgis-oauth-bearer'].remoteServiceName === 'iframe') {

@@ -6,6 +6,7 @@
 'use strict';
 
 module.exports = function(environment) {
+  let TARGET = process.env.TARGET || environment || 'development';
   let ENV = {
     modulePrefix: 'dummy',
     environment,
@@ -71,7 +72,7 @@ module.exports = function(environment) {
     ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = 'https://dev0003027.esri.com/portal';
     ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = '../..';
     ENV.rootURL = '/portal/apps/torii';
-
+  }
   if (environment === 'production') {
     // here you can enable a production-specific feature
   }

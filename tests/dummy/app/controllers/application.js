@@ -3,14 +3,17 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
-export default Ember.Controller.extend({
+import { not } from '@ember/object/computed';
+
+import { computed } from '@ember/object';
+import Controller from '@ember/controller';
+export default Controller.extend({
 
   /**
    * Should we show signin/signout
    */
-  isTokenAuth: Ember.computed('session.authType', function () {
+  isTokenAuth: computed('session.authType', function () {
     return this.getWithDefault('session.authType', 'token') === 'token';
   }),
-  isWebTier: Ember.computed.not('isTokenAuth'),
+  isWebTier: not('isTokenAuth'),
 });

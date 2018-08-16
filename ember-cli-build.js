@@ -5,10 +5,12 @@
 
 /* jshint node:true */
 /* global require, module */
+'use strict';
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 const env = EmberAddon.env() || 'development';
 
 module.exports = function (defaults) {
+  // eslint-disable-next-line no-console
   console.log(`BUILD: Env is ${env}`);
   var app = new EmberAddon(defaults, {
     // only needed so that the addon's dummy app can be run in IE

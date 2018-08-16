@@ -260,6 +260,7 @@ The `/etc/hosts` equivalent filepath on Windows is:
 
 For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file)).
 
+
 ## Running
 
 * `ember serve`
@@ -274,6 +275,7 @@ For more info, see [Hosts at wikipedia](http://en.wikipedia.org/wiki/Hosts_(file
 ## Building
 
 * `ember build`
+
 
 ## Resources
 

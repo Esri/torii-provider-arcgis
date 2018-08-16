@@ -251,7 +251,8 @@ export default Ember.Object.extend({
     let portalUrl = this.get('settings').portalUrl + '/sharing/rest';
     let options = {
       clientId: settings.clientId,
-      username: settings.username,
+      // in an ArcGIS Online cookie, the username is tagged as an email.
+      username: settings.username ? settings.username : settings.email,
       token: settings.token,
       tokenDuration: parseInt(settings.expires_in),
       portal: portalUrl
@@ -347,8 +348,8 @@ export default Ember.Object.extend({
       create: sessionInfo.currentUser.created,
       culture: sessionInfo.currentUser.culture,
       customBaseUrl: sessionInfo.portal.customBaseUrl,
-      username: sessionInfo.currentUser.username,
-      email: sessionInfo.currentUser.email,
+      // to mimic the ArcGIS Online cookie, we tag the username as an email.
+      email: sessionInfo.currentUser.username,
       expires: sessionInfo.expires,
       region: sessionInfo.currentUser.region,
       role: sessionInfo.currentUser.role,

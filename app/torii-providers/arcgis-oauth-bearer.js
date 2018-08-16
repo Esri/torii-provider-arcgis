@@ -14,7 +14,9 @@
  import QueryString from './query-string';
  import ENV from '../config/environment';
 
+
  var ArcGISOAuth = Provider.extend({
+
    name: 'arcgis-oauth-bearer',
 
    // Allow the portalUrl to be passed in, but default to ago
@@ -34,12 +36,16 @@
    expiration: configurable('expiration', 20160),
 
    locale: configurable('locale', 'en-us'),
-
-   // These params must be present in on the provider
+   // -----------------------------------------------------------------------
+   // Note: I tried a number of things to get rid of these eslint errors,
+   // and every thing I did caused things to #FAIL. Apparently torii relies
+   // on this is some way. :-(
+   // -----------------------------------------------------------------------
+   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
    requiredUrlParams: ['response_type', 'showSocialLogins', 'display', 'expiration', 'locale'],
-   // additional params that this provider accepts
+   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
    optionalUrlParams: ['client', 'parent', 'autoAccountCreateForSocial', 'socialLoginProviderName'],
-   // params the provider will extract from the redirected url
+   // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
    responseParams: ['token', 'state', 'expires_in', 'username'],
 
    customRedirectUri: configurable('customRedirectUri', ''),
@@ -49,7 +55,7 @@
    },
 
    buildQueryString: function(options){
-     const requiredParams = this.get('requiredUrlParams');
+     const requiredParams = this.get('requiredUrlParams'); // ['response_type', 'showSocialLogins', 'display', 'expiration', 'locale']; // this.get('requiredUrlParams');
      const optionalParams = this.get('optionalUrlParams');
 
      const qs = QueryString.create({

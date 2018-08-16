@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+- correctly cache `username` and `email` when an authentication session is initiated.
+
 ## [1.1.4]
 ### Changed
 - bump arcgis-rest-js dependencies to `v1.7.1`

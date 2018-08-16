@@ -4,6 +4,8 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.1.6]
 ### Fixed
 - match behavior of ArcGIS Online cookie, which caches usernames as an `email`.
 
@@ -188,7 +190,8 @@ Versioning](http://semver.org/).
 - support for iframe (\*.argis.com only apps) oAuth
 - support for application (pop-up) oAuth
 
-[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.5...HEAD
+[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.6...HEAD
+[1.1.6]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.5...v1.1.6
 [1.1.5]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.4...v1.1.5
 [1.1.4]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.1...v1.1.3

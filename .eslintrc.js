@@ -4,9 +4,6 @@
 */
 module.exports = {
   root: true,
-  globals: {
-    "arcgisRest": true
-  },
   parserOptions: {
     ecmaVersion: 2017,
     sourceType: 'module'

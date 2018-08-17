@@ -3,15 +3,17 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
-import ENV from '../config/environment';
-export default Ember.Controller.extend({
+import { computed } from '@ember/object';
 
-  usingIframe: Ember.computed('ENV.torii', function () {
+import Controller from '@ember/controller';
+import ENV from '../config/environment';
+export default Controller.extend({
+
+  usingIframe: computed('ENV.torii', function () {
     return (ENV.torii.providers['arcgis-oauth-bearer'].display && ENV.torii.providers['arcgis-oauth-bearer'].display === 'iframe');
   }),
 
-  badDomain: Ember.computed('model', function () {
+  badDomain: computed('model', function () {
     // logic to show a warning if iframe style is requested...
     if (this.get('usingIframe')) {
       if (window.location.hostname.toLowerCase().indexOf('arcgis.com') > -1) {

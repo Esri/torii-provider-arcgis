@@ -3,13 +3,16 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
+import { resolve, Promise } from 'rsvp';
+
+import { warn, debug } from '@ember/debug';
+import EmberObject, { computed } from '@ember/object';
 import ENV from '../config/environment';
 import fetch from 'fetch';
 import { request, getSelf, getPortalUrl } from "@esri/arcgis-rest-request";
 import { UserSession } from "@esri/arcgis-rest-auth";
 
-export default Ember.Object.extend({
+export default EmberObject.extend({
 
   authCookieName: 'esri_auth',
 
@@ -18,7 +21,7 @@ export default Ember.Object.extend({
   /**
    * Get the signout url
    */
-  signoutUrl: Ember.computed('portalBaseUrl', function () {
+  signoutUrl: computed('portalBaseUrl', function () {
     // baseURL is basically deprecated, in preference of rootURL.
     // So, we will use baseURL if present, but prefer rootURL
     let base = ENV.baseURL || ENV.rootURL;
@@ -28,7 +31,7 @@ export default Ember.Object.extend({
   /**
    * Friendlyer means to get provider settings
    */
-  settings: Ember.computed('ENV.torii.providers', function () {
+  settings: computed('ENV.torii.providers', function () {
     return ENV.torii.providers['arcgis-oauth-bearer'];
   }),
 
@@ -46,7 +49,7 @@ export default Ember.Object.extend({
     if (this.get('settings').portalUrl) {
       this.set('portalBaseUrl', this.get('settings').portalUrl);
     } else {
-      Ember.warn('ENV.torii.providers[\'arcgis-oauth-bearer\'].portalUrl not defined. Defaulting to https://www.arcgis.com');
+      warn('ENV.torii.providers[\'arcgis-oauth-bearer\'].portalUrl not defined. Defaulting to https://www.arcgis.com');
     }
   },
 
@@ -66,11 +69,11 @@ export default Ember.Object.extend({
     };
     // instantiate an auth session from what's in the cookie/url hash
     if (!authentication.authMgr) {
-      Ember.debug(`${debugPrefix} Creating an AuthMgr`);
+      debug(`${debugPrefix} Creating an AuthMgr`);
       // create the arcgis-rest-js auth manager aka UserSession
       sessionInfo.authMgr = this._createAuthManager(authentication.properties);
     } else {
-      Ember.debug(`${debugPrefix} Recieved an AuthMgr`);
+      debug(`${debugPrefix} Recieved an AuthMgr`);
       sessionInfo.authMgr = authentication.authMgr;
     }
 
@@ -78,7 +81,7 @@ export default Ember.Object.extend({
     // check if authentication.hash contains a portalSelf object
     if (authentication.properties.portalSelf) {
       // webTier has likely occured, so we can side-step the portalSelf call..
-      portalSelfPromise = Ember.RSVP.resolve(authentication.properties.portalSelf);
+      portalSelfPromise = resolve(authentication.properties.portalSelf);
       // get rid of the property so it does not get used in other contexts..
       delete authentication.properties.portalSelf;
     } else {
@@ -88,14 +91,14 @@ export default Ember.Object.extend({
 
     return portalSelfPromise
       .then((portal) => {
-        Ember.debug(`${debugPrefix} Recieved portal and user information`);
+        debug(`${debugPrefix} Recieved portal and user information`);
         sessionInfo.portal = portal;
         sessionInfo.currentUser = portal.user;
         // reomvoe the user prop from the portal
         delete sessionInfo.portal.user;
         // check if we should load the user's groups...
         if (this.get('settings.loadGroups')) {
-          Ember.debug(`${debugPrefix} Fetching user groups`);
+          debug(`${debugPrefix} Fetching user groups`);
           return this._fetchUserGroups(sessionInfo.currentUser.username, sessionInfo.authMgr)
             .then((userResponse) => {
               // use this user object...
@@ -146,7 +149,7 @@ export default Ember.Object.extend({
    * Close a session (aka log out the user)
    */
   close () {
-    return new Ember.RSVP.Promise((resolve /*, reject */) => {
+    return new Promise((resolve /*, reject */) => {
       // always nuke the localStorage things
       if (window.localStorage) {
         window.localStorage.removeItem('torii-provider-arcgis');
@@ -175,7 +178,7 @@ export default Ember.Object.extend({
 
     // Did we get something from cookie or local storage?
     if (savedSession.valid) {
-      Ember.debug(`${debugPrefix} Rehydrating session`);
+      debug(`${debugPrefix} Rehydrating session`);
       // normalize the authData hash...
       let authData = this._rehydrateSession(savedSession.properties);
       // degate to the open function to do the work...
@@ -183,7 +186,7 @@ export default Ember.Object.extend({
     } else {
       // This is configurable so we don't even have this option for AGO
       if (this.get('settings.webTier')) {
-        Ember.debug(`${debugPrefix} no local session information found. Attempting web-tier...`);
+        debug(`${debugPrefix} no local session information found. Attempting web-tier...`);
         let portalUrl = this.get('portalBaseUrl');
         return this.attemptWebTierPortalSelfCall(portalUrl)
           .then((authData) => {
@@ -191,11 +194,11 @@ export default Ember.Object.extend({
             return this.open(authData);
           })
           .catch((ex) => {
-            Ember.debug(`${debugPrefix} Web-tier failed. User is not logged in. ${ex}`);
+            debug(`${debugPrefix} Web-tier failed. User is not logged in. ${ex}`);
             throw new Error(`WebTier Auth not successful.`);
           });
       } else {
-          Ember.debug(`${debugPrefix} Web-tier not attempted. Web-tier not enabled for this application.`);
+          debug(`${debugPrefix} Web-tier not attempted. Web-tier not enabled for this application.`);
           throw new Error(`WebTier Auth not successful.`);
       }
     }
@@ -218,7 +221,7 @@ export default Ember.Object.extend({
         // really want to check if we got the user back... if we did... THEN we
         // are pretty sure some web-tier auth has happened... we think.
         if (portalSelf.user && portalSelf.user.username) {
-          Ember.debug(`${debugPrefix} Web-tier authentication succeeded.`);
+          debug(`${debugPrefix} Web-tier authentication succeeded.`);
           // in addition to returning the payload, the porta/self call should also
           // have set the esri_auth cookie... which we will now read...
           let result = this._checkCookie(this.get('authCookieName'));
@@ -231,12 +234,12 @@ export default Ember.Object.extend({
           return authData;
         } else {
           // we are not web-tier authenticated...
-          Ember.debug(`${debugPrefix} Web-tier portal/self call succeeded but user was not returned. User is not logged in.`);
+          debug(`${debugPrefix} Web-tier portal/self call succeeded but user was not returned. User is not logged in.`);
           throw new Error(`WebTier Auth not successful.`);
         }
       })
       .catch((ex) => {
-        Ember.debug(`${debugPrefix} Web-tier authentication failed. User is not logged in. ${ex}`);
+        debug(`${debugPrefix} Web-tier authentication failed. User is not logged in. ${ex}`);
         throw new Error(`WebTier Auth not successful.`);
       });
   },
@@ -247,7 +250,7 @@ export default Ember.Object.extend({
    */
   _createAuthManager (settings) {
     let debugPrefix = 'torii adapter._createAuthManager:: ';
-    Ember.debug(`${debugPrefix} Creating AuthMgr`);
+    debug(`${debugPrefix} Creating AuthMgr`);
     let portalUrl = this.get('settings').portalUrl + '/sharing/rest';
     let options = {
       clientId: settings.clientId,
@@ -317,13 +320,13 @@ export default Ember.Object.extend({
       if (stored) {
         result.properties = JSON.parse(stored);
         if (new Date(result.properties.expires) > new Date()) {
-          Ember.debug(`${debugPrefix} Found session information in Local Storage.`);
+          debug(`${debugPrefix} Found session information in Local Storage.`);
           result.valid = true;
         } else {
-          Ember.debug(`${debugPrefix} Found *expired* session information in Local Storage.`);
+          debug(`${debugPrefix} Found *expired* session information in Local Storage.`);
         }
       } else {
-        Ember.debug(`${debugPrefix} No session information found in Local Storage.`);
+        debug(`${debugPrefix} No session information found in Local Storage.`);
       }
     }
     return result;
@@ -381,14 +384,14 @@ export default Ember.Object.extend({
       if (new Date(cookieData.expires) > new Date()) {
         // ok it's still valid... we still don't know if
         // it is valid for the env we are working with, but we will return it
-        Ember.debug(`${debugPrefix} Cookie session has not expired yet`);
+        debug(`${debugPrefix} Cookie session has not expired yet`);
       } else {
         // There is an occasional bug where it seems that we can have valid tokens
         // with expires values in the past. Where this gets really odd is that
         // when we make a call to /authorize ahd this borked cookie is sent along
         // the cookie is not overwritten w/ an updated cookie.
         // Thus, we return the auth data in either case
-        Ember.debug(`${debugPrefix} Cookie session has expired - but we are still going to try to use it`);
+        debug(`${debugPrefix} Cookie session has expired - but we are still going to try to use it`);
       }
       result.properties = cookieData;
       // check if we have the auth_tier prop in the cookie...
@@ -402,7 +405,7 @@ export default Ember.Object.extend({
       }
       result.valid = true;
     } else {
-      Ember.debug(`${debugPrefix} No session information found in Cookie.`);
+      debug(`${debugPrefix} No session information found in Cookie.`);
     }
     return result;
   }

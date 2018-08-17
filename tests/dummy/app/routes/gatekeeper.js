@@ -3,11 +3,13 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
 
-export default Ember.Route.extend({
+import Route from '@ember/routing/route';
 
-  session: Ember.inject.service('session'),
+export default Route.extend({
+
+  session: service('session'),
 
   // just some simple props to juggle things
   // between the beforeModel hook, which is where

@@ -3,7 +3,7 @@
  * Apache-2.0
 */
 
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 import GatekeeperMixin from 'torii-provider-arcgis/mixins/gatekeeper';
 import { module, test } from 'qunit';
 
@@ -11,14 +11,14 @@ module('Unit | Mixin | gatekeeper');
 
 // Replace this with your real tests.
 test('returns current user', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   subject.set('currentUser', {username: 'dbouwman'});
   assert.equal(subject.get('currentUser.username'), 'dbouwman');
 });
 
 test('isAdmin- pass', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let user = {
     username: 'fakeuser',
@@ -30,7 +30,7 @@ test('isAdmin- pass', function (assert) {
 });
 
 test('isAdmin - fail', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let user = {
     username: 'fakeuser',
@@ -43,7 +43,7 @@ test('isAdmin - fail', function (assert) {
 });
 
 test('isInRole', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let user = {
     username: 'fakeuser',
@@ -56,7 +56,7 @@ test('isInRole', function (assert) {
 });
 
 test('isInAnyRole', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let user = {
     username: 'fakeuser',
@@ -73,7 +73,7 @@ test('isInAnyRole', function (assert) {
 });
 
 test('hasPrivilege', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let user = {
     username: 'fakeuser',
@@ -88,7 +88,7 @@ test('hasPrivilege', function (assert) {
 });
 
 test('hasAnyPrivilege', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let user = {
     username: 'fakeuser',
@@ -104,7 +104,7 @@ test('hasAnyPrivilege', function (assert) {
 });
 
 test('hasAllPrivileges', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let user = {
     username: 'fakeuser',
@@ -120,7 +120,7 @@ test('hasAllPrivileges', function (assert) {
 });
 
 test('isInOrg', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let portal = {
     id: 'ABC123'
@@ -132,7 +132,7 @@ test('isInOrg', function (assert) {
 });
 
 test('isInAnyOrg', function (assert) {
-  let GatekeeperObject = Ember.Object.extend(GatekeeperMixin);
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();
   let portal = {
     id: 'ABC123'

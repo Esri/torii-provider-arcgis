@@ -3,18 +3,23 @@
  * Apache-2.0
 */
 /* eslint-env node  */
-module.exports = function (environment) {
-  let TARGET = process.env.TARGET || 'development';
-  console.info(`TARGET: ${TARGET}`);
-  var ENV = {
+'use strict';
+
+module.exports = function(environment) {
+  let TARGET = process.env.TARGET || environment || 'development';
+  let ENV = {
     modulePrefix: 'dummy',
-    environment: environment,
+    environment,
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
+      },
+      EXTEND_PROTOTYPES: {
+        // Prevent Ember Data from overriding Date.parse.
+        Date: false
       }
     },
 
@@ -51,6 +56,7 @@ module.exports = function (environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+    ENV.APP.autoboot = false;
   }
 
   if (TARGET === 'surge') {
@@ -66,6 +72,9 @@ module.exports = function (environment) {
     ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = 'https://dev0003027.esri.com/portal';
     ENV.torii.providers['arcgis-oauth-bearer'].portalUrl = '../..';
     ENV.rootURL = '/portal/apps/torii';
+  }
+  if (environment === 'production') {
+    // here you can enable a production-specific feature
   }
 
   return ENV;

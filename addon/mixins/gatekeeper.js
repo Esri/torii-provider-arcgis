@@ -9,9 +9,15 @@
  * Used to extend the ToriiSession with ArcGIS specific helper methods
  *
  */
-import Ember from 'ember';
+import { equal, deprecatingAlias, not } from '@ember/object/computed';
 
-export default Ember.Mixin.create({
+import { getOwner } from '@ember/application';
+import { computed } from '@ember/object';
+import { debug, warn } from '@ember/debug';
+import { isArray } from '@ember/array';
+import Mixin from '@ember/object/mixin';
+
+export default Mixin.create({
 
   /**
    * Org Admins must have the org_admin role and
@@ -45,9 +51,9 @@ export default Ember.Mixin.create({
    */
   isGroupMember (groupId) {
     let user = this.get('currentUser');
-    if (!Ember.isArray(user.groups)) {
+    if (!isArray(user.groups)) {
       // if the provider has not been configured to load groups, show a warning...
-      Ember.debug('Session.isGroupMember was called, but torii-provider-arcgis has not been configured to fetch user groups. Please see documentation. (https://github.com/dbouwman/torii-provider-arcgis#ember-cli-torii-provider-arcgis)');
+      debug('Session.isGroupMember was called, but torii-provider-arcgis has not been configured to fetch user groups. Please see documentation. (https://github.com/dbouwman/torii-provider-arcgis#ember-cli-torii-provider-arcgis)');
       return false;
     } else {
       // look up the group in the groups array by it's Id
@@ -81,14 +87,14 @@ export default Ember.Mixin.create({
   hasAnyPrivilege (privileges) {
     let result = false;
     // check that we have an array
-    if (Ember.isArray(privileges)) {
+    if (isArray(privileges)) {
       for (var i = 0; i < privileges.length; i++) {
         if (this.hasPrivilege(privileges[i])) {
           result = true;
         }
       }
     } else {
-      Ember.warn('Session.hasAnyPrivilege was not passed an array. Please use .hasPrivilege instead.');
+      warn('Session.hasAnyPrivilege was not passed an array. Please use .hasPrivilege instead.');
     }
     return result;
   },
@@ -99,12 +105,12 @@ export default Ember.Mixin.create({
   hasAllPrivileges (privileges) {
     let result = false;
     // check that we have an array
-    if (Ember.isArray(privileges)) {
+    if (isArray(privileges)) {
       let chks = privileges.map(this.hasPrivilege, this);
       // ensure that all checks return true...
       result = chks.indexOf(false) === -1;
     } else {
-      Ember.warn('Session.hasAllPrivileges was not passed an array. Please use .hasPrivilege instead.');
+      warn('Session.hasAllPrivileges was not passed an array. Please use .hasPrivilege instead.');
     }
     return result;
   },
@@ -115,14 +121,14 @@ export default Ember.Mixin.create({
   isInAnyRole (roles) {
     let result = false;
     // check that we have an array
-    if (Ember.isArray(roles)) {
+    if (isArray(roles)) {
       for (var i = 0; i < roles.length; i++) {
         if (this.isInRole(roles[i])) {
           result = true;
         }
       }
     } else {
-      Ember.warn('Session.isInAnyRole was not passed an array. Please use .isInRole instead.');
+      warn('Session.isInAnyRole was not passed an array. Please use .isInRole instead.');
     }
     return result;
   },
@@ -148,14 +154,14 @@ export default Ember.Mixin.create({
   isInAnyOrg (orgs) {
     let result = false;
     // check that we have an array
-    if (Ember.isArray(orgs)) {
+    if (isArray(orgs)) {
       for (var i = 0; i < orgs.length; i++) {
         if (this.isInOrg(orgs[i])) {
           result = true;
         }
       }
     } else {
-      Ember.warn('Session.isInAnyOrg was not passed an array. Please use .isInOrg instead.');
+      warn('Session.isInAnyOrg was not passed an array. Please use .isInOrg instead.');
     }
     return result;
   },
@@ -163,7 +169,7 @@ export default Ember.Mixin.create({
   /**
    * Returns a protocol-less hostname for the Portal
    */
-  portalHostname: Ember.computed('isAuthenticated', function () {
+  portalHostname: computed('isAuthenticated', function () {
     let result;
     if (this.get('isAuthenticated')) {
       const portal = this.get('portal');
@@ -174,18 +180,18 @@ export default Ember.Mixin.create({
         result = `${urlKey}.${portal.customBaseUrl}`;
       }
     } else {
-      const config = Ember.getOwner(this).resolveRegistration('config:environment');
+      const config = getOwner(this).resolveRegistration('config:environment');
       result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;
       result = result.replace(/https?:\/\//, '');
     }
     return result;
   }),
 
-  isLevelOne: Ember.computed.equal('currentUser.level', '1'),
+  isLevelOne: equal('currentUser.level', '1'),
 
-  isLevelTwo: Ember.computed.equal('currentUser.level', '2'),
+  isLevelTwo: equal('currentUser.level', '2'),
 
-  portalHostName: Ember.computed.deprecatingAlias('portalHostname', {
+  portalHostName: deprecatingAlias('portalHostname', {
     id: 'torii-provider-arcgis::portalHostName',
     until: '10.0.0'
   }),
@@ -193,14 +199,14 @@ export default Ember.Mixin.create({
   /**
    * Deprecated - use portalHostName
    */
-  orgPortalUrl: Ember.computed.deprecatingAlias('portalHostName', {
+  orgPortalUrl: deprecatingAlias('portalHostName', {
     id: 'torii-provider-arcgis::orgPortalUrl',
     until: '10.0.0'
   }),
 
-  isPublicUser: Ember.computed.not('portal.portalProperties'),
+  isPublicUser: not('portal.portalProperties'),
 
-  isCommunityOrgUser: Ember.computed.equal('portal.subscriptionInfo.type', 'Community'),
+  isCommunityOrgUser: equal('portal.subscriptionInfo.type', 'Community'),
 
-  isEsriUser: Ember.computed.equal('portal.subscriptionInfo.type', 'In House'),
+  isEsriUser: equal('portal.subscriptionInfo.type', 'In House'),
 });

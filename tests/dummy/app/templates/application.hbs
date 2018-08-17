@@ -13,19 +13,19 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        {{#active-link}}{{link-to "Home" "index"}}{{/active-link}}
-        {{#active-link}}{{link-to "Secure" "secure"}}{{/active-link}}
-        {{#active-link}}{{link-to "GateKeeper" "gatekeeper"}}{{/active-link}}
+        <li>{{link-to "Home" "index"}}</li>
+        <li>{{link-to "Secure" "secure"}}</li>
+        <li>{{link-to "GateKeeper" "gatekeeper"}}</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {{#if isTokenAuth}}
           {{#if session.isAuthenticated}}
             <li><a href="#" {{action 'signout'}}>Sign Out</a></li>
           {{else}}
-            {{#active-link}}{{link-to "Sign In" "signin"}}{{/active-link}}
+            <li>{{link-to "Sign In" "signin"}}</li>
           {{/if}}
         {{/if}}
-        <li><a href="https://github.com/dbouwman/torii-provider-arcgis">Github</a></li>
+        <li><a href="https://github.com/esri/torii-provider-arcgis">Github</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container-fluid -->

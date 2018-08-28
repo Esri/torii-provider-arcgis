@@ -34,6 +34,10 @@ export function getPortalUrl (portal) {
   return assembleUrl(parts, insertPort);
 }
 
+export function getPortalRestUrl (portal) {
+  return `${getPortalUrl(portal)}/sharing/rest`;
+}
+
 /**
  * Disassemble a url into a hash of parts so we can reason about it
  */

@@ -12,7 +12,7 @@ import fetch from 'fetch';
 import { request, getSelf, getPortalUrl } from "@esri/arcgis-rest-request";
 import { UserSession } from "@esri/arcgis-rest-auth";
 import {
-  getPortalHostname
+  getPortalRestUrl
 } from 'torii-provider-arcgis/utils/url-utils';
 
 export default EmberObject.extend({
@@ -99,7 +99,7 @@ export default EmberObject.extend({
         sessionInfo.currentUser = portal.user;
         // use the portal to assign the `.portal` to the authMgr
         // authMgr expects a protocol, possible ports and paths
-        sessionInfo.authMgr.portal = getPortalHostname(portal);
+        sessionInfo.authMgr.portal = getPortalRestUrl(portal);
         // reomvoe the user prop from the portal
         delete sessionInfo.portal.user;
         // check if we should load the user's groups...
@@ -255,9 +255,16 @@ export default EmberObject.extend({
    * which is used by arcgis-rest::request
    */
   _createAuthManager (settings) {
+
     let debugPrefix = 'torii adapter._createAuthManager:: ';
     debug(`${debugPrefix} Creating AuthMgr`);
+
+    // default to the portal as defined in the torii config
     let portalUrl = this.get('settings').portalUrl + '/sharing/rest';
+    // for AGO, the cookie will have urlKey and customBaseUrl...
+    if (settings.urlKey && settings.customBaseUrl) {
+      portalUrl = `https://${settings.urlKey}.${settings.customBaseUrl}/sharing/rest`;
+    }
     let options = {
       clientId: settings.clientId,
       // in an ArcGIS Online cookie, the username is tagged as an email.
@@ -306,6 +313,8 @@ export default EmberObject.extend({
       session.authMgr = UserSession.deserialize(sessionInfo.serializedSession);
       // remove  the prop...
       delete session.properties.serializedSession;
+    } else {
+      session.authMgr = this._createAuthManager(sessionInfo);
     }
     // and return the object
     return session;

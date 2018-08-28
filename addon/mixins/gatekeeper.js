@@ -17,7 +17,8 @@ import { debug, warn } from '@ember/debug';
 import { isArray } from '@ember/array';
 import Mixin from '@ember/object/mixin';
 import {
-  getPortalHostname
+  getPortalHostname,
+  getPortalRestUrl
 } from 'torii-provider-arcgis/utils/url-utils';
 
 export default Mixin.create({
@@ -180,6 +181,18 @@ export default Mixin.create({
       const config = getOwner(this).resolveRegistration('config:environment');
       result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;
       result = result.replace(/https?:\/\//, '');
+    }
+    return result;
+  }),
+
+  portalRestUrl: computed('isAuthenticated', function () {
+    let result;
+    if (this.get('isAuthenticated')) {
+      result = getPortalRestUrl(this.get('portal'));
+    } else {
+      const config = getOwner(this).resolveRegistration('config:environment');
+      result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;
+      result = `${this.get('portalHostname')}/sharing/rest`;
     }
     return result;
   }),

@@ -16,6 +16,9 @@ import { computed } from '@ember/object';
 import { debug, warn } from '@ember/debug';
 import { isArray } from '@ember/array';
 import Mixin from '@ember/object/mixin';
+import {
+  getPortalHostname
+} from 'torii-provider-arcgis/utils/url-utils';
 
 export default Mixin.create({
 
@@ -172,13 +175,7 @@ export default Mixin.create({
   portalHostname: computed('isAuthenticated', function () {
     let result;
     if (this.get('isAuthenticated')) {
-      const portal = this.get('portal');
-      const urlKey = portal.urlKey;
-      result = portal.portalHostname;
-
-      if (urlKey) {
-        result = `${urlKey}.${portal.customBaseUrl}`;
-      }
+      result = getPortalHostname(this.get('portal'));
     } else {
       const config = getOwner(this).resolveRegistration('config:environment');
       result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;

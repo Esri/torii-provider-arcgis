@@ -4,6 +4,8 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- `session.authMgr.portal` will now be the full ssl org portal url, using the ports and paths from the portalSelf hash
 
 ## [1.1.6]
 ### Fixed

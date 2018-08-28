@@ -11,6 +11,9 @@ import ENV from '../config/environment';
 import fetch from 'fetch';
 import { request, getSelf, getPortalUrl } from "@esri/arcgis-rest-request";
 import { UserSession } from "@esri/arcgis-rest-auth";
+import {
+  getPortalHostname
+} from 'torii-provider-arcgis/utils/url-utils';
 
 export default EmberObject.extend({
 
@@ -94,6 +97,9 @@ export default EmberObject.extend({
         debug(`${debugPrefix} Recieved portal and user information`);
         sessionInfo.portal = portal;
         sessionInfo.currentUser = portal.user;
+        // use the portal to assign the `.portal` to the authMgr
+        // authMgr expects a protocol, possible ports and paths
+        sessionInfo.authMgr.portal = getPortalHostname(portal);
         // reomvoe the user prop from the portal
         delete sessionInfo.portal.user;
         // check if we should load the user's groups...
@@ -113,8 +119,8 @@ export default EmberObject.extend({
         // unless web-tier, store the information
         if (sessionInfo.authType !== 'web-tier') {
           sessionInfo.expires = sessionInfo.authMgr.tokenExpires.getTime();
-          let cookieData = this._createCookieData(sessionInfo);
-          this._store('torii-provider-arcgis', cookieData);
+          let sessionData = this._serializeSession(sessionInfo);
+          this._store('torii-provider-arcgis', sessionData);
           sessionInfo.signoutUrl = this.get('signoutUrl');
         }
         /**
@@ -344,7 +350,7 @@ export default EmberObject.extend({
   /**
    * Helper to ensure consistent serialization
    */
-  _createCookieData (sessionInfo) {
+  _serializeSession (sessionInfo) {
     let data = {
       accountId: sessionInfo.currentUser.orgId,
       authType: sessionInfo.authType,

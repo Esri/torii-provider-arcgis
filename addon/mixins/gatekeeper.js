@@ -185,6 +185,9 @@ export default Mixin.create({
     return result;
   }),
 
+  /**
+   * Return the full url to the Portal's REST API
+   */
   portalRestUrl: computed('isAuthenticated', function () {
     let result;
     if (this.get('isAuthenticated')) {

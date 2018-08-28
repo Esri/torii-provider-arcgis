@@ -107,6 +107,7 @@ Example usage
 | `isInOrg('orgId')` | bool | is the current user a member of the specified org |
 | `isInAnyOrg(['orgId1', 'orgId2'])` | bool | is the current user a member of any of the specified orgs |
 | `portalHostName()` | string | returns a protocol-less hostname for the portal i.e. `www.arcgis.com` or `dcdev.maps.arcgis.com` |
+| `portalRestUrl()` | string | returns https url for the portal api i.e. `https://www.arcgis.com/sharing/rest` or `https://dcdev.maps.arcgis.com/sharing/rest`. Respects ArcGIS Enterprise httpsPort settings |
 
 Example Usage
 

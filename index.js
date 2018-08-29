@@ -14,7 +14,7 @@ module.exports = {
   name: 'torii-provider-arcgis',
 
   isDevelopingAddon: function () {
-    return true;
+    return false;
   },
 
   included( /* app */ ) {

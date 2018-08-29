@@ -16,6 +16,10 @@ import { computed } from '@ember/object';
 import { debug, warn } from '@ember/debug';
 import { isArray } from '@ember/array';
 import Mixin from '@ember/object/mixin';
+import {
+  getPortalHostname,
+  getPortalRestUrl
+} from 'torii-provider-arcgis/utils/url-utils';
 
 export default Mixin.create({
 
@@ -169,20 +173,29 @@ export default Mixin.create({
   /**
    * Returns a protocol-less hostname for the Portal
    */
-  portalHostname: computed('isAuthenticated', function () {
+  portalHostname: computed('isAuthenticated', 'portal', function () {
     let result;
     if (this.get('isAuthenticated')) {
-      const portal = this.get('portal');
-      const urlKey = portal.urlKey;
-      result = portal.portalHostname;
-
-      if (urlKey) {
-        result = `${urlKey}.${portal.customBaseUrl}`;
-      }
+      result = getPortalHostname(this.get('portal'));
     } else {
       const config = getOwner(this).resolveRegistration('config:environment');
       result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;
       result = result.replace(/https?:\/\//, '');
+    }
+    return result;
+  }),
+
+  /**
+   * Return the full url to the Portal's REST API
+   */
+  portalRestUrl: computed('isAuthenticated', 'portal', function () {
+    let result;
+    if (this.get('isAuthenticated')) {
+      result = getPortalRestUrl(this.get('portal'));
+    } else {
+      const config = getOwner(this).resolveRegistration('config:environment');
+      result = config.torii.providers['arcgis-oauth-bearer'].portalUrl;
+      result = `${this.get('portalHostname')}/sharing/rest`;
     }
     return result;
   }),

@@ -5,8 +5,26 @@
 
 import Route from '@ember/routing/route';
 import ENV from '../config/environment';
+import { debug } from '@ember/debug';
 export default Route.extend({
-
+  beforeModel() {
+    // try to re-hydrate old sessions
+    // this._initSession();
+  },
+  /**
+   * Initialize the session, picking up identity from either cookie or local storage
+   */
+  _initSession () {
+    return this.get('session').fetch()
+      .then(() => {
+        debug('User has been automatically logged in... ');
+        return {success: true, status: 'authenticated'};
+      })
+      .catch(() => {
+        debug('No cookie/localstorage entry was found, user is anonymous... ');
+        return {success: true, status: 'anonymous'};
+      });
+  },
   actions: {
     accessDenied: function () {
       this.transitionTo('signin');

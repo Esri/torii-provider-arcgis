@@ -173,7 +173,7 @@ export default Mixin.create({
   /**
    * Returns a protocol-less hostname for the Portal
    */
-  portalHostname: computed('isAuthenticated', function () {
+  portalHostname: computed('isAuthenticated', 'portal', function () {
     let result;
     if (this.get('isAuthenticated')) {
       result = getPortalHostname(this.get('portal'));
@@ -188,7 +188,7 @@ export default Mixin.create({
   /**
    * Return the full url to the Portal's REST API
    */
-  portalRestUrl: computed('isAuthenticated', function () {
+  portalRestUrl: computed('isAuthenticated', 'portal', function () {
     let result;
     if (this.get('isAuthenticated')) {
       result = getPortalRestUrl(this.get('portal'));

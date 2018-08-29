@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+- set isDevelopingAddon to false
+
 ## [2.0.0]
 ### Breaking Change
 - `session.authMgr.portal` will now be the full ssl org portal url, using the ports and paths from the portalSelf hash
@@ -192,7 +196,8 @@ Versioning](http://semver.org/).
 - support for iframe (\*.argis.com only apps) oAuth
 - support for application (pop-up) oAuth
 
-[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.6...HEAD
+[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.6...v2.0.0
 [1.1.6]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.5...v1.1.6
 [1.1.5]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.4...v1.1.5
 [1.1.4]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.3...v1.1.4

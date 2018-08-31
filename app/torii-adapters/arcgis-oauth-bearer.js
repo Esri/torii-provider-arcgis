@@ -177,13 +177,15 @@ export default EmberObject.extend({
    */
   fetch () {
     let debugPrefix = 'torii adapter.fetch:: ';
-    // try for a cookie...
+    // We want to prefer the cookie over localStorage. This is so that
+    // a user can switch accounts / ENV's @ AGO, and the app should use
+    // that set of creds, vs what may be in localStorage. If there is
+    // no cookie, (which is the case for apps not hosted @ *.arcgis.com)
+    // then we look in localStorage
     let savedSession = this._checkCookie(this.get('authCookieName'));
-    // let savedSession = this._checkLocalStorage('torii-provider-arcgis');
     // failing that look in localStorage
     if (!savedSession.valid) {
       savedSession = this._checkLocalStorage('torii-provider-arcgis');
-      // savedSession = this._checkCookie(this.get('authCookieName'));
     }
 
     // Did we get something from cookie or local storage?

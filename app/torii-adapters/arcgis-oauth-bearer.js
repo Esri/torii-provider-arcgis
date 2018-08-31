@@ -83,12 +83,14 @@ export default EmberObject.extend({
     let portalSelfPromise;
     // check if authentication.hash contains a portalSelf object
     if (authentication.properties.portalSelf) {
+      debug(`${debugPrefix} Recieved a portalSelf - not making xhr`);
       // webTier has likely occured, so we can side-step the portalSelf call..
       portalSelfPromise = resolve(authentication.properties.portalSelf);
       // get rid of the property so it does not get used in other contexts..
       delete authentication.properties.portalSelf;
     } else {
       // we have to fetch portalSelf
+      debug(`${debugPrefix} Did not recieved a portalSelf - making xhr via AGRjs::getSelf`);
       portalSelfPromise = getSelf({ authentication: sessionInfo.authMgr, fetch });
     }
 
@@ -175,7 +177,11 @@ export default EmberObject.extend({
    */
   fetch () {
     let debugPrefix = 'torii adapter.fetch:: ';
-    // try for a cookie...
+    // We want to prefer the cookie over localStorage. This is so that
+    // a user can switch accounts / ENV's @ AGO, and the app should use
+    // that set of creds, vs what may be in localStorage. If there is
+    // no cookie, (which is the case for apps not hosted @ *.arcgis.com)
+    // then we look in localStorage
     let savedSession = this._checkCookie(this.get('authCookieName'));
     // failing that look in localStorage
     if (!savedSession.valid) {
@@ -184,7 +190,7 @@ export default EmberObject.extend({
 
     // Did we get something from cookie or local storage?
     if (savedSession.valid) {
-      debug(`${debugPrefix} Rehydrating session`);
+      debug(`${debugPrefix} Session is valid, rehydrating session...`);
       // normalize the authData hash...
       let authData = this._rehydrateSession(savedSession.properties);
       // degate to the open function to do the work...
@@ -261,10 +267,17 @@ export default EmberObject.extend({
 
     // default to the portal as defined in the torii config
     let portalUrl = this.get('settings').portalUrl + '/sharing/rest';
-    // for AGO, the cookie will have urlKey and customBaseUrl...
-    if (settings.urlKey && settings.customBaseUrl) {
-      portalUrl = `https://${settings.urlKey}.${settings.customBaseUrl}/sharing/rest`;
-    }
+    debug(`${debugPrefix} Torii Config PortalUrl: ${portalUrl}`);
+    // --------------------------------------------------------------------
+    // for AGO, the cookie will have urlKey and customBaseUrl,
+    // but we can't use this because we may be authenticating against a
+    // different environment - so we *must* use the portalUrl from the
+    // configuration so that the portal/self call will reject using the
+    // token from the rehydrated
+    // if (settings.urlKey && settings.customBaseUrl) {
+    //   portalUrl = `https://${settings.urlKey}.${settings.customBaseUrl}/sharing/rest`;
+    // }
+    // --------------------------------------------------------------------
     let options = {
       clientId: settings.clientId,
       // in an ArcGIS Online cookie, the username is tagged as an email.
@@ -308,14 +321,11 @@ export default EmberObject.extend({
     if (sessionInfo.portal) {
       session.properties.portal = sessionInfo.portal + '/sharing/rest';
     }
-    // finally, if the hash has a serializeSession, deserialize it
-    if (sessionInfo.serializedSession) {
-      session.authMgr = UserSession.deserialize(sessionInfo.serializedSession);
-      // remove  the prop...
-      delete session.properties.serializedSession;
-    } else {
-      session.authMgr = this._createAuthManager(sessionInfo);
-    }
+    // Previously we had serialized UserSession into localStorage
+    // however, that led to issues with cross-env cookies (QA vs PROD vs DEV)
+    // Using the hash we originally used pre- ArcGIS Rest JS, does not
+    // have this issue.
+    session.authMgr = this._createAuthManager(sessionInfo);
     // and return the object
     return session;
   },
@@ -371,7 +381,8 @@ export default EmberObject.extend({
       expires: sessionInfo.expires,
       region: sessionInfo.currentUser.region,
       role: sessionInfo.currentUser.role,
-      serializedSession: sessionInfo.authMgr.serialize(),
+      // serializing the session actually complicates other things
+      //serializedSession: sessionInfo.authMgr.serialize(),
       token: sessionInfo.token,
       withCredentials: sessionInfo.withCredentials,
     };

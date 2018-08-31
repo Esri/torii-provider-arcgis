@@ -4,6 +4,10 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- do not serialize `UserSession` into local storage
+- when fetching portalSelf, always use the url from the torii config, as this forces an existing token to be used against the configured API, which will cause things to reject if we have a valid token that's for a different environment (DEV/QA/PROD)
+
 
 ## [2.0.1]
 ### Fixed

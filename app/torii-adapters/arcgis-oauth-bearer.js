@@ -265,7 +265,7 @@ export default EmberObject.extend({
 
     // default to the portal as defined in the torii config
     let portalUrl = this.get('settings').portalUrl + '/sharing/rest';
-    debug(`${debugPrefix} PortalUrl: ${portalUrl}`);
+    debug(`${debugPrefix} Torii Config PortalUrl: ${portalUrl}`);
     // --------------------------------------------------------------------
     // for AGO, the cookie will have urlKey and customBaseUrl,
     // but we can't use this because we may be authenticating against a

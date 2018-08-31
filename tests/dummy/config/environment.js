@@ -65,7 +65,6 @@ module.exports = function(environment) {
   }
 
   if (TARGET === 'ecs' || environment === 'ecs') {
-    console.info('Setting ENV for ecs');
     ENV.locationType = 'hash';
     ENV.torii.providers['arcgis-oauth-bearer'].webTier = true;
     ENV.torii.providers['arcgis-oauth-bearer'].apiKey = 'arcgisonline';

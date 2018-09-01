@@ -3,7 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## [Unreleased]
+## [2.2.1]
+### Fixed
+- bug where subsequent reloads would keep extending the token expiry by a massive factor. On the third reload, the timestamp was so large it was an invalid date.
+
+## [2.1.0]
 ### Changed
 - do not serialize `UserSession` into local storage
 - when fetching portalSelf, always use the url from the torii config, as this forces an existing token to be used against the configured API, which will cause things to reject if we have a valid token that's for a different environment (DEV/QA/PROD)

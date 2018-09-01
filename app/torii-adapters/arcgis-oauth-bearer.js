@@ -292,12 +292,18 @@ export default EmberObject.extend({
     }
     // set the tokenExpires date...
     options.tokenExpires = new Date();
-    options.tokenExpires.setMinutes(options.tokenExpires.getMinutes() + (options.tokenDuration -1 ));
+    let now = Date.now();
+    let expires = new Date(now + (options.tokenDuration * 60 * 1000));
+    options.tokenExpires = expires;
+    debug(`${debugPrefix} got expiresIn value of ${options.tokenDuration} minutes which equates to ${options.tokenExpires}`);
     // create the arcgis-rest-js auth manager aka UserSession
-    return new UserSession(options);
+    let sess = new UserSession(options);
+    return sess;
   },
 
   _rehydrateSession (sessionInfo) {
+    let debugPrefix = 'torii adapter._rehydrateSession:: ';
+    // debug(`${debugPrefix} Rehydrating session ${JSON.stringify(sessionInfo,null,2)}`);
     // create the authData object for open
     let session = {
       properties: sessionInfo
@@ -309,11 +315,12 @@ export default EmberObject.extend({
     // expect an expiry so we will simply create one set to 8 hours
     let now = Date.now();
     let expiresIn = 8 * 60; // 8 hous
-
     if (sessionInfo.expires) {
-      // that said, if the hash does have an expires value (which is minutes from now)
-      // then we should use that (but converted to a timestamp)
-      expiresIn = (sessionInfo.expires - now) / 1000;
+      debug(`${debugPrefix} sessionInfo.expires ${sessionInfo.expires} ${new Date(sessionInfo.expires)}`);
+      // that said, if the hash does have an expires value (which is a timestamp in ms)
+      // then we should use that (converted to minutes from now)
+      expiresIn = Math.floor((sessionInfo.expires - now) / 60000);
+      debug(`${debugPrefix} which is ${expiresIn} minutes from now.`);
     }
     session.properties.expires_in = expiresIn;
 

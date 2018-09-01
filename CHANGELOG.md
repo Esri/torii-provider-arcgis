@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## [2.2.1]
+## [2.1.1]
 ### Fixed
 - bug where subsequent reloads would keep extending the token expiry by a massive factor. On the third reload, the timestamp was so large it was an invalid date.
 

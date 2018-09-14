@@ -27,6 +27,7 @@
     "build:ecs": "TARGET=ecs ember build --environment=production"
   },
   "dependencies": {
+    "@esri/arcgis-rest-common-types": "^1.7.1",
     "@esri/arcgis-rest-auth": "^1.7.1",
     "@esri/arcgis-rest-request": "^1.7.1",
     "broccoli-funnel": "^2.0.1",

@@ -27,8 +27,8 @@
     "build:ecs": "TARGET=ecs ember build --environment=production"
   },
   "dependencies": {
-    "@esri/arcgis-rest-common-types": "^1.7.1",
     "@esri/arcgis-rest-auth": "^1.7.1",
+    "@esri/arcgis-rest-common-types": "^1.7.1",
     "@esri/arcgis-rest-request": "^1.7.1",
     "broccoli-funnel": "^2.0.1",
     "broccoli-merge-trees": "^2.0.0",
@@ -50,6 +50,7 @@
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
+    "ember-cli-update": "^0.27.3",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",

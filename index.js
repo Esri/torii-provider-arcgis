@@ -11,7 +11,8 @@ var Funnel = require('broccoli-funnel');
 var MergeTrees = require('broccoli-merge-trees');
 
 module.exports = {
-  name: 'torii-provider-arcgis',
+
+  name: require('./package').name,
 
   isDevelopingAddon: function () {
     return false;

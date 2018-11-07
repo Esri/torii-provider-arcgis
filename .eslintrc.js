@@ -2,6 +2,8 @@
  * Copyright (c) 2016-2018 Esri
  * Apache-2.0
 */
+/*eslint no-undef: "error"*/
+/* eslint-env node */
 module.exports = {
   root: true,
   parserOptions: {
@@ -16,7 +18,8 @@ module.exports = {
     'plugin:ember/recommended'
   ],
   env: {
-    browser: true
+    browser: true,
+    node: true
   },
   rules: {
   },

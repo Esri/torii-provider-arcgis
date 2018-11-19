@@ -4,9 +4,14 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [2.2.1]
+### Changed
+- upgraded to ember-fetch 6.2.0
+
+## [2.2.0]
 ### Changed
 - added `@esri/arcgis-rest-common-types` to dependencies
-- upgraded to ember-fetch 6.2.0
 
 ## [2.1.1]
 ### Fixed

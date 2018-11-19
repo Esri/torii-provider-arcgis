@@ -6,6 +6,7 @@ Versioning](http://semver.org/).
 ## Unreleased
 ### Changed
 - added `@esri/arcgis-rest-common-types` to dependencies
+- upgraded to ember-fetch 6.2.0
 
 ## [2.1.1]
 ### Fixed

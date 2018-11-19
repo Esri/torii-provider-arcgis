@@ -7,6 +7,10 @@ Versioning](http://semver.org/).
 
 ## [2.2.1]
 ### Changed
+- nothing - release snafu
+
+## [2.1.2]
+### Changed
 - upgraded to ember-fetch 6.2.0
 
 ## [2.2.0]

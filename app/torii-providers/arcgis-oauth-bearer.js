@@ -112,7 +112,16 @@
     // if you have multiple apps fronted by nginx and you want to centralize
     // the redirects.
     if (this.get('customRedirectUri')) {
+      // get it...
       uri = this.get('customRedirectUri');
+      // if it does not contains a protocol,
+      if (!uri.includes('http')) {
+        // ensure a slash...
+        if (uri[0] !== '/') {
+          uri = `/${uri}`;
+        }
+        uri =`${this._currentBaseUrl()}${uri}`;
+      }
     } else {
       // Set the redirectUri to the redirect.html that's in the addon's public
       // folder and exposed at /<addon-name>/redirect.html

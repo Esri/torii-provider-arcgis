@@ -5,6 +5,19 @@ Versioning](http://semver.org/).
 
 ## Unreleased
 ### Changed
+- allow `customRedirectUri` to be a path (i.e. /redirect.html) instead of just a full url. If a path, prepend the current window.location.
+
+
+## [2.2.1]
+### Changed
+- nothing - release snafu
+
+## [2.1.2]
+### Changed
+- upgraded to ember-fetch 6.2.0
+
+## [2.2.0]
+### Changed
 - added `@esri/arcgis-rest-common-types` to dependencies
 
 ## [2.1.1]

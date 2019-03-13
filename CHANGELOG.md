@@ -4,6 +4,9 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- allow `customRedirectUri` to be a path (i.e. /redirect.html) instead of just a full url. If a path, prepend the current window.location.
+
 
 ## [2.2.1]
 ### Changed

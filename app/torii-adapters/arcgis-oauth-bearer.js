@@ -9,8 +9,9 @@ import { warn, debug } from '@ember/debug';
 import EmberObject, { computed } from '@ember/object';
 import ENV from '../config/environment';
 import fetch from 'fetch';
-import { request, getSelf, getPortalUrl } from "@esri/arcgis-rest-request";
 import { UserSession } from "@esri/arcgis-rest-auth";
+import { request } from "@esri/arcgis-rest-request";
+import { getSelf, getUserUrl } from "@esri/arcgis-rest-portal";
 import {
   getPortalRestUrl
 } from 'torii-provider-arcgis/utils/url-utils';
@@ -143,9 +144,7 @@ export default EmberObject.extend({
    */
   _fetchUserGroups (username, authMgr) {
     // create the url
-    const userUrl = getPortalUrl({
-      authentication: authMgr
-    }) + `/community/users/${username}`
+    const userUrl = getUserUrl(authMgr)
     // fire off the request...
     return request(userUrl, {
       authentication: authMgr,

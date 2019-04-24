@@ -23,8 +23,10 @@ module.exports = {
     // bundle scripts from vendor folder
     this.import('vendor/@esri/arcgis-rest-request/request.umd.js');
     this.import('vendor/@esri/arcgis-rest-auth/auth.umd.js');
+    this.import('vendor/@esri/arcgis-rest-portal/portal.umd.js');
     this.import('vendor/shims/@esri/arcgis-rest-request.js');
     this.import('vendor/shims/@esri/arcgis-rest-auth.js');
+    this.import('vendor/shims/@esri/arcgis-rest-portal.js');
   },
 
   treeForVendor(vendorTree) {
@@ -38,7 +40,12 @@ module.exports = {
       destDir: '@esri/arcgis-rest-auth'
     });
 
-    var treesToMerge = [arcgisRequestTree, arcgisAuthTree];
+    var arcgisPortalTree = new Funnel(path.dirname(require.resolve('@esri/arcgis-rest-portal/dist/umd/portal.umd.js')), {
+      files: ['portal.umd.js', 'portal.umd.js.map'],
+      destDir: '@esri/arcgis-rest-portal'
+    });
+
+    var treesToMerge = [arcgisRequestTree, arcgisAuthTree, arcgisPortalTree];
     // if we got a vendorTree, and add it in
     if (vendorTree) {
       treesToMerge.unshift(vendorTree);

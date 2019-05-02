@@ -29,17 +29,23 @@
     "build:ecs": "TARGET=ecs ember build --environment=production"
   },
   "dependencies": {
-    "@esri/arcgis-rest-auth": "^2.0.0",
-    "@esri/arcgis-rest-portal": "^2.0.0",
-    "@esri/arcgis-rest-request": "^2.0.0",
-    "@esri/arcgis-rest-types": "^2.0.0",
     "ember-auto-import": "^1.3.0",
     "ember-cli-babel": "^6.16.0",
     "ember-fetch": "^6.2.0",
     "torii": "0.10.1"
   },
+  "peerDependencies": {
+    "@esri/arcgis-rest-auth": "^2.0.0",
+    "@esri/arcgis-rest-portal": "^2.0.0",
+    "@esri/arcgis-rest-request": "^2.0.0",
+    "@esri/arcgis-rest-types": "^2.0.0"
+  },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",
+    "@esri/arcgis-rest-auth": "^2.0.0",
+    "@esri/arcgis-rest-portal": "^2.0.0",
+    "@esri/arcgis-rest-request": "^2.0.0",
+    "@esri/arcgis-rest-types": "^2.0.0",
     "broccoli-asset-rev": "^2.7.0",
     "ember-cli": "~3.5.0",
     "ember-auto-import": "^1.3.0",

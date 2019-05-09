@@ -4,21 +4,25 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [3.0.0]
+
 ### Changed
 - allow `customRedirectUri` to be a path (i.e. /redirect.html) instead of just a full url. If a path, prepend the current window.location.
-
+- ArcGIS REST JS v2.x is now used under the hood
+- ember-auto-import is now used to load ArcGIS REST JS
 
 ## [2.2.1]
 ### Changed
 - nothing - release snafu
 
-## [2.1.2]
-### Changed
-- upgraded to ember-fetch 6.2.0
-
 ## [2.2.0]
 ### Changed
 - added `@esri/arcgis-rest-common-types` to dependencies
+
+## [2.1.2]
+### Changed
+- upgraded to ember-fetch 6.2.0
 
 ## [2.1.1]
 ### Fixed
@@ -223,7 +227,14 @@ Versioning](http://semver.org/).
 - support for iframe (\*.argis.com only apps) oAuth
 - support for application (pop-up) oAuth
 
-[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/Esri/torii-provider-arcgis/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/Esri/torii-provider-arcgis/compare/v2.2.1...v3.0.0
+[2.2.1]: https://github.com/Esri/torii-provider-arcgis/compare/v2.2.0...v2.2.1
+[2.2.0]: https://github.com/Esri/torii-provider-arcgis/compare/v2.1.2...v2.2.0
+[2.1.2]: https://github.com/Esri/torii-provider-arcgis/compare/v2.1.1...v2.1.2
+[2.1.1]: https://github.com/Esri/torii-provider-arcgis/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/Esri/torii-provider-arcgis/compare/v2.0.1...v2.1.0
+[2.0.1]: https://github.com/Esri/torii-provider-arcgis/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.6...v2.0.0
 [1.1.6]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.5...v1.1.6
 [1.1.5]: https://github.com/Esri/torii-provider-arcgis/compare/v1.1.4...v1.1.5

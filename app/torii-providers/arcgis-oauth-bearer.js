@@ -159,6 +159,9 @@
       if (missingResponseParams.length) {
         throw new Error(`${debugPrefix} The response from the provider is missing these required response params: ${missingResponseParams.join(', ')}`);
       }
+      // the server sends the username back on the hash url encoded but we should work with it decoded
+      // it will get url encoded again anytime we need to use it in a url
+      authData.username = decodeURIComponent(authData.username);
       // attach in more info that arcgisRest wants
       authData.clientId = clientId;
       authData.portal = portalUrl;

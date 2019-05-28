@@ -4,6 +4,8 @@ This project adheres to [Semantic
 Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- url decode username we get back on the url hash
 
 ## [3.0.0]
 

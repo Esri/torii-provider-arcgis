@@ -18,7 +18,8 @@ import { isArray } from '@ember/array';
 import Mixin from '@ember/object/mixin';
 import {
   getPortalHostname,
-  getPortalRestUrl
+  getPortalRestUrl,
+  hubBaseFromPortalUrl
 } from 'torii-provider-arcgis/utils/url-utils';
 
 export default Mixin.create({
@@ -198,6 +199,21 @@ export default Mixin.create({
       result = `${this.get('portalHostname')}/sharing/rest`;
     }
     return result;
+  }),
+
+  /**
+   * Returns a URL for the current user's Hub Home
+   */
+  userHubHome: computed('isAuthenticated', 'portal', function () {
+    if (this.get('isPortal')) {
+      const base = window.location.href.split('#')[0];
+      return `${base}#/home`;
+    }
+    if (this.get('portal.portalProperties.hub.settings.hubHome')) {
+      return this.get('portal.portalProperties.hub.settings.hubHome');
+    }
+    const hubBase = hubBaseFromPortalUrl(this.get('portalUrl'));
+    return `https://${this.get('portal.urlKey')}.${hubBase}.arcgis.com`;
   }),
 
   isLevelOne: equal('currentUser.level', '1'),

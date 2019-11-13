@@ -78,6 +78,7 @@ We recommend passing data into components vs. having them pull in the session.
 | `token` | string | the token returned as part of the authentication process |
 | `isGroupMember` | boolean | Is the user a member of a particular group. |
 | `authType` | string `"token" or "web-tier"` | type of authentication used |
+| `userHubHome` | string | URL for current user's hub home site |
 
 
 

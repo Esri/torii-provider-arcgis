@@ -9,7 +9,6 @@ export function getPortalHostname (portal) {
   } else {
     return portal.urlKey ? `${portal.urlKey}.${portal.customBaseUrl}` : portal.portalHostname;
   }
-
 }
 
 /**
@@ -104,6 +103,18 @@ function portFromProtocol (protocol) {
 
 function hasPort (host) {
   return /:\d*$/.test(host);
+}
+
+export function hubBaseFromPortalUrl(portalUrl) {
+  if (portalUrl.match(/(qaext|\.mapsqa)\.arcgis.com/)) {
+    return 'hubqa';
+  } else if (portalUrl.match(/(devext|\.mapsdevext)\.arcgis.com/)) {
+    return 'hubdev';
+  } else if (portalUrl.match(/(www|\.maps)\.arcgis.com/)) {
+    return 'hub';
+  } else {
+    return undefined;
+  }
 }
 
 function getHost ([host, ...path]) {

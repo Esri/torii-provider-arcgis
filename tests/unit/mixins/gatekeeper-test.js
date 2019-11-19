@@ -143,3 +143,23 @@ test('isInAnyOrg', function (assert) {
   assert.ok(subject.isInAnyOrg(['ABC123']));
   assert.notOk(subject.isInAnyOrg(['OTHER']));
 });
+
+test('userHubHome', function (assert) {
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
+  let subject = GatekeeperObject.create();
+  const customHomeUrl = 'my home url';
+  subject.set('portal', {
+    id: 'ABC123',
+    portalProperties: { hub: { settings: { hubHome: customHomeUrl } } },
+  });
+  assert.equal(subject.userHubHome, customHomeUrl, 'userHubHome is an alias for portalProperties.hub.settings.hubHome if set');
+
+  const urlKey = 'my-org';
+  subject.set('portal', {
+    id: 'ABC123',
+    portalProperties: { hub: { settings: { hubHome: null } } },
+    urlKey
+  });
+  subject.set('portalUrl', 'https://orgname.mapsqa.arcgis.com');
+  assert.equal(subject.userHubHome, `https://${urlKey}.hubqa.arcgis.com`, 'userHubHome correctly generated if portalProperties.hub.settings.hubHome unset');
+});

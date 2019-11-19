@@ -106,7 +106,6 @@ function hasPort (host) {
 }
 
 export function hubBaseFromPortalUrl(portalUrl) {
-  debugger;
   if (portalUrl.match(/(qaext|\.mapsqa)\.arcgis.com/)) {
     return 'hubqa';
   } else if (portalUrl.match(/(devext|\.mapsdevext)\.arcgis.com/)) {

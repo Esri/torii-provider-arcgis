@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+- `arcgis-oath-bearer::open` handles `redirectUriQueryString` option by appending it to the redirectUri
+
 ## [3.1.0]
 ### Changed
 - url decode username we get back on the url hash

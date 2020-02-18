@@ -135,6 +135,12 @@
       }
     }
 
+    if (options.redirectUriQueryString) {
+      // redirectUriQueryString allows us to pass queryParams through to the consuming app to be handled after login
+      const separator = uri.includes('?') ? '&' : '?';
+      uri = `${uri}${separator}${options.redirectUriQueryString}`;
+    }
+
     this.set('redirectUri', uri);
 
     let name = this.get('name');

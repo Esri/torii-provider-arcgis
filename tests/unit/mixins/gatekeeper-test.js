@@ -87,6 +87,20 @@ test('hasPrivilege', function (assert) {
   assert.notOk(subject.isInRole('other:fake'));
 });
 
+test('hasPrivilege support public users w/o priv array', function (assert) {
+  let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
+  let subject = GatekeeperObject.create();
+  let user = {
+    username: 'fakeuser',
+  };
+  subject.set('currentUser', user);
+  assert.expect(4);
+  assert.notOk(subject.hasPrivilege('fake:one'));
+  assert.notOk(subject.hasPrivilege('fake:two'));
+  assert.notOk(subject.hasPrivilege('fake:three'));
+  assert.notOk(subject.isInRole('other:fake'));
+});
+
 test('hasAnyPrivilege', function (assert) {
   let GatekeeperObject = EmberObject.extend(GatekeeperMixin);
   let subject = GatekeeperObject.create();

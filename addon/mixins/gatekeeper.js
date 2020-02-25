@@ -80,7 +80,8 @@ export default Mixin.create({
   hasPrivilege (privilege) {
     let user = this.get('currentUser');
     if (user) {
-      return (user.privileges.indexOf(privilege) > -1);
+      let privs = user.privileges || [];
+      return (privs.indexOf(privilege) > -1);
     } else {
       return false;
     }

@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## [3.2.1]
+### Changed
+- `session.hasPrivilege` will handle the case where user.privileges is `undefined`, as it is for "public" users.
+
 ## [3.2.0]
 ### Added
 - `arcgis-oath-bearer::open` handles `redirectUriQueryString` option by appending it to the redirectUri

@@ -9,16 +9,18 @@ import { warn, debug } from '@ember/debug';
 import EmberObject, { computed } from '@ember/object';
 import ENV from '../config/environment';
 import fetch from 'fetch';
-import { UserSession } from "@esri/arcgis-rest-auth";
+import { UserSession, platformSelf } from "@esri/arcgis-rest-auth";
 import { request } from "@esri/arcgis-rest-request";
 import { getSelf, getUserUrl } from "@esri/arcgis-rest-portal";
 import {
   getPortalRestUrl
 } from 'torii-provider-arcgis/utils/url-utils';
 
+
 export default EmberObject.extend({
 
-  authCookieName: 'esri_auth',
+  authCookieName: 'esri_apoc',
+
 
   portalBaseUrl: 'https://www.arcgis.com/',
 
@@ -112,8 +114,13 @@ export default EmberObject.extend({
             .then((userResponse) => {
               // use this user object...
               sessionInfo.currentUser = userResponse;
+              debug(`${debugPrefix} Returning session`);
               return sessionInfo;
-            });
+            })
+            .catch((ex) => {
+              debug(`${debugPrefix} exception occured getting groups ${ex}`);
+              throw new Error(`${debugPrefix} exception occured ${ex}`);
+            })
         } else {
           return sessionInfo;
         }
@@ -134,7 +141,7 @@ export default EmberObject.extend({
 
     })
     .catch((ex) => {
-      // console.error(`${debugPrefix} exception occured ${ex}`);
+      debug(`${debugPrefix} exception occured ${ex}`);
       throw new Error(`${debugPrefix} exception occured ${ex}`);
     });
   },
@@ -162,11 +169,41 @@ export default EmberObject.extend({
         window.localStorage.removeItem('torii-provider-arcgis');
       }
       // TODO find a cleaner means to handle this iframe jiggery pokery
-      if (this.get('settings.display') && this.get('settings.display') === 'iframe') {
-        throw new Error('To log out of ArcGIS Online, you should redirect the browser to ' + this.get('signoutUrl'));
-      }
+      // if (this.get('settings.display') && this.get('settings.display') === 'iframe') {
+      //   throw new Error('To log out of ArcGIS Online, you should redirect the browser to ' + this.get('signoutUrl'));
+      // }
       resolve();
     });
+  },
+  redirectUri: computed('settings', function (){
+    let uri = '';
+    if (this.get('settings.customRedirectUri')) {
+      // get it...
+      uri = this.get('settings.customRedirectUri');
+      // if it does not contains a protocol,
+      if (!uri.includes('http')) {
+        // ensure a slash...
+        if (uri[0] !== '/') {
+          uri = `/${uri}`;
+        }
+        uri =`${this._currentBaseUrl()}${uri}`;
+      }
+    } else {
+      // Set the redirectUri to the redirect.html that's in the addon's public
+      // folder and exposed at /<addon-name>/redirect.html
+      // By default torii redirects to the whole ember app, which can be really slow
+      // given that it's just 10 lines of js that's needed
+      if (ENV.baseURL || ENV.rootURL) {
+        let path = ENV.baseURL || ENV.rootURL;
+        uri = this._currentBaseUrl() + path + 'torii-provider-arcgis/redirect.html';
+      } else {
+        uri = this._currentBaseUrl() + '/' + 'torii-provider-arcgis/redirect.html';
+      }
+    }
+    return uri;
+  }),
+  _currentBaseUrl: function () {
+    return [window.location.protocol, '//', window.location.host].join('');
   },
 
   /**
@@ -176,43 +213,45 @@ export default EmberObject.extend({
    */
   fetch () {
     let debugPrefix = 'torii adapter.fetch:: ';
+    const clientId = this.get('settings.apiKey');
+    const portal = this.get('settings.portalUrl') + '/sharing/rest';
+    const redirectUri = this.get('redirectUri');
     // We want to prefer the cookie over localStorage. This is so that
     // a user can switch accounts / ENV's @ AGO, and the app should use
     // that set of creds, vs what may be in localStorage. If there is
     // no cookie, (which is the case for apps not hosted @ *.arcgis.com)
     // then we look in localStorage
-    let savedSession = this._checkCookie(this.get('authCookieName'));
-    // failing that look in localStorage
-    if (!savedSession.valid) {
-      savedSession = this._checkLocalStorage('torii-provider-arcgis');
-    }
-
-    // Did we get something from cookie or local storage?
-    if (savedSession.valid) {
-      debug(`${debugPrefix} Session is valid, rehydrating session...`);
-      // normalize the authData hash...
-      let authData = this._rehydrateSession(savedSession.properties);
-      // degate to the open function to do the work...
-      return this.open(authData);
-    } else {
-      // This is configurable so we don't even have this option for AGO
-      if (this.get('settings.webTier')) {
-        debug(`${debugPrefix} no local session information found. Attempting web-tier...`);
-        let portalUrl = this.get('portalBaseUrl');
-        return this.attemptWebTierPortalSelfCall(portalUrl)
-          .then((authData) => {
-            // try to open the session.
-            return this.open(authData);
-          })
-          .catch((ex) => {
-            debug(`${debugPrefix} Web-tier failed. User is not logged in. ${ex}`);
-            throw new Error(`WebTier Auth not successful.`);
-          });
-      } else {
-          debug(`${debugPrefix} Web-tier not attempted. Web-tier not enabled for this application.`);
-          throw new Error(`WebTier Auth not successful.`);
+    return this._tryEncryptedCookie(clientId, portal, redirectUri)
+    .then((savedSession) => {
+      if (!savedSession.valid) {
+        savedSession = this._checkLocalStorage('torii-provider-arcgis');
       }
-    }
+      if (savedSession.valid) {
+        debug(`${debugPrefix} Session is valid, rehydrating session...`);
+        // normalize the authData hash...
+        let authData = this._rehydrateSession(savedSession.properties);
+        // degate to the open function to do the work...
+        return this.open(authData);
+      } else {
+        // This is configurable so we don't even have this option for AGO
+        if (this.get('settings.webTier')) {
+          debug(`${debugPrefix} no local session information found. Attempting web-tier...`);
+          let portalUrl = this.get('portalBaseUrl');
+          return this.attemptWebTierPortalSelfCall(portalUrl)
+            .then((authData) => {
+              // try to open the session.
+              return this.open(authData);
+            })
+            .catch((ex) => {
+              debug(`${debugPrefix} Web-tier failed. User is not logged in. ${ex}`);
+              throw new Error(`WebTier Auth not successful.`);
+            });
+        } else {
+            debug(`${debugPrefix} Web-tier not attempted. Web-tier not enabled for this application.`);
+            throw new Error(`WebTier Auth not enabled for this application.`);
+        }
+      }
+    })
   },
 
   /**
@@ -324,7 +363,7 @@ export default EmberObject.extend({
     session.properties.expires_in = expiresIn;
 
     // if a poral prop is on the hash - in this case it's the portalUrl
-    if (sessionInfo.portal) {
+    if (sessionInfo.portal && sessionInfo.portal.indexOf('sharing/rest') === -1 ) {
       session.properties.portal = sessionInfo.portal + '/sharing/rest';
     }
     // Previously we had serialized UserSession into localStorage
@@ -440,6 +479,47 @@ export default EmberObject.extend({
       debug(`${debugPrefix} No session information found in Cookie.`);
     }
     return result;
+  },
+
+  /**
+   * The encrypted platform cookie is not accessible from javascript
+   * so if we are on *.arcgis.com, we just shoot this off, and it may
+   * or may not return with a token.
+   * @param {*} clientId 
+   * @param {*} portal 
+   * @param {*} redirectUri 
+   */
+  _tryEncryptedCookie (clientId, portal, redirectUri) {
+    let result = {
+      valid: false,
+      properties: {}
+    };
+    // If the redirect uri is  not on *.arcgis.com we don't bother
+    if (redirectUri.indexOf('.arcgis.com') === -1) {
+      return Promise.resolve(result);
+    } else {
+      return platformSelf(clientId, redirectUri, portal)
+      .then((response) => {
+        const currentTimestamp = new Date().getTime();
+        const tokenExpiresTimestamp = currentTimestamp + (response.expires_in * 1000);
+        // Construct the session and return it
+        result.properties = {
+          portal: response.portalUrl,
+          clientId,
+          username: response.username,
+          token: response.token,
+          expires: tokenExpiresTimestamp,
+          ssl: true
+        };
+        result.valid = true;
+        return result;
+      })
+      .catch((err) => {
+        debug(`torii.adapter._tryEncryptedCookie: ${err}. Returning no auth`);
+        return result;
+      });
+    }
+    
   }
 
 });

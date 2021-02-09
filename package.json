@@ -41,17 +41,17 @@
     "torii": "0.10.1"
   },
   "peerDependencies": {
-    "@esri/arcgis-rest-auth": "^2.0.0",
-    "@esri/arcgis-rest-portal": "^2.0.0",
-    "@esri/arcgis-rest-request": "^2.0.0",
-    "@esri/arcgis-rest-types": "^2.0.0"
+    "@esri/arcgis-rest-auth": "^2.25.0",
+    "@esri/arcgis-rest-portal": "^2.25.0",
+    "@esri/arcgis-rest-request": "^2.25.0",
+    "@esri/arcgis-rest-types": "^2.25.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",
-    "@esri/arcgis-rest-auth": "^2.0.0",
-    "@esri/arcgis-rest-portal": "^2.0.0",
-    "@esri/arcgis-rest-request": "^2.0.0",
-    "@esri/arcgis-rest-types": "^2.0.0",
+    "@esri/arcgis-rest-auth": "^2.25.0",
+    "@esri/arcgis-rest-portal": "^2.25.0",
+    "@esri/arcgis-rest-request": "^2.25.0",
+    "@esri/arcgis-rest-types": "^2.25.0",
     "broccoli-asset-rev": "^2.7.0",
     "ember-cli": "~3.5.0",
     "ember-cli-dependency-checker": "^3.0.0",

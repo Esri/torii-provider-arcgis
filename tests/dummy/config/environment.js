@@ -26,17 +26,41 @@ module.exports = function(environment) {
     APP: {
       // normal app stuff in here
     },
+    // torii: {
+    //   sessionServiceName: 'session',
+    //   providers: {
+    //     'arcgis-oauth-bearer': {
+    //       apiKey: 'zDbzLJW6W4tcxHkj', // production,
+    //       portalUrl: 'https://www.arcgis.com',
+    //       loadGroups: true,
+    //       webTier: false
+    //     }
+    //   }
+    // },
+    // TESTING WITH PLATFORM AUTH
     torii: {
       sessionServiceName: 'session',
       providers: {
         'arcgis-oauth-bearer': {
-          apiKey: 'zDbzLJW6W4tcxHkj', // production,
-          portalUrl: 'https://www.arcgis.com',
+          apiKey: 'arcgisonline', // 'uaBK8PhD6G4XKnnU', // devext: 5b26c35bafe8450a9664fbd86cc18780
+          portalUrl: 'https://devext.arcgis.com',
           loadGroups: true,
           webTier: false
         }
       }
-    }
+    },
+    // TESTING WITH LOCALHOST OR CROSS-DOMAIN
+    // torii: {
+    //   sessionServiceName: 'session',
+    //   providers: {
+    //     'arcgis-oauth-bearer': {
+    //       apiKey: 'uaBK8PhD6G4XKnnU', // devext: 5b26c35bafe8450a9664fbd86cc18780
+    //       portalUrl: 'https://devext.arcgis.com',
+    //       loadGroups: true,
+    //       webTier: false
+    //     }
+    //   }
+    // }
   };
 
   if (environment === 'development') {

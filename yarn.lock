@@ -716,33 +716,33 @@
     resolve "^1.8.1"
     semver "^5.6.0"
 
-"@esri/arcgis-rest-auth@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-auth/-/arcgis-rest-auth-2.0.1.tgz#2bcd3d2c4adc2ae992572d549c56264fb635b451"
-  integrity sha512-88SVnEpX/JpnLqeWxyf07c+dXEDfibKol7bZIRrrbBuw28dsRiwQqlMqI+bF0Vbyj0zTid/zvBLn74DNovKkFg==
+"@esri/arcgis-rest-auth@^2.25.0":
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-auth/-/arcgis-rest-auth-2.25.0.tgz#c1d066cce08a833bb724b65f02fdf5578aec8c1a"
+  integrity sha512-fJHbusenCtna0vZUcqX2L0a3KAKOrXIQJE++qRFK8IaVfIjx2KWgkOfgiAgW4kUkRsF1lq15pXEXVRo5LyD43Q==
   dependencies:
-    "@esri/arcgis-rest-types" "^2.0.1"
-    tslib "^1.9.3"
+    "@esri/arcgis-rest-types" "^2.25.0"
+    tslib "^1.13.0"
 
-"@esri/arcgis-rest-portal@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-portal/-/arcgis-rest-portal-2.0.1.tgz#6bb815911f2fe159677950c7a63a9d37e9e59543"
-  integrity sha512-KlSvvojy6NKR2TXgNJq+w/jwhpIouiNihtnv8v2o2XKt6pRrMgL7qIzZssQbB6UZ1FD8gxbdXe6xdwRgW+yaiQ==
+"@esri/arcgis-rest-portal@^2.25.0":
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-portal/-/arcgis-rest-portal-2.25.0.tgz#96db0fe8c3836714359224e6c09f3a8895d518ab"
+  integrity sha512-OL2b59UhUtSfmJad6EwsOfUZRN031bgLfnznOrONRaB12U4iah+vjsCjkj1+l3sj8O6YlJpedLyP08Ci3IPY+g==
   dependencies:
-    "@esri/arcgis-rest-types" "^2.0.1"
-    tslib "^1.9.3"
+    "@esri/arcgis-rest-types" "^2.25.0"
+    tslib "^1.13.0"
 
-"@esri/arcgis-rest-request@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-request/-/arcgis-rest-request-2.0.1.tgz#8cdf5be9ded7daeb5e84486370e4d8a49d763d39"
-  integrity sha512-lAhX15VI306bzzMH6xWCSSg1GHZxa5eWLb0r5M94Uet/Z0mMTXXTtIMQWYO0WQ05jEpLnZ5UKvNR0v9aKyFNkw==
+"@esri/arcgis-rest-request@^2.25.0":
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-request/-/arcgis-rest-request-2.25.0.tgz#dfccf8221eb60c7ee3b42a9b6dea6d64433ab5c4"
+  integrity sha512-4KYl+Ene7kwZg/M2ABneZizcWVoQkxDvyB9f6zrcKQ2uYjCj1kEl2OTBFmDhT7HFtBm/8cdLi79p/3kDGtSsqQ==
   dependencies:
-    tslib "^1.9.3"
+    tslib "^1.10.0"
 
-"@esri/arcgis-rest-types@^2.0.0", "@esri/arcgis-rest-types@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-types/-/arcgis-rest-types-2.0.1.tgz#09178d05744869f48fb9f2e1021e7c0a3ef330f9"
-  integrity sha512-3bsrqespqnjAkT+fdnEOfyX57cjnijEWegnXngeD6QlBohTtIys0bhw5bKySOkq4Jnv3JZzmiPYqVZCuJcDKig==
+"@esri/arcgis-rest-types@^2.25.0":
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/@esri/arcgis-rest-types/-/arcgis-rest-types-2.25.0.tgz#d92db612db103175b435e3c284b1f3e87a940eb2"
+  integrity sha512-2iMwX8tUVTImpoyKjNVsigc0JCUM8hTlyIu/hF2NnehyetvsefSut8njMObwHy872zfBzZ+kOMyulGGzdHvLxg==
 
 "@glimmer/compiler@^0.38.0":
   version "0.38.4"
@@ -11520,15 +11520,15 @@ trim-right@^1.0.1:
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
 
+tslib@^1.10.0, tslib@^1.13.0:
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
+  integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
+
 tslib@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
-
-tslib@^1.9.3:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
-  integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==
 
 tty-browserify@0.0.0:
   version "0.0.0"

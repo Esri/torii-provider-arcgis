@@ -94,7 +94,7 @@ export default EmberObject.extend({
     } else {
       // we have to fetch portalSelf
       debug(`${debugPrefix} Did not recieved a portalSelf - making xhr via AGRjs::getSelf`);
-      portalSelfPromise = getSelf({ authentication: sessionInfo.authMgr, fetch });
+      portalSelfPromise = getSelf({ authentication: sessionInfo.authMgr });
     }
 
     return portalSelfPromise
@@ -333,11 +333,9 @@ export default EmberObject.extend({
       options.portal = settings.portal;
     }
     // set the tokenExpires date...
-    options.tokenExpires = new Date();
-    let now = Date.now();
-    let expires = new Date(now + (options.tokenDuration * 60 * 1000));
-    options.tokenExpires = expires;
-    debug(`${debugPrefix} got expiresIn value of ${options.tokenDuration} minutes which equates to ${options.tokenExpires}`);
+    let expires = Date.now() + (options.tokenDuration * 1000);
+    options.tokenExpires = new Date(expires);
+    debug(`${debugPrefix} got expiresIn value of ${options.tokenDuration} seconds which equates to ${options.tokenExpires}`);
     // create the arcgis-rest-js auth manager aka UserSession
     let sess = new UserSession(options);
     return sess;
@@ -356,13 +354,13 @@ export default EmberObject.extend({
     // However, arcgis-rest-js's UserSession and request systems
     // expect an expiry so we will simply create one set to 8 hours
     let now = Date.now();
-    let expiresIn = 8 * 60; // 8 hous
+    let expiresIn = 8 * 60 * 60; // 8 hours, in seconds
     if (sessionInfo.expires) {
       debug(`${debugPrefix} sessionInfo.expires ${sessionInfo.expires} ${new Date(sessionInfo.expires)}`);
       // that said, if the hash does have an expires value (which is a timestamp in ms)
-      // then we should use that (converted to minutes from now)
-      expiresIn = Math.floor((sessionInfo.expires - now) / 60000);
-      debug(`${debugPrefix} which is ${expiresIn} minutes from now.`);
+      // then we should use that (converted to seconds from now)
+      expiresIn = Math.floor((sessionInfo.expires - now) / 1000);
+      debug(`${debugPrefix} which is ${expiresIn} seconds from now.`);
     }
     session.properties.expires_in = expiresIn;
 

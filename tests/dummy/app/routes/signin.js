@@ -26,6 +26,7 @@ export default Route.extend({
           this.controller.transitionToRoute('secure');
         })
         .catch((err) => {
+          debugger;
           debug('AUTH ERROR: ', err);
         });
     },
@@ -42,11 +43,13 @@ export default Route.extend({
         schedule('afterRender', this, function () {
           this.get('session').open('arcgis-oauth-bearer')
             .then((authorization) => {
+              debugger;
               debug('AUTH SUCCESS: ', authorization);
               // transition to secured route
               this.controller.transitionToRoute('secure');
             })
             .catch((err) => {
+              debugger;
               debug('AUTH ERROR: ' + JSON.stringify(err));
             });
         });

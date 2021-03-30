@@ -129,8 +129,12 @@ export default EmberObject.extend({
         // unless web-tier, store the information
         if (sessionInfo.authType !== 'web-tier') {
           sessionInfo.expires = sessionInfo.authMgr.tokenExpires.getTime();
-          let sessionData = this._serializeSession(sessionInfo);
-          this._store('torii-provider-arcgis', sessionData);
+          if (!sessionInfo.portal.isPortal) {
+            // No need to store auth info in local storage on Enterprise Sites
+            // since no custom domains
+            let sessionData = this._serializeSession(sessionInfo);
+            this._store('torii-provider-arcgis', sessionData);
+          }
           sessionInfo.signoutUrl = this.get('signoutUrl');
         }
         /**
@@ -485,9 +489,9 @@ export default EmberObject.extend({
    * The encrypted platform cookie is not accessible from javascript
    * so if we are on *.arcgis.com, we just shoot this off, and it may
    * or may not return with a token.
-   * @param {*} clientId 
-   * @param {*} portal 
-   * @param {*} redirectUri 
+   * @param {*} clientId
+   * @param {*} portal
+   * @param {*} redirectUri
    */
   _tryEncryptedCookie (clientId, portal, redirectUri) {
     let result = {
@@ -519,7 +523,7 @@ export default EmberObject.extend({
         return result;
       });
     }
-    
+
   }
 
 });

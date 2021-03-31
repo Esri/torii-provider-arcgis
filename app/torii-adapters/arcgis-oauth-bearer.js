@@ -94,7 +94,7 @@ export default EmberObject.extend({
     } else {
       // we have to fetch portalSelf
       debug(`${debugPrefix} Did not recieved a portalSelf - making xhr via AGRjs::getSelf`);
-      portalSelfPromise = getSelf({ authentication: sessionInfo.authMgr });
+      portalSelfPromise = getSelf({ authentication: sessionInfo.authMgr, fetch });
     }
 
     return portalSelfPromise

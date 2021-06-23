@@ -485,8 +485,7 @@ export default EmberObject.extend({
 
   /**
    * The encrypted platform cookie is not accessible from javascript
-   * so if we are on *.arcgis.com, we just shoot this off, and it may
-   * or may not return with a token.
+   * so we just shoot this off, and it may or may not return with a token.
    * @param {*} clientId
    * @param {*} portal
    * @param {*} redirectUri
@@ -496,32 +495,27 @@ export default EmberObject.extend({
       valid: false,
       properties: {}
     };
-    // If the redirect uri is  not on *.arcgis.com we don't bother
-    if (redirectUri.indexOf('.arcgis.com') === -1) {
-      return Promise.resolve(result);
-    } else {
-      return platformSelf(clientId, redirectUri, portal)
-      .then((response) => {
-        const currentTimestamp = new Date().getTime();
-        const tokenExpiresTimestamp = currentTimestamp + (response.expires_in * 1000);
-        // Construct the session and return it
-        result.properties = {
-          portal: response.portalUrl,
-          clientId,
-          username: response.username,
-          token: response.token,
-          expires: tokenExpiresTimestamp,
-          ssl: true
-        };
-        result.valid = true;
-        return result;
-      })
-      .catch((err) => {
-        debug(`torii.adapter._tryEncryptedCookie: ${err}. Returning no auth`);
-        return result;
-      });
-    }
 
+    return platformSelf(clientId, redirectUri, portal)
+    .then((response) => {
+      const currentTimestamp = new Date().getTime();
+      const tokenExpiresTimestamp = currentTimestamp + (response.expires_in * 1000);
+      // Construct the session and return it
+      result.properties = {
+        portal: response.portalUrl,
+        clientId,
+        username: response.username,
+        token: response.token,
+        expires: tokenExpiresTimestamp,
+        ssl: true
+      };
+      result.valid = true;
+      return result;
+    })
+    .catch((err) => {
+      debug(`torii.adapter._tryEncryptedCookie: ${err}. Returning no auth`);
+      return result;
+    });
   }
 
 });

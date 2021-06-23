@@ -285,7 +285,6 @@ For more info, see [Hosts at wikipedia](<http://en.wikipedia.org/wiki/Hosts_(fil
 - fetch all tags
 - `ember release` - will increment patch
 - `ember release --minor` - will increment minor
-- `npm publish` - publish on npm
 
 ## Resources
 

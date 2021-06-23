@@ -280,6 +280,13 @@ For more info, see [Hosts at wikipedia](<http://en.wikipedia.org/wiki/Hosts_(fil
 - `ember serve`
 - Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
+### Release
+
+- fetch all tags
+- `ember release` - will increment patch
+- `ember release --minor` - will increment minor
+- `npm publish` - publish on npm
+
 ## Resources
 
 - [ArcGIS Hub](http://doc.arcgis.com/en/hub/)

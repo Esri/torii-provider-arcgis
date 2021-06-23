@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+## UNRELEASED
+
+### Changed
+
+- added support for esri_aopc cookie in ArcGIS Enterprise (will only work on 10.9+, but should not error on downlevel)
+
 ## [4.0.1]
 
 ### Fixed

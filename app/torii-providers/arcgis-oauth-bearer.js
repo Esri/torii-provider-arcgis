@@ -146,9 +146,14 @@
     let name = this.get('name');
     let url = this.buildUrl(options);
     let responseParams = this.get('responseParams');
-    // hopefully someone can explain to me the whole camelize() thing someday
+    
     let clientId = this.get('clientId');
-    let portalUrl = this.get('portalUrl') + '/sharing/rest';
+    let portalUrl = this.get('settings').portalUrl;
+    if (portalUrl.slice(-1) === "/") {
+      portalUrl = portalUrl + 'sharing/rest';
+    } else {
+      portalUrl = portalUrl + '/sharing/rest';
+    }
     let redirectUri = this.get('redirectUri') + `?clientId=${clientId}`;
 
     // open the popup/iframe and start polling localStorage for the auth info...

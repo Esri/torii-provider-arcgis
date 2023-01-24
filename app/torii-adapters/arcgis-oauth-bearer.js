@@ -210,6 +210,16 @@ export default EmberObject.extend({
     return [window.location.protocol, '//', window.location.host].join('');
   },
 
+  restUrl: computed('settings.portalUrl', function() {
+    let portalUrl = this.get('settings').portalUrl;
+    if (portalUrl.slice(-1) === "/") {
+      portalUrl = portalUrl + 'sharing/rest';
+    } else {
+      portalUrl = portalUrl + '/sharing/rest';
+    }
+    return portalUrl
+  }),
+
   /**
    * Rehydrate a session by looking for:
    * - the esri_auth cookie or
@@ -218,14 +228,14 @@ export default EmberObject.extend({
   fetch () {
     let debugPrefix = 'torii adapter.fetch:: ';
     const clientId = this.get('settings.apiKey');
-    const portal = this.get('settings.portalUrl') + '/sharing/rest';
+    const restUrl = this.get('restUrl');
     const redirectUri = this.get('redirectUri');
     // We want to prefer the cookie over localStorage. This is so that
     // a user can switch accounts / ENV's @ AGO, and the app should use
     // that set of creds, vs what may be in localStorage. If there is
     // no cookie, (which is the case for apps not hosted @ *.arcgis.com)
     // then we look in localStorage
-    return this._tryEncryptedCookie(clientId, portal, redirectUri)
+    return this._tryEncryptedCookie(clientId, restUrl, redirectUri)
     .then((savedSession) => {
       if (!savedSession.valid) {
         savedSession = this._checkLocalStorage('torii-provider-arcgis');
@@ -240,16 +250,15 @@ export default EmberObject.extend({
         // This is configurable so we don't even have this option for AGO
         if (this.get('settings.webTier')) {
           debug(`${debugPrefix} no local session information found. Attempting web-tier...`);
-          let portalUrl = this.get('portalBaseUrl');
-          return this.attemptWebTierPortalSelfCall(portalUrl)
-            .then((authData) => {
-              // try to open the session.
-              return this.open(authData);
-            })
-            .catch((ex) => {
-              debug(`${debugPrefix} Web-tier failed. User is not logged in. ${ex}`);
+          // ============================================================
+          // Ensure we use encrypted cookie for webtier auth
+          return this._tryEncryptedCookie(clientId, restUrl, redirectUri).then(authData => {
+            return this.open(authData);
+          })
+          .catch((ex) => {
+            debug(`${debugPrefix} Web-tier failed. User is not logged in. ${ex}`);
               throw new Error(`WebTier Auth not successful.`);
-            });
+          })
         } else {
             debug(`${debugPrefix} Web-tier not attempted. Web-tier not enabled for this application.`);
             throw new Error(`WebTier Auth not enabled for this application.`);
@@ -258,45 +267,7 @@ export default EmberObject.extend({
     })
   },
 
-  /**
-   * Attempt to call porta/self sending same-origin credentials
-   * If we get a response that has a user object and user.username
-   * then we have successfully authenticated using web-tier auth.
-   */
-  attemptWebTierPortalSelfCall (portalUrl) {
-    let debugPrefix = 'torii adapter.attemptWebTierPortalSelfCall:: ';
-    // we make the portal/self call directly using fetch so we can control things
-    return fetch(`${portalUrl}/sharing/rest/portals/self?f=json`, { credentials: 'same-origin' })
-      .then((response) => {
-        return response.json();
-      })
-      .then((portalSelf) => {
-        // many times the portal will return information w/o a token, so we
-        // really want to check if we got the user back... if we did... THEN we
-        // are pretty sure some web-tier auth has happened... we think.
-        if (portalSelf.user && portalSelf.user.username) {
-          debug(`${debugPrefix} Web-tier authentication succeeded.`);
-          // in addition to returning the payload, the porta/self call should also
-          // have set the esri_auth cookie... which we will now read...
-          let result = this._checkCookie(this.get('authCookieName'));
-          result.properties.portal = portalUrl;
-          result.properties.withCredentials = true;
-          let authData = this._rehydrateSession(result.properties);
-          // We are sending along the portalSelf we already have so we can short circuit
-          // and not make the same call again...
-          authData.properties.portalSelf = portalSelf;
-          return authData;
-        } else {
-          // we are not web-tier authenticated...
-          debug(`${debugPrefix} Web-tier portal/self call succeeded but user was not returned. User is not logged in.`);
-          throw new Error(`WebTier Auth not successful.`);
-        }
-      })
-      .catch((ex) => {
-        debug(`${debugPrefix} Web-tier authentication failed. User is not logged in. ${ex}`);
-        throw new Error(`WebTier Auth not successful.`);
-      });
-  },
+
   /**
    * Given a hash of authentication infomation
    * create a UserSession object, whic is an IAuthenticationManager
@@ -308,25 +279,16 @@ export default EmberObject.extend({
     debug(`${debugPrefix} Creating AuthMgr`);
 
     // default to the portal as defined in the torii config
-    let portalUrl = this.get('settings').portalUrl + '/sharing/rest';
-    debug(`${debugPrefix} Torii Config PortalUrl: ${portalUrl}`);
-    // --------------------------------------------------------------------
-    // for AGO, the cookie will have urlKey and customBaseUrl,
-    // but we can't use this because we may be authenticating against a
-    // different environment - so we *must* use the portalUrl from the
-    // configuration so that the portal/self call will reject using the
-    // token from the rehydrated
-    // if (settings.urlKey && settings.customBaseUrl) {
-    //   portalUrl = `https://${settings.urlKey}.${settings.customBaseUrl}/sharing/rest`;
-    // }
-    // --------------------------------------------------------------------
+    let restUrl = this.get('restUrl');
+    debug(`${debugPrefix} Torii Config PortalUrl: ${restUrl}`);
+
     let options = {
       clientId: settings.clientId,
       // in an ArcGIS Online cookie, the username is tagged as an email.
       username: settings.username ? settings.username : settings.email,
       token: settings.token,
       tokenDuration: parseInt(settings.expires_in),
-      portal: portalUrl
+      portal: restUrl
     };
     // but if we happen to pass it in, use that...
     if (settings.portal) {

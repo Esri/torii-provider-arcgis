@@ -148,7 +148,7 @@
     let responseParams = this.get('responseParams');
     
     let clientId = this.get('clientId');
-    let portalUrl = this.get('settings').portalUrl;
+    let portalUrl = this.get('portalUrl');
     if (portalUrl.slice(-1) === "/") {
       portalUrl = portalUrl + 'sharing/rest';
     } else {

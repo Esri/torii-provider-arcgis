@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /*
  * Copyright (c) 2016-2018 Esri
  * Apache-2.0
@@ -9,8 +10,7 @@ import { warn, debug } from '@ember/debug';
 import EmberObject, { computed } from '@ember/object';
 import ENV from '../config/environment';
 import fetch from 'fetch';
-import { UserSession, platformSelf } from "@esri/arcgis-rest-auth";
-import { request } from "@esri/arcgis-rest-request";
+import { ArcGISIdentityManager, platformSelf, request } from "@esri/arcgis-rest-request";
 import { getSelf, getUserUrl } from "@esri/arcgis-rest-portal";
 import {
   getPortalRestUrl
@@ -47,6 +47,7 @@ export default EmberObject.extend({
    * options, and update the defaults
    */
   init () {
+    debugger;
     this._super.init && this._super.init.apply(this, arguments);
     if (ENV.APP.authCookieName) {
       this.set('authCookieName', ENV.APP.authCookieName);
@@ -66,6 +67,7 @@ export default EmberObject.extend({
    */
   open (authentication) {
     let debugPrefix = 'torii adapter.open:: ';
+    debugger;
     // create the sessionInfo object that we return at the end of this
     // it is *close* to the object passed in, but it is different
     const sessionInfo = {
@@ -299,7 +301,7 @@ export default EmberObject.extend({
     options.tokenExpires = new Date(expires);
     debug(`${debugPrefix} got expiresIn value of ${options.tokenDuration} seconds which equates to ${options.tokenExpires}`);
     // create the arcgis-rest-js auth manager aka UserSession
-    let sess = new UserSession(options);
+    let sess = new ArcGISIdentityManager(options);
     return sess;
   },
 

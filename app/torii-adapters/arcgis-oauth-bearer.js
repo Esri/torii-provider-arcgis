@@ -1,4 +1,4 @@
-/* eslint-disable no-debugger */
+
 /*
  * Copyright (c) 2016-2018 Esri
  * Apache-2.0
@@ -47,7 +47,7 @@ export default EmberObject.extend({
    * options, and update the defaults
    */
   init () {
-    debugger;
+    
     this._super.init && this._super.init.apply(this, arguments);
     if (ENV.APP.authCookieName) {
       this.set('authCookieName', ENV.APP.authCookieName);
@@ -67,7 +67,7 @@ export default EmberObject.extend({
    */
   open (authentication) {
     let debugPrefix = 'torii adapter.open:: ';
-    debugger;
+    
     // create the sessionInfo object that we return at the end of this
     // it is *close* to the object passed in, but it is different
     const sessionInfo = {

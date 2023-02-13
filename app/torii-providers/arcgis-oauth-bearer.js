@@ -1,4 +1,4 @@
-/* eslint-disable no-debugger */
+
 /*
  * Copyright (c) 2016-2018 Esri
  * Apache-2.0
@@ -90,7 +90,7 @@
   * the login
   */
   open: function (options) {
-    debugger;
+    
     let debugPrefix = 'torii provider.open:: ';
     options = options || {};
 

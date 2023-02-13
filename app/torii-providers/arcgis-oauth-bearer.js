@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2016-2018 Esri
  * Apache-2.0
@@ -89,6 +90,7 @@
   * the login
   */
   open: function (options) {
+    
     let debugPrefix = 'torii provider.open:: ';
     options = options || {};
 

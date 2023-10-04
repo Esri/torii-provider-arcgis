@@ -445,6 +445,7 @@ export default EmberObject.extend({
         document.cookie.replace(
           new RegExp(
             "(?:(?:^|.*;)\\s*" +
+              // eslint-disable-next-line no-useless-escape
               encodeURIComponent(cookieName).replace(/[\-\.\+\*]/g, "\\$&") +
               "\\s*\\=\\s*([^;]*).*$)|^.*$"
           ),

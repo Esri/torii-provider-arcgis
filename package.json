@@ -1,6 +1,6 @@
 {
   "name": "torii-provider-arcgis",
-  "version": "4.1.2",
+  "version": "4.1.3",
   "description": "ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.",
   "keywords": [
     "ember-addon",
@@ -94,5 +94,9 @@
     "configPath": "tests/dummy/config"
   },
   "homepage": "https://github.com/Esri/torii-provider-arcgis#readme",
-  "main": "index.js"
+  "main": "index.js",
+  "volta": {
+    "node": "14.17.0",
+    "yarn": "1.22.15"
+  }
 }

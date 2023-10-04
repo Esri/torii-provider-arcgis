@@ -2,6 +2,25 @@
 
 **Note** This package should be considered deprecated. Although still used in some production applications, support for this will end soon. The v4 release is expected to be the last.
 
+### Release Process
+To do a 4.x release, 
+- checkout the `f/7778-exchange-token-after-platform-self` branch
+- add commits to that branch
+- determine the feature & patch numbers you are releasing, and use that in the next command
+- build it: `yarn build` - this cooks the files in /dist
+- run `yarn ember release --local --tag="v4.feat.patch" --annotation="maintenance release of 4.x" - this creates the tag
+- run `npm publish` to push to npm
+- push local `f/7778-exchange-token-after-platform-self` to origin
+- push local tags `git push origin v4.feat.patch`
+
+To do a 5.x release
+- checkout master, create a branch from that
+- add commits, PR into master, merge
+- checkout updated master
+- use ember release
+- `yarn ember release --publish=true` - this should do everything
+
+
 > ArcGIS authentication provider & adapters for [Torii](https://github.com/Vestorly/torii), packaged as an [Ember CLI](https://github.com/ember-cli/ember-cli) Addon.
 
 ![oauth 2.0 example screenshot](oauth2.png)

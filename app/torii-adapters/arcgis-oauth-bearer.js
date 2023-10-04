@@ -240,9 +240,9 @@ export default EmberObject.extend({
    * - the esri_auth cookie or
    * - localStorage::torii-provider-arcgis
    */
-  fetch() {
+  fetch(opts = {}) {
     let debugPrefix = "torii adapter.fetch:: ";
-    const clientId = this.get("settings.apiKey");
+    const clientId = opts.clientId || this.get("settings.apiKey");
     const restUrl = this.get("restUrl");
     const redirectUri = this.get("redirectUri");
     // We want to prefer the cookie over localStorage. This is so that

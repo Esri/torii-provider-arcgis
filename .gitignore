@@ -22,3 +22,6 @@
 /bower.json.ember-try
 /package.json.ember-try
 /ssl
+# yarn
+.yarn
+.yarnrc.yml

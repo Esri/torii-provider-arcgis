@@ -96,7 +96,7 @@
   "homepage": "https://github.com/Esri/torii-provider-arcgis#readme",
   "main": "index.js",
   "volta": {
-    "node": "14.17.0",
+    "node": "12.22.12",
     "yarn": "1.22.15"
   }
 }

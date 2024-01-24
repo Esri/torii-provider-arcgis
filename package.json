@@ -20,8 +20,7 @@
   },
   "scripts": {
     "build": "ember build",
-    "lint:hbs": "ember-template-lint .",
-    "lint:js": "eslint .",
+    "lint": "eslint app addon config tests",
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
@@ -53,7 +52,6 @@
     "ember-cli-inject-live-reload": "^1.8.2",
     "ember-cli-release": "^1.0.0-beta.2",
     "ember-cli-sri": "^2.1.1",
-    "ember-cli-template-lint": "^1.0.0-beta.1",
     "ember-cli-uglify": "^2.1.0",
     "ember-cli-update": "^0.27.3",
     "ember-disable-prototype-extensions": "^1.1.3",

@@ -282,9 +282,9 @@ For more info, see [Hosts at wikipedia](<http://en.wikipedia.org/wiki/Hosts_(fil
 
 ### Release
 
-- fetch all tags
-- `ember release` - will increment patch
-- `ember release --minor` - will increment minor
+- fetch all tags `git fetch --tags`
+- `npx ember release` - will increment patch
+- `npx ember release --minor` - will increment minor
 
 ## Resources
 

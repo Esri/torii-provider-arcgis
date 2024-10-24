@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic
 Versioning](http://semver.org/).
 
+
+## [4.2.1]
+- resolve issue with IWA in ArcGIS Enterprise not passing expires_in
+
 ## [4.1.2]
 
 - resolve issue with IWA in ArcGIS Enterprise not using esri_aopc cookie.

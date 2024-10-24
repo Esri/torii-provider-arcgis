@@ -1,6 +1,6 @@
 {
   "name": "torii-provider-arcgis",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "ArcGIS authentication provider & adapters for Torii, packaged as an Ember CLI Addon.",
   "keywords": [
     "ember-addon",
@@ -25,6 +25,7 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
+    "release": "ember release",
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\";",
     "build:ecs": "TARGET=ecs ember build --environment=production"
   },

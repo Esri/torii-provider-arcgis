@@ -525,6 +525,7 @@ export default EmberObject.extend({
           username: username,
           token: etResponse.token,
           expires: tokenExpiresTimestamp,
+          expires_in: etResponse.expires_in,
           ssl: true,
         };
         result.valid = true;
